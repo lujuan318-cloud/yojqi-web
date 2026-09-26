@@ -25,6 +25,7 @@ export default async function ShopPage({
     { id: 'balance', label: dict.shop.filterBalance },
     { id: 'sleep', label: dict.shop.filterSleep },
     { id: 'focus', label: dict.shop.filterFocus },
+    { id: 'protection', label: dict.shop.filterProtection },
     { id: 'gift', label: dict.shop.filterGift },
   ];
 
@@ -87,9 +88,9 @@ export default async function ShopPage({
             <ShieldCheck className="w-5 h-5 text-yojqi-bronze shrink-0" />
             <div className="text-xs text-yojqi-body">
               <strong className="block text-yojqi-ink font-semibold">
-                {lang === 'zh' ? '纯天然草本无害' : '100% Pure Botanical Formulations'}
+                {lang === 'zh' ? '正统开光与纯天然药材' : 'Authentic Consecration & Pure Herbs'}
               </strong>
-              {lang === 'zh' ? '严选道地药材与天然树脂合香' : 'Free of synthetic artificial fragrance compounds.'}
+              {lang === 'zh' ? '严选道地药材与真朱砂法印开光加持' : '100% genuine cinnabar vermilion & master altar seals.'}
             </div>
           </div>
 

@@ -6,21 +6,17 @@ import Link from 'next/link';
 import {
   MapPin,
   Eye,
-  Maximize2,
-  Users,
-  Bed,
   CheckCircle2,
   MessageCircle,
-  Phone,
   Sparkles,
-  Camera,
-  Coffee,
   ShieldCheck,
   ChevronLeft,
 } from 'lucide-react';
 import { SanctuaryProperty } from '@/lib/retreats-data';
 import { Language, getDictionary } from '@/lib/i18n';
 import { WeChatModal } from '@/components/WeChatModal';
+import { SanctuaryInquiryForm } from '@/components/SanctuaryInquiryForm';
+import { DroneScheduleWidget } from '@/components/DroneScheduleWidget';
 
 interface RetreatDetailViewProps {
   property: SanctuaryProperty;
@@ -202,6 +198,15 @@ export function RetreatDetailView({ property, lang }: RetreatDetailViewProps) {
           </div>
         </div>
       </div>
+
+      {/* Flight Schedule Widget */}
+      <DroneScheduleWidget lang={lang} />
+
+      {/* Direct VIP Inquiry Form */}
+      <SanctuaryInquiryForm
+        lang={lang}
+        defaultSuite={lang === 'zh' ? property.nameZh : property.nameEn}
+      />
 
       {/* Concierge Modal */}
       <WeChatModal

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ShieldCheck, Send, MessageCircle, MapPin } from 'lucide-react';
+import { ShieldCheck, Send, MapPin, MessageCircle, Flame } from 'lucide-react';
 import { Language, getDictionary } from '@/lib/i18n';
 import { WeChatModal } from './WeChatModal';
 
@@ -20,17 +20,31 @@ export function Footer({ lang }: FooterProps) {
         {/* Top Feature Bar */}
         <div className="border-b border-yojqi-border py-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center md:text-left">
               <div className="flex items-center justify-center md:justify-start gap-3">
                 <div className="w-10 h-10 rounded-full bg-yojqi-sand flex items-center justify-center text-yojqi-bronze shrink-0">
                   <ShieldCheck className="w-5 h-5" />
                 </div>
                 <div>
                   <h4 className="text-sm font-semibold text-yojqi-ink">
-                    {lang === 'zh' ? 'Stripe 全球安全结算' : 'Stripe Global Protected'}
+                    {lang === 'zh' ? '全球多币种便捷结算' : 'Global Multi-Currency'}
                   </h4>
                   <p className="text-xs text-yojqi-body">
-                    {lang === 'zh' ? '支持 Apple Pay / 信用卡 / 多币种' : 'Apple Pay, Google Pay & major cards accepted.'}
+                    {lang === 'zh' ? '支持 USD / EUR / GBP / CNY' : 'USD, EUR, GBP, CNY & major cards.'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-center md:justify-start gap-3">
+                <div className="w-10 h-10 rounded-full bg-yojqi-sand flex items-center justify-center text-yojqi-bronze shrink-0">
+                  <Flame className="w-5 h-5 text-amber-700" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-semibold text-yojqi-ink">
+                    {lang === 'zh' ? '道门正统朱砂开光' : 'Authentic Daoist Seals'}
+                  </h4>
+                  <p className="text-xs text-yojqi-body">
+                    {lang === 'zh' ? '真原矿朱砂 · 坛前敕笔盖印' : '100% genuine cinnabar & master seals.'}
                   </p>
                 </div>
               </div>
@@ -41,10 +55,10 @@ export function Footer({ lang }: FooterProps) {
                 </div>
                 <div>
                   <h4 className="text-sm font-semibold text-yojqi-ink">
-                    {lang === 'zh' ? '全球可追踪直邮' : 'Trackable Worldwide Shipping'}
+                    {lang === 'zh' ? '全球可追踪直邮' : 'Trackable Global Shipping'}
                   </h4>
                   <p className="text-xs text-yojqi-body">
-                    {lang === 'zh' ? '顺丰与国际专线直达全球' : 'Dispatched with insured courier tracking.'}
+                    {lang === 'zh' ? '顺丰与国际专线极速直达' : 'Dispatched with insured courier tracking.'}
                   </p>
                 </div>
               </div>
@@ -55,10 +69,10 @@ export function Footer({ lang }: FooterProps) {
                 </div>
                 <div>
                   <h4 className="text-sm font-semibold text-yojqi-ink">
-                    {lang === 'zh' ? '重庆高空无人机宿集' : 'Chongqing Skyline Sanctuaries'}
+                    {lang === 'zh' ? '重庆高空无人机宿集' : 'Chongqing Skyline Suites'}
                   </h4>
                   <p className="text-xs text-yojqi-body">
-                    {lang === 'zh' ? '白宏江景公寓 & YOJQI艺术宿集' : 'Baihong & YOJQI Drone Show Apartments'}
+                    {lang === 'zh' ? '白宏江景公寓 & YOJQI艺术宿集' : 'Baihong & YOJQI Drone Show Balconies'}
                   </p>
                 </div>
               </div>
@@ -100,6 +114,12 @@ export function Footer({ lang }: FooterProps) {
                   </Link>
                 </li>
                 <li>
+                  <Link href={`/${lang}/talismans`} className="hover:text-yojqi-bronze transition-colors flex items-center gap-1.5">
+                    <Flame className="w-3.5 h-3.5 text-amber-700" />
+                    <span>{dict.nav.talismans}</span>
+                  </Link>
+                </li>
+                <li>
                   <Link href={`/${lang}/retreats`} className="hover:text-yojqi-bronze transition-colors">
                     {dict.nav.retreats}
                   </Link>
@@ -112,11 +132,6 @@ export function Footer({ lang }: FooterProps) {
                 <li>
                   <Link href={`/${lang}/retreats/baihong-drone-show-apartment`} className="hover:text-yojqi-bronze transition-colors">
                     {lang === 'zh' ? '白宏无人机机位公寓' : 'Baihong Drone Show Apartment'}
-                  </Link>
-                </li>
-                <li>
-                  <Link href={`/${lang}/retreats/yojqi-drone-show-apartment`} className="hover:text-yojqi-bronze transition-colors">
-                    {lang === 'zh' ? 'YOJQI 无人机艺术宿集' : 'YOJQI Drone Art Sanctuary'}
                   </Link>
                 </li>
               </ul>

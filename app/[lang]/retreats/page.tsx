@@ -2,7 +2,9 @@ import React from 'react';
 import { Language, getDictionary } from '@/lib/i18n';
 import { SANCTUARY_PROPERTIES } from '@/lib/retreats-data';
 import { RetreatCard } from '@/components/RetreatCard';
-import { Eye, ShieldAlert, Sparkles, Coffee, CalendarCheck, HelpCircle } from 'lucide-react';
+import { DroneScheduleWidget } from '@/components/DroneScheduleWidget';
+import { SanctuaryInquiryForm } from '@/components/SanctuaryInquiryForm';
+import { Eye, Sparkles, HelpCircle } from 'lucide-react';
 
 export default async function RetreatsPage({
   params,
@@ -17,8 +19,8 @@ export default async function RetreatsPage({
     {
       qEn: "When are the official Chongqing drone shows scheduled?",
       qZh: "重庆两江无人机灯光秀通常在什么时间上演？",
-      aEn: "Official drone shows take place over major statutory holidays (National Day Golden Week, New Year's Eve, Spring Festival) and select cultural weekend events. Schedules are announced 2-3 days prior. Our VIP concierge monitors the air traffic authority bulletins in real time to alert booked guests immediately.",
-      aZh: "官方大型无人机天幕汇演主要在国家法定节假日（国庆黄金周、跨年元旦、春节假期）及重点周末文旅活动期间进行，起降空域通常在朝天门与南滨路交界上方。我们的私享管家会提前监测民航与文旅发布，为在住宾客提供第一手起降时刻同步。",
+      aEn: "Official drone shows take place over major statutory holidays (National Day Golden Week, New Year's Eve, Spring Festival) and regular weekend nights (Saturday & Sunday 20:30 CST). Our VIP concierge monitors the air traffic authority bulletins in real time to alert booked guests immediately.",
+      aZh: "官方大型无人机天幕汇演主要在每周六日晚间 20:30 常规起飞，并在国家法定节假日（国庆黄金周、跨年元旦、春节假期）进行双场加演。起降空域在朝天门与南滨路交界上方。我们的私享管家会提前监测民航发布，为在住宾客提供第一手起降时刻同步。",
     },
     {
       qEn: "How does private terrace viewing compare with public viewing areas?",
@@ -50,8 +52,11 @@ export default async function RetreatsPage({
         </p>
       </div>
 
+      {/* Interactive Drone Schedule Calendar Widget */}
+      <DroneScheduleWidget lang={currentLang} />
+
       {/* Crowd Gridlock Warning Comparison Box */}
-      <div className="bg-[#fff8f0] border border-amber-300 rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row gap-6 items-start">
+      <div className="bg-[#fff8f0] border border-amber-300 rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row gap-6 items-start shadow-xs">
         <div className="w-12 h-12 rounded-full bg-amber-500 text-white flex items-center justify-center shrink-0">
           <Eye className="w-6 h-6" />
         </div>
@@ -63,7 +68,7 @@ export default async function RetreatsPage({
           </h3>
           <p className="text-xs sm:text-sm text-yojqi-bodyStrong leading-relaxed">
             {currentLang === 'zh'
-              ? '重庆作为立体魔幻山城，节日期间南滨路与朝天门交通极为拥堵。数十万游客在夜风与嘈杂喇叭声中推挤，极度消耗身心元气。选择白宏与YOJQI高空机位公寓，将万人喧嚣隔绝于双层静音玻璃之外，在私密露台上以最体面的姿态俯瞰天地流光。'
+              ? '重庆作为立体魔幻山城，节日期间南滨路与朝天门交通极为拥堵。数十万游客在夜风与嘈杂喇叭声中推挤，极度消耗身心元气。选择百宏与YOJQI高空机位公寓，将万人喧嚣隔绝于双层静音玻璃之外，在私密露台上以最体面的姿态俯瞰天地流光。'
               : 'Chongqing’s vertical topography concentrates massive holiday crowds into bottleneck river quays. By securing a high-altitude sanctuary at Baihong or YOJQI Art Residence, you transform a hectic tourist chore into an intimate, restorative sensory ritual.'}
           </p>
         </div>
@@ -75,6 +80,9 @@ export default async function RetreatsPage({
           <RetreatCard key={property.id} property={property} lang={currentLang} />
         ))}
       </div>
+
+      {/* Direct VIP Inquiry Form for Fast Lead Capture */}
+      <SanctuaryInquiryForm lang={currentLang} />
 
       {/* FAQ Section */}
       <div className="pt-8 border-t border-yojqi-border">

@@ -3,10 +3,11 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ShoppingBag, Menu, X, Globe, Sparkles } from 'lucide-react';
+import { ShoppingBag, Menu, X, Globe, Sparkles, Shield } from 'lucide-react';
 import { Language, getDictionary } from '@/lib/i18n';
 import { useCart } from '@/context/CartContext';
 import { CartDrawer } from './CartDrawer';
+import { CurrencySelector } from './CurrencySelector';
 
 interface NavbarProps {
   lang: Language;
@@ -24,6 +25,7 @@ export function Navbar({ lang }: NavbarProps) {
 
   const navLinks = [
     { href: `/${lang}/shop`, label: dict.nav.shop },
+    { href: `/${lang}/talismans`, label: dict.nav.talismans, icon: Shield },
     { href: `/${lang}/retreats`, label: dict.nav.retreats, highlight: true },
     { href: `/${lang}/wisdom`, label: dict.nav.wisdom },
   ];
@@ -36,8 +38,8 @@ export function Navbar({ lang }: NavbarProps) {
           <Sparkles className="w-3.5 h-3.5 text-amber-300" />
           <span>
             {lang === 'zh'
-              ? '重庆两江汇无人机机位江景公寓现已开放预约 · 全球多币种安全配送'
-              : 'Chongqing Two-Rivers Drone Show Apartments Now Open for VIP Reservations'}
+              ? '重庆两江汇无人机机位江景公寓现已开放预约 · 道家朱砂手书符咒专区已上线'
+              : 'Chongqing Two-Rivers Drone Balcony Suites Open · Authentic Taoist Talismans Live'}
           </span>
         </div>
 
@@ -56,22 +58,24 @@ export function Navbar({ lang }: NavbarProps) {
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-8">
+            <nav className="hidden md:flex items-center space-x-7">
               {navLinks.map((link) => {
                 const isActive = pathname.startsWith(link.href);
+                const Icon = link.icon;
                 return (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`relative text-sm tracking-wide font-medium transition-colors py-2 ${
+                    className={`relative text-sm tracking-wide font-medium transition-colors py-2 flex items-center gap-1.5 ${
                       isActive
                         ? 'text-yojqi-ink font-semibold'
                         : 'text-yojqi-body hover:text-yojqi-ink'
                     }`}
                   >
+                    {Icon && <Icon className="w-3.5 h-3.5 text-amber-700" />}
                     <span>{link.label}</span>
                     {link.highlight && (
-                      <span className="ml-1.5 px-1.5 py-0.5 text-[10px] font-mono rounded bg-amber-100 text-amber-900 border border-amber-200">
+                      <span className="ml-1 px-1.5 py-0.5 text-[10px] font-mono rounded bg-amber-100 text-amber-900 border border-amber-200">
                         {lang === 'zh' ? '两江机位' : 'Skyline'}
                       </span>
                     )}
@@ -84,7 +88,10 @@ export function Navbar({ lang }: NavbarProps) {
             </nav>
 
             {/* Right Action Icons */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-3">
+              {/* Multi-Currency Selector */}
+              <CurrencySelector lang={lang} />
+
               {/* Language Switcher */}
               <Link
                 href={switchedPath}
@@ -124,22 +131,28 @@ export function Navbar({ lang }: NavbarProps) {
         {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden border-t border-yojqi-border bg-[#fffdfa] px-4 pt-3 pb-6 space-y-3 animate-in slide-in-from-top-2">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-between py-2 text-base text-yojqi-ink border-b border-neutral-100"
-              >
-                <span>{link.label}</span>
-                {link.highlight && (
-                  <span className="px-2 py-0.5 text-xs rounded bg-amber-100 text-amber-900 font-mono">
-                    {lang === 'zh' ? '无人机机位' : 'Skyline View'}
+            {navLinks.map((link) => {
+              const Icon = link.icon;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center justify-between py-2 text-base text-yojqi-ink border-b border-neutral-100"
+                >
+                  <span className="flex items-center gap-2">
+                    {Icon && <Icon className="w-4 h-4 text-amber-700" />}
+                    <span>{link.label}</span>
                   </span>
-                )}
-              </Link>
-            ))}
-            <div className="pt-2">
+                  {link.highlight && (
+                    <span className="px-2 py-0.5 text-xs rounded bg-amber-100 text-amber-900 font-mono">
+                      {lang === 'zh' ? '无人机机位' : 'Skyline View'}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
+            <div className="pt-2 flex items-center justify-between">
               <Link
                 href={switchedPath}
                 onClick={() => setMobileMenuOpen(false)}

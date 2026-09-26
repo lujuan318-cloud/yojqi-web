@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { X, Trash2, Plus, Minus, ArrowRight, ShieldCheck, Lock } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useCurrency } from '@/context/CurrencyContext';
 import { Language, getDictionary } from '@/lib/i18n';
 
 interface CartDrawerProps {
@@ -12,6 +13,7 @@ interface CartDrawerProps {
 
 export function CartDrawer({ lang }: CartDrawerProps) {
   const { items, isOpen, closeCart, removeFromCart, updateQuantity, totalPrice, totalCount } = useCart();
+  const { formatPrice, currency } = useCurrency();
   const [isLoading, setIsLoading] = useState(false);
   const dict = getDictionary(lang);
 
@@ -34,6 +36,7 @@ export function CartDrawer({ lang }: CartDrawerProps) {
         body: JSON.stringify({
           items: lineItems,
           lang,
+          currency,
         }),
       });
 
@@ -125,7 +128,7 @@ export function CartDrawer({ lang }: CartDrawerProps) {
                       </button>
                     </div>
                     <div className="text-xs text-yojqi-bronze font-medium mt-0.5">
-                      ${product.price.toFixed(2)}
+                      {formatPrice(product.price)}
                     </div>
                   </div>
 
@@ -151,7 +154,7 @@ export function CartDrawer({ lang }: CartDrawerProps) {
                     </div>
 
                     <div className="text-sm font-semibold text-yojqi-ink">
-                      ${(product.price * quantity).toFixed(2)}
+                      {formatPrice(product.price * quantity)}
                     </div>
                   </div>
                 </div>
@@ -166,7 +169,7 @@ export function CartDrawer({ lang }: CartDrawerProps) {
             <div className="flex items-center justify-between text-sm">
               <span className="text-yojqi-body">{dict.shop.total}</span>
               <span className="font-serif text-2xl font-bold text-yojqi-ink">
-                ${totalPrice.toFixed(2)} <span className="text-xs font-sans text-neutral-500 font-normal">USD</span>
+                {formatPrice(totalPrice)} <span className="text-xs font-sans text-neutral-500 font-normal">{currency}</span>
               </span>
             </div>
 

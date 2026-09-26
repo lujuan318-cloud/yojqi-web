@@ -56,8 +56,34 @@ export default async function ProductPage({
     notFound();
   }
 
+  const isZh = lang === 'zh';
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: isZh ? product.nameZh : product.nameEn,
+    image: `https://www.yojqi.com${product.heroImage}`,
+    description: isZh ? product.summaryZh : product.summaryEn,
+    brand: {
+      '@type': 'Brand',
+      name: 'YOJQI',
+    },
+    offers: {
+      '@type': 'Offer',
+      price: product.price,
+      priceCurrency: 'USD',
+      availability: product.inStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      url: `https://www.yojqi.com/${lang}/product/${product.slug}`,
+    },
+    category: product.category,
+    material: isZh ? product.materialsZh : product.materialsEn,
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <ProductDetailView product={product} lang={lang as Language} />
     </div>
   );

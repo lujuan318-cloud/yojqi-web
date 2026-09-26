@@ -3,10 +3,13 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ShoppingBag, ArrowRight, ShieldCheck, Heart, Sparkles, Check } from 'lucide-react';
+import { ShoppingBag, ArrowRight, ShieldCheck, Heart, Sparkles, Check, Shield } from 'lucide-react';
 import { Product, getProductBySlug } from '@/lib/products-data';
 import { Language, getDictionary } from '@/lib/i18n';
 import { useCart } from '@/context/CartContext';
+import { useCurrency } from '@/context/CurrencyContext';
+import { ScentPyramid } from '@/components/ScentPyramid';
+import { StickyBuyBar } from '@/components/StickyBuyBar';
 
 interface ProductDetailViewProps {
   product: Product;
@@ -18,6 +21,7 @@ export function ProductDetailView({ product, lang }: ProductDetailViewProps) {
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const { addToCart } = useCart();
+  const { formatPrice } = useCurrency();
   const dict = getDictionary(lang);
 
   const pairedProduct = product.pairedSlug ? getProductBySlug(product.pairedSlug) : null;
@@ -28,8 +32,15 @@ export function ProductDetailView({ product, lang }: ProductDetailViewProps) {
     setTimeout(() => setAdded(false), 2000);
   };
 
+  const typeLabels = {
+    bracelet: lang === 'zh' ? '手腕锚点 · 日常触感' : 'Wrist Anchor · Daily Contact',
+    pendant: lang === 'zh' ? '胸前胸坠 · 呼吸共振' : 'Pendant · Breath Awareness',
+    talisman: lang === 'zh' ? '道门正统朱砂符 · 坛前开光' : 'Hand-Inscribed Vermilion Talisman',
+    set: lang === 'zh' ? '全境典藏礼盒' : 'Complete Ritual Box',
+  };
+
   return (
-    <div className="space-y-16">
+    <div className="space-y-12">
       {/* Top Grid: Gallery & Purchase Column */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
         {/* Gallery (Left) */}
@@ -44,6 +55,12 @@ export function ProductDetailView({ product, lang }: ProductDetailViewProps) {
               className="object-cover transition-all duration-300"
               sizes="(max-width: 1024px) 100vw, 60vw"
             />
+            {product.category === 'protection' && (
+              <div className="absolute top-4 left-4 bg-amber-950/80 backdrop-blur-xs text-amber-200 text-xs font-mono px-3 py-1.5 rounded-full border border-amber-500/40 flex items-center gap-1.5 shadow-md">
+                <Shield className="w-3.5 h-3.5 text-amber-400" />
+                <span>{lang === 'zh' ? '正一坛前敕笔盖印' : 'Altar Consecrated'}</span>
+              </div>
+            )}
           </div>
 
           {/* Thumbnails */}
@@ -75,15 +92,12 @@ export function ProductDetailView({ product, lang }: ProductDetailViewProps) {
         {/* Purchase Info (Right) */}
         <div className="lg:col-span-5 space-y-6">
           <div>
-            <div className="text-xs font-mono tracking-widest text-yojqi-bronze uppercase mb-1">
-              {product.type === 'bracelet'
-                ? (lang === 'zh' ? '手腕锚点 · 日常触感' : 'Wrist Anchor · Daily Contact')
-                : product.type === 'pendant'
-                ? (lang === 'zh' ? '胸前胸坠 · 呼吸共振' : 'Pendant · Breath Awareness')
-                : (lang === 'zh' ? '全境典藏礼盒' : 'Complete Ritual Box')}
+            <div className="text-xs font-mono tracking-widest text-yojqi-bronze uppercase mb-1 flex items-center gap-1.5">
+              {product.category === 'protection' && <Shield className="w-3.5 h-3.5 text-amber-700" />}
+              <span>{typeLabels[product.type] || product.type}</span>
             </div>
 
-            <h1 className="font-serif text-3xl sm:text-4xl font-medium text-yojqi-inkHeading">
+            <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-semibold text-yojqi-inkHeading leading-tight">
               {lang === 'zh' ? product.nameZh : product.nameEn}
             </h1>
 
@@ -95,14 +109,14 @@ export function ProductDetailView({ product, lang }: ProductDetailViewProps) {
           {/* Pricing */}
           <div className="flex items-baseline gap-3 pt-2 pb-4 border-b border-yojqi-border">
             <span className="font-serif text-3xl font-bold text-yojqi-ink">
-              ${product.price.toFixed(2)}
+              {formatPrice(product.price)}
             </span>
             {product.originalPrice > product.price && (
               <span className="text-sm text-neutral-400 line-through">
-                ${product.originalPrice.toFixed(2)}
+                {formatPrice(product.originalPrice)}
               </span>
             )}
-            <span className="text-xs px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-medium">
+            <span className="text-xs px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-medium">
               {dict.shop.inStock}
             </span>
           </div>
@@ -137,7 +151,7 @@ export function ProductDetailView({ product, lang }: ProductDetailViewProps) {
               {/* Main Action Button */}
               <button
                 onClick={handleAdd}
-                className="flex-1 py-4 px-6 rounded-xl yojqi-btn-primary font-medium text-sm flex items-center justify-center gap-2"
+                className="flex-1 py-4 px-6 rounded-xl yojqi-btn-primary font-medium text-sm flex items-center justify-center gap-2 shadow-sm"
               >
                 {added ? (
                   <>
@@ -158,11 +172,13 @@ export function ProductDetailView({ product, lang }: ProductDetailViewProps) {
             </div>
           </div>
 
-          {/* Paired Cross-Linking Recommendation (Per V2 Taxonomy Section 5) */}
+          {/* Paired Cross-Linking Recommendation */}
           {pairedProduct && (
             <div className="mt-8 p-4 rounded-xl bg-[#fff8f0] border border-yojqi-borderAccent">
               <div className="text-xs font-mono font-semibold text-yojqi-bronze uppercase mb-1">
-                {product.type === 'pendant'
+                {product.category === 'protection'
+                  ? (lang === 'zh' ? '推荐同频结缘搭配：' : 'Recommended Companion Protection Anchor:')
+                  : product.type === 'pendant'
                   ? (lang === 'zh' ? '更渴望全天候轻巧触感？推荐搭配同款手绳：' : 'Prefer a quieter all-day route? Start with the bracelet:')
                   : (lang === 'zh' ? '渴望更直观的胸腔仪式感？推荐搭配同款项链：' : 'Want a stronger visible ritual? Choose the pendant version:')}
               </div>
@@ -184,8 +200,8 @@ export function ProductDetailView({ product, lang }: ProductDetailViewProps) {
                     <h5 className="font-serif text-sm font-medium text-yojqi-inkHeading group-hover:text-yojqi-bronze transition-colors">
                       {lang === 'zh' ? pairedProduct.nameZh : pairedProduct.nameEn}
                     </h5>
-                    <span className="text-xs font-mono text-yojqi-bronze">
-                      ${pairedProduct.price.toFixed(2)}
+                    <span className="text-xs font-mono text-yojqi-bronze font-bold">
+                      {formatPrice(pairedProduct.price)}
                     </span>
                   </div>
                 </div>
@@ -196,10 +212,13 @@ export function ProductDetailView({ product, lang }: ProductDetailViewProps) {
         </div>
       </div>
 
+      {/* Scent & Olfactory Pyramid (CRO Interactive Card) */}
+      <ScentPyramid product={product} lang={lang} />
+
       {/* Somatic Benefits & Ritual Details Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-yojqi-border">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4 border-t border-yojqi-border">
         {/* Left: Somatic Benefits */}
-        <div className="p-6 rounded-2xl bg-white border border-yojqi-border space-y-4">
+        <div className="p-6 sm:p-8 rounded-2xl bg-white border border-yojqi-border space-y-4">
           <div className="flex items-center gap-2 text-yojqi-bronze">
             <Heart className="w-5 h-5" />
             <h3 className="font-serif text-xl font-medium text-yojqi-inkHeading">
@@ -210,28 +229,28 @@ export function ProductDetailView({ product, lang }: ProductDetailViewProps) {
             {(lang === 'zh' ? product.somaticBenefitsZh : product.somaticBenefitsEn).map((benefit, idx) => (
               <li key={idx} className="flex items-start gap-2.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-yojqi-bronze mt-2 shrink-0" />
-                <span>{benefit}</span>
+                <span className="leading-relaxed">{benefit}</span>
               </li>
             ))}
           </ul>
         </div>
 
         {/* Right: How to Anchor Ritual */}
-        <div className="p-6 rounded-2xl bg-yojqi-warm border border-yojqi-border space-y-4">
+        <div className="p-6 sm:p-8 rounded-2xl bg-yojqi-warm border border-yojqi-border space-y-4">
           <div className="flex items-center gap-2 text-yojqi-bronze">
             <Sparkles className="w-5 h-5" />
             <h3 className="font-serif text-xl font-medium text-yojqi-inkHeading">
               {dict.shop.howToUse}
             </h3>
           </div>
-          <p className="text-xs sm:text-sm text-yojqi-bodyStrong leading-relaxed italic">
+          <p className="text-xs sm:text-sm text-yojqi-bodyStrong leading-relaxed italic bg-white/70 p-4 rounded-xl border border-yojqi-border">
             &ldquo;{lang === 'zh' ? product.ritualStepZh : product.ritualStepEn}&rdquo;
           </p>
 
-          <div className="pt-4 border-t border-yojqi-border text-xs text-yojqi-body space-y-2">
+          <div className="pt-2 border-t border-yojqi-border text-xs text-yojqi-body space-y-2">
             <div>
               <strong className="text-yojqi-ink font-semibold mr-1">
-                {lang === 'zh' ? '材质：' : 'Materials:'}
+                {lang === 'zh' ? '材质用料：' : 'Materials:'}
               </strong>
               {lang === 'zh' ? product.materialsZh : product.materialsEn}
             </div>
@@ -244,6 +263,9 @@ export function ProductDetailView({ product, lang }: ProductDetailViewProps) {
           </div>
         </div>
       </div>
+
+      {/* Floating Bottom Sticky Bar on Scroll */}
+      <StickyBuyBar product={product} lang={lang} />
     </div>
   );
 }
