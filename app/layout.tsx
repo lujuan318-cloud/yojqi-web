@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     siteName: 'YOJQI Official Platform',
     images: [
       {
-        url: 'https://yojqi.com/wp-content/uploads/2026/05/yojqi_ambergris_bracelet_hero.jpg',
+        url: 'https://www.yojqi.com/images/retreats/baihong-drone-night.jpg',
         width: 1200,
         height: 630,
         alt: 'YOJQI Somatic Wearables & Chongqing Sanctuaries',

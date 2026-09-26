@@ -21,12 +21,8 @@ export function middleware(request: NextRequest) {
     !pathname.startsWith('/en') && !pathname.startsWith('/zh');
 
   if (pathnameIsMissingLocale) {
-    // Detect preferred locale from header or default to 'en'
-    const acceptLanguage = request.headers.get('accept-language') || '';
-    const preferredLocale = acceptLanguage.toLowerCase().includes('zh') ? 'zh' : 'en';
-
-    // Redirect to locale prefixed path
-    const url = new URL(`/${preferredLocale}${pathname === '/' ? '' : pathname}`, request.url);
+    // Default to English ('en') as the primary global storefront locale
+    const url = new URL(`/en${pathname === '/' ? '' : pathname}`, request.url);
     url.search = request.nextUrl.search;
     return NextResponse.redirect(url);
   }
