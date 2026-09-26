@@ -9,6 +9,9 @@ import { INITIAL_ARTICLES } from '@/lib/editorial-data';
 import { ProductCard } from '@/components/ProductCard';
 import { RetreatCard } from '@/components/RetreatCard';
 import { ArticleCard } from '@/components/ArticleCard';
+import { BreathingCircle } from '@/components/BreathingCircle';
+import { MindEnergyQuiz } from '@/components/MindEnergyQuiz';
+import { ReviewsSection } from '@/components/ReviewsSection';
 
 export default async function HomePage({
   params,
@@ -154,7 +157,12 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* 2. FIVE INTENTIONS ENTRANCE */}
+      {/* 2. INTERACTIVE 4-7-8 BREATHING ANCHOR WIDGET */}
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <BreathingCircle lang={lang} />
+      </section>
+
+      {/* 3. FIVE INTENTIONS ENTRANCE */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
           <span className="text-xs font-mono font-medium tracking-widest text-yojqi-bronze uppercase block">
@@ -198,7 +206,12 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* 3. FEATURED WEARABLES */}
+      {/* 4. INTERACTIVE 30-SEC MIND & ENERGY DIAGNOSTIC QUIZ */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <MindEnergyQuiz lang={lang} />
+      </section>
+
+      {/* 5. FEATURED WEARABLES */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
           <div>
@@ -225,7 +238,7 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* 4. TAOIST TALISMANS SPOTLIGHT SECTION */}
+      {/* 6. TAOIST TALISMANS SPOTLIGHT SECTION */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-[#1c1b18] text-[#fffdfa] rounded-3xl p-8 sm:p-12 border border-amber-900/40 shadow-xl space-y-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-amber-900/50 pb-6">
@@ -261,7 +274,7 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* 5. CHONGQING DRONE SHOW SANCTUARIES SPOTLIGHT */}
+      {/* 7. CHONGQING DRONE SHOW SANCTUARIES SPOTLIGHT */}
       <section className="bg-yojqi-warm py-20 border-y border-yojqi-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-14 space-y-2">
@@ -284,7 +297,12 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* 6. SOMATIC WISDOM JOURNAL */}
+      {/* 8. VERIFIED VIP REVIEWS & TESTIMONIALS WALL */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <ReviewsSection lang={lang} />
+      </section>
+
+      {/* 9. SOMATIC WISDOM JOURNAL */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
           <div>
@@ -311,7 +329,7 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* 7. BRAND ETHOS SECTION */}
+      {/* 10. BRAND ETHOS SECTION */}
       <section id="ethos" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
         <div className="p-8 sm:p-12 rounded-3xl bg-white border border-yojqi-border text-center space-y-6 shadow-xs">
           <span className="text-xs font-mono font-semibold tracking-widest text-yojqi-bronze uppercase">

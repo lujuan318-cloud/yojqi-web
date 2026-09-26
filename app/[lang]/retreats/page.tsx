@@ -3,6 +3,7 @@ import { Language, getDictionary } from '@/lib/i18n';
 import { SANCTUARY_PROPERTIES } from '@/lib/retreats-data';
 import { RetreatCard } from '@/components/RetreatCard';
 import { DroneScheduleWidget } from '@/components/DroneScheduleWidget';
+import { SkylineComparisonSlider } from '@/components/SkylineComparisonSlider';
 import { SanctuaryInquiryForm } from '@/components/SanctuaryInquiryForm';
 import { Eye, Sparkles, HelpCircle } from 'lucide-react';
 
@@ -51,6 +52,9 @@ export default async function RetreatsPage({
           {dict.retreats.subtitle}
         </p>
       </div>
+
+      {/* Interactive Day-to-Night Balcony Comparison Slider */}
+      <SkylineComparisonSlider lang={currentLang} />
 
       {/* Interactive Drone Schedule Calendar Widget */}
       <DroneScheduleWidget lang={currentLang} />

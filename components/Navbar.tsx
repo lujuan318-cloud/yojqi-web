@@ -3,11 +3,12 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ShoppingBag, Menu, X, Globe, Sparkles, Shield } from 'lucide-react';
+import { ShoppingBag, Menu, X, Globe, Sparkles, Shield, Search } from 'lucide-react';
 import { Language, getDictionary } from '@/lib/i18n';
 import { useCart } from '@/context/CartContext';
 import { CartDrawer } from './CartDrawer';
 import { CurrencySelector } from './CurrencySelector';
+import { SearchModal } from './SearchModal';
 
 interface NavbarProps {
   lang: Language;
@@ -15,6 +16,7 @@ interface NavbarProps {
 
 export function Navbar({ lang }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const { openCart, totalCount } = useCart();
   const pathname = usePathname();
   const dict = getDictionary(lang);
@@ -89,6 +91,16 @@ export function Navbar({ lang }: NavbarProps) {
 
             {/* Right Action Icons */}
             <div className="flex items-center space-x-3">
+              {/* Fast Search Trigger */}
+              <button
+                onClick={() => setSearchOpen(true)}
+                className="p-2 text-yojqi-body hover:text-yojqi-ink transition-colors"
+                aria-label="Search"
+                title="Search (Cmd+K)"
+              >
+                <Search className="w-5 h-5 stroke-[1.6]" />
+              </button>
+
               {/* Multi-Currency Selector */}
               <CurrencySelector lang={lang} />
 
@@ -131,6 +143,19 @@ export function Navbar({ lang }: NavbarProps) {
         {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden border-t border-yojqi-border bg-[#fffdfa] px-4 pt-3 pb-6 space-y-3 animate-in slide-in-from-top-2">
+            <button
+              onClick={() => {
+                setSearchOpen(true);
+                setMobileMenuOpen(false);
+              }}
+              className="w-full flex items-center justify-between py-2 text-sm text-yojqi-body border-b border-neutral-100"
+            >
+              <span className="flex items-center gap-2">
+                <Search className="w-4 h-4 text-yojqi-bronze" />
+                <span>{lang === 'zh' ? '搜索全站选品、符咒与宿集' : 'Search Products & Suites'}</span>
+              </span>
+            </button>
+
             {navLinks.map((link) => {
               const Icon = link.icon;
               return (
@@ -168,6 +193,13 @@ export function Navbar({ lang }: NavbarProps) {
 
       {/* Cart Drawer */}
       <CartDrawer lang={lang} />
+
+      {/* Fast Search Modal */}
+      <SearchModal
+        isOpen={searchOpen}
+        onClose={() => setSearchOpen(false)}
+        lang={lang}
+      />
     </>
   );
 }

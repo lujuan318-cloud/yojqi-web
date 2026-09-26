@@ -5,6 +5,7 @@ import { CartProvider } from '@/context/CartContext';
 import { CurrencyProvider } from '@/context/CurrencyContext';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
+import { FloatingConcierge } from '@/components/FloatingConcierge';
 
 export async function generateStaticParams() {
   return [{ lang: 'en' }, { lang: 'zh' }];
@@ -27,10 +28,11 @@ export default async function LangLayout({
   return (
     <CurrencyProvider>
       <CartProvider>
-        <div className="flex min-h-screen flex-col bg-yojqi-ivory text-yojqi-ink">
+        <div className="flex min-h-screen flex-col bg-yojqi-ivory text-yojqi-ink relative">
           <Navbar lang={lang} />
           <main className="flex-1">{children}</main>
           <Footer lang={lang} />
+          <FloatingConcierge lang={lang} />
         </div>
       </CartProvider>
     </CurrencyProvider>
