@@ -22,35 +22,35 @@ export default async function HomePage({
   const intentions = [
     {
       id: 'balance',
-      name: lang === 'zh' ? '情绪平衡 · 日常定心' : 'Balance & Grounding',
-      desc: lang === 'zh' ? '平抚焦虑浮躁，引导深长呼吸' : 'Soothe ambient anxiety and anchor diaphragmatic breath.',
+      name: dict.intentions.balanceTitle,
+      desc: dict.intentions.balanceDesc,
       icon: Shield,
       href: `/${lang}/shop?category=balance`,
-      count: '4 Products',
+      count: lang === 'zh' ? '4 款选品' : '4 Products',
     },
     {
       id: 'sleep',
-      name: lang === 'zh' ? '夜间安睡 · 深度收束' : 'Sleep & Night Calm',
-      desc: lang === 'zh' ? '沉香茯神温润，替代睡前刷屏' : 'Sedative agarwood transitions you into delta deep rest.',
+      name: dict.intentions.sleepTitle,
+      desc: dict.intentions.sleepDesc,
       icon: Moon,
       href: `/${lang}/shop?category=sleep`,
-      count: '2 Products',
+      count: lang === 'zh' ? '2 款选品' : '2 Products',
     },
     {
       id: 'focus',
-      name: lang === 'zh' ? '深度专注 · 击破脑雾' : 'Focus & Cognitive Clarity',
-      desc: lang === 'zh' ? '龙脑薄荷微循环，重启心流状态' : 'Invigorating camphor disrupts digital fatigue loops.',
+      name: dict.intentions.focusTitle,
+      desc: dict.intentions.focusDesc,
       icon: Zap,
       href: `/${lang}/shop?category=focus`,
-      count: '4 Products',
+      count: lang === 'zh' ? '4 款选品' : '4 Products',
     },
     {
       id: 'gift',
-      name: lang === 'zh' ? '典藏礼遇 · 同频心礼' : 'Curated Sets & Gifts',
-      desc: lang === 'zh' ? '原木定制礼盒，朝夕同频气味' : 'Shared olfactory frequencies packaged in paulownia wood.',
+      name: dict.intentions.giftTitle,
+      desc: dict.intentions.giftDesc,
       icon: Gift,
       href: `/${lang}/shop?category=gift`,
-      count: '2 Sets',
+      count: lang === 'zh' ? '2 款套组' : '2 Sets',
     },
   ];
 
@@ -60,19 +60,24 @@ export default async function HomePage({
   return (
     <div className="space-y-24 pb-20">
       {/* 1. HERO SECTION */}
-      <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-32 bg-gradient-to-b from-[#fffaf6] via-[#fffdfa] to-white border-b border-yojqi-border">
+      <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-28 bg-gradient-to-b from-[#fffaf6] via-[#fffdfa] to-white border-b border-yojqi-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left Copy */}
             <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-yojqi-sand text-yojqi-bronze text-xs font-mono tracking-widest uppercase">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-yojqi-sand text-yojqi-bronze text-xs font-mono tracking-widest uppercase">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>{dict.hero.eyebrow}</span>
               </div>
 
-              <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-medium tracking-tight text-yojqi-inkHeading leading-[1.15]">
-                {dict.hero.title}
-              </h1>
+              <div className="space-y-2">
+                <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-medium tracking-tight text-yojqi-inkHeading leading-[1.15]">
+                  {dict.hero.title}
+                </h1>
+                <p className="font-serif text-xl sm:text-2xl text-yojqi-bronze italic">
+                  {dict.hero.subtitle}
+                </p>
+              </div>
 
               <p className="text-base sm:text-lg text-yojqi-body leading-relaxed max-w-2xl mx-auto lg:mx-0">
                 {dict.hero.desc}
@@ -97,11 +102,11 @@ export default async function HomePage({
               </div>
             </div>
 
-            {/* Right Hero Visual */}
+            {/* Right Hero Visual (Real High-Res Night Drone View) */}
             <div className="lg:col-span-5 relative">
-              <div className="relative mx-auto max-w-md lg:max-w-none rounded-2xl overflow-hidden border border-yojqi-borderAccent shadow-2xl bg-white aspect-[4/5]">
+              <div className="relative mx-auto max-w-md lg:max-w-none rounded-2xl overflow-hidden border border-yojqi-borderAccent shadow-2xl bg-neutral-900 aspect-[4/5]">
                 <Image
-                  src="https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=1200&q=80"
+                  src="/images/retreats/baihong-drone-night.jpg"
                   alt="YOJQI Chongqing Skyline & Drone Show Terrace"
                   fill
                   priority
@@ -129,19 +134,17 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* 2. FOUR INTENTION ENTRANCE (V2.0 Taxonomy) */}
+      {/* 2. FOUR INTENTIONS ENTRANCE ("Begin with the state you wish to return to") */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <span className="text-xs font-mono font-medium tracking-widest text-yojqi-bronze uppercase block mb-2">
-            {lang === 'zh' ? '身心结果导向选品' : 'Intention-Driven Taxonomy'}
+        <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
+          <span className="text-xs font-mono font-medium tracking-widest text-yojqi-bronze uppercase block">
+            {lang === 'zh' ? '意图导向 · 身心回归' : 'Intention-Driven Taxonomy'}
           </span>
           <h2 className="font-serif text-3xl sm:text-4xl font-medium text-yojqi-inkHeading">
-            {lang === 'zh' ? '按身心渴望的结果选择' : 'Shop by Somatic State'}
+            {dict.intentions.title}
           </h2>
-          <p className="text-sm text-yojqi-body mt-2">
-            {lang === 'zh'
-              ? '香丸是系统，项链与手链是形式。先感受你身体此刻需要的疗愈路径。'
-              : 'Our herbal scent anchors are systems. Pendants and bracelets are wearable forms.'}
+          <p className="text-sm text-yojqi-body">
+            {dict.intentions.subtitle}
           </p>
         </div>
 
@@ -158,7 +161,7 @@ export default async function HomePage({
                   <div className="w-12 h-12 rounded-xl bg-yojqi-sand flex items-center justify-center text-yojqi-bronze group-hover:bg-yojqi-ink group-hover:text-white transition-colors mb-4">
                     <Icon className="w-6 h-6" />
                   </div>
-                  <h3 className="font-serif text-lg font-medium text-yojqi-inkHeading group-hover:text-yojqi-bronze transition-colors">
+                  <h3 className="font-serif text-lg font-medium text-yojqi-inkHeading group-hover:text-yojqi-bronze transition-colors leading-snug">
                     {item.name}
                   </h3>
                   <p className="text-xs text-yojqi-body mt-2 leading-relaxed">
@@ -175,7 +178,7 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* 3. FEATURED PRODUCTS (Paired bracelet & pendant system) */}
+      {/* 3. FEATURED PRODUCTS ("Find the ritual that meets your moment") */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
           <div>
@@ -183,14 +186,14 @@ export default async function HomePage({
               {lang === 'zh' ? '经典随身香丸锚点' : 'Signature Anchors'}
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl font-medium text-yojqi-inkHeading">
-              {lang === 'zh' ? '热选随身香丸锚点' : 'Herbal Scent Anchors'}
+              {lang === 'zh' ? '契合你当下呼吸的随身物件' : 'Find the Ritual That Meets Your Moment'}
             </h2>
           </div>
           <Link
             href={`/${lang}/shop`}
             className="inline-flex items-center gap-1.5 text-sm font-medium text-yojqi-ink hover:text-yojqi-bronze transition-colors"
           >
-            <span>{lang === 'zh' ? '查看全部 10 款选品' : 'Explore All 10 Anchors'}</span>
+            <span>{lang === 'zh' ? '查看全部 10 款选品' : 'Explore All Collections'}</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -205,14 +208,14 @@ export default async function HomePage({
       {/* 4. CHONGQING DRONE SHOW SANCTUARIES SPOTLIGHT */}
       <section className="bg-yojqi-warm py-20 border-y border-yojqi-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-14">
-            <span className="text-xs font-mono font-semibold tracking-widest text-amber-800 uppercase block mb-2">
+          <div className="text-center max-w-3xl mx-auto mb-14 space-y-2">
+            <span className="text-xs font-mono font-semibold tracking-widest text-amber-800 uppercase block">
               {dict.retreats.eyebrow}
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl font-medium text-yojqi-inkHeading">
               {dict.retreats.title}
             </h2>
-            <p className="text-sm text-yojqi-body mt-2 leading-relaxed">
+            <p className="text-sm text-yojqi-body leading-relaxed">
               {dict.retreats.subtitle}
             </p>
           </div>
