@@ -144,6 +144,17 @@ export function Footer({ lang }: FooterProps) {
               </h5>
               <ul className="space-y-2.5 text-sm text-yojqi-body">
                 <li>
+                  <Link href={`/${lang}/track-order`} className="hover:text-yojqi-bronze transition-colors flex items-center gap-1.5 font-medium text-yojqi-bronze">
+                    <Send className="w-3.5 h-3.5" />
+                    <span>{lang === 'zh' ? '订单物流实时查询' : 'Track My Order'}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href={`/${lang}/account`} className="hover:text-yojqi-bronze transition-colors">
+                    {lang === 'zh' ? 'VIP客户个人中心' : 'Customer Account & History'}
+                  </Link>
+                </li>
+                <li>
                   <span className="font-mono text-xs text-neutral-400">Email:</span>
                   <a href="mailto:concierge@yojqi.com" className="ml-1 hover:text-yojqi-bronze">
                     concierge@yojqi.com
@@ -157,6 +168,11 @@ export function Footer({ lang }: FooterProps) {
                 </li>
                 <li className="pt-2 text-xs text-neutral-500">
                   {dict.footer.currencyNote}
+                </li>
+                <li className="pt-3 border-t border-yojqi-border">
+                  <Link href={`/${lang}/admin`} className="text-xs text-neutral-400 hover:text-yojqi-bronze transition-colors">
+                    {lang === 'zh' ? '🔐 管理员工作台 (Admin Console)' : '🔐 Admin Management Console'}
+                  </Link>
                 </li>
               </ul>
             </div>

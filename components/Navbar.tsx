@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ShoppingBag, Menu, X, Globe, Sparkles, Shield, Search } from 'lucide-react';
+import { ShoppingBag, Menu, X, Globe, Sparkles, Shield, Search, User } from 'lucide-react';
 import { Language, getDictionary } from '@/lib/i18n';
 import { useCart } from '@/context/CartContext';
 import { CartDrawer } from './CartDrawer';
@@ -112,6 +112,16 @@ export function Navbar({ lang }: NavbarProps) {
               >
                 <Globe className="w-3.5 h-3.5 text-yojqi-bronze" />
                 <span>{dict.nav.switchLang}</span>
+              </Link>
+
+              {/* Account / User Portal */}
+              <Link
+                href={`/${lang}/account`}
+                className="p-2 text-yojqi-body hover:text-yojqi-ink transition-colors"
+                aria-label="Account"
+                title={dict.nav.account}
+              >
+                <User className="w-5 h-5 stroke-[1.6]" />
               </Link>
 
               {/* Shopping Bag Button */}
