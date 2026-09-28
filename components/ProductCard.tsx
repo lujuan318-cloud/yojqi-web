@@ -12,9 +12,10 @@ import { useCurrency } from '@/context/CurrencyContext';
 interface ProductCardProps {
   product: Product;
   lang: Language;
+  darkTheme?: boolean;
 }
 
-export function ProductCard({ product, lang }: ProductCardProps) {
+export function ProductCard({ product, lang, darkTheme = false }: ProductCardProps) {
   const { addToCart } = useCart();
   const { formatPrice } = useCurrency();
   const dict = getDictionary(lang);
@@ -35,7 +36,11 @@ export function ProductCard({ product, lang }: ProductCardProps) {
   };
 
   return (
-    <div className="group flex flex-col bg-white rounded-xl border border-yojqi-border hover:border-yojqi-borderAccent hover:shadow-cardHover transition-all duration-300 overflow-hidden">
+    <div className={`group flex flex-col rounded-2xl border transition-all duration-300 overflow-hidden ${
+      darkTheme
+        ? 'bg-[#181614] border-amber-900/30 text-white hover:border-amber-600/50 hover:shadow-xl'
+        : 'bg-white border-yojqi-border hover:border-yojqi-borderAccent hover:shadow-cardHover'
+    }`}>
       {/* Image container */}
       <Link
         href={`/${lang}/product/${product.slug}`}

@@ -107,7 +107,23 @@ export function Footer({ lang }: FooterProps) {
               <h5 className="font-serif text-base font-semibold text-yojqi-ink mb-4">
                 {dict.footer.quickLinks}
               </h5>
-              <ul className="space-y-2.5 text-sm text-yojqi-body">
+              <ul className="space-y-2 text-sm text-yojqi-body">
+                <li>
+                  <Link href={`/${lang}/today`} className="hover:text-yojqi-bronze transition-colors flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-600" />
+                    <span>{dict.nav.today}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href={`/${lang}/journey`} className="hover:text-yojqi-bronze transition-colors">
+                    {dict.nav.journey}
+                  </Link>
+                </li>
+                <li>
+                  <Link href={`/${lang}/friends`} className="hover:text-yojqi-bronze transition-colors">
+                    {dict.nav.friends}
+                  </Link>
+                </li>
                 <li>
                   <Link href={`/${lang}/shop`} className="hover:text-yojqi-bronze transition-colors">
                     {dict.nav.shop}
@@ -120,18 +136,23 @@ export function Footer({ lang }: FooterProps) {
                   </Link>
                 </li>
                 <li>
-                  <Link href={`/${lang}/retreats`} className="hover:text-yojqi-bronze transition-colors">
-                    {dict.nav.retreats}
+                  <Link href={`/${lang}/experiences`} className="hover:text-yojqi-bronze transition-colors">
+                    {lang === 'zh' ? '宿集与体验' : 'Experiences & Suites'}
                   </Link>
                 </li>
                 <li>
-                  <Link href={`/${lang}/wisdom`} className="hover:text-yojqi-bronze transition-colors">
-                    {dict.nav.wisdom}
+                  <Link href={`/${lang}/listen`} className="hover:text-yojqi-bronze transition-colors">
+                    {dict.nav.listen}
                   </Link>
                 </li>
                 <li>
-                  <Link href={`/${lang}/retreats/baihong-drone-show-apartment`} className="hover:text-yojqi-bronze transition-colors">
-                    {lang === 'zh' ? '白宏无人机机位公寓' : 'Baihong Drone Show Apartment'}
+                  <Link href={`/${lang}/companion`} className="hover:text-yojqi-bronze transition-colors">
+                    {dict.nav.companion}
+                  </Link>
+                </li>
+                <li>
+                  <Link href={`/${lang}/discover/eastern-living`} className="hover:text-yojqi-bronze transition-colors">
+                    {dict.nav.easternLiving}
                   </Link>
                 </li>
               </ul>
