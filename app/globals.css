@@ -84,3 +84,39 @@ body {
   border-radius: 8px;
   margin: 0 auto;
 }
+
+/* V2 Atmospheric Cyber-Oriental & Quiet Luxury Classes */
+.yojqi-night-card {
+  background: radial-gradient(120% 120% at 50% 0%, #1c1815 0%, #100e0d 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  color: #fffdfa;
+}
+
+.yojqi-glass-card {
+  background: rgba(255, 253, 250, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(38, 29, 24, 0.08);
+}
+
+.yojqi-glow-amber {
+  box-shadow: 0 0 40px -10px rgba(201, 122, 62, 0.25);
+}
+
+.yojqi-glow-teal {
+  box-shadow: 0 0 40px -10px rgba(69, 130, 123, 0.2);
+}
+
+.yojqi-badge-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
