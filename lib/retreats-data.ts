@@ -37,18 +37,22 @@ export interface SanctuaryProperty {
     noteEn: string;
     noteZh: string;
   };
+  bookingComUrl?: string;
+  basePrice?: number;
 }
 
 export const SANCTUARY_PROPERTIES: SanctuaryProperty[] = [
   {
     id: "prop-baihong-drone-view",
     slug: "baihong-drone-show-apartment",
-    nameEn: "Baihong Drone Show Riverview Apartment",
-    nameZh: "白宏无人机机位江景公寓",
-    subtitleEn: "Private Balcony Over the Two Rivers Confluence — The Ultimate Crowd-Free Drone Show Viewing Sanctuary",
-    subtitleZh: "坐拥长江与嘉陵江两江交汇浩瀚全景 — 告别十万人流拥挤，私享无人机天幕盛典",
-    badgeEn: "Front-Row Drone View Point",
-    badgeZh: "两江无人机绝佳观礼位",
+    nameEn: "Baihong River View Panoramic Balcony Retreat",
+    nameZh: "白虹·两江汇全江景阳台大床房 (潋滟)",
+    subtitleEn: "Private Balcony Over the Two Rivers Confluence & Hongyadong — The Ultimate High-Altitude Sanctuary",
+    subtitleZh: "坐拥长江与嘉陵江两江交汇浩瀚全景 · 俯瞰洪崖洞木质灯火璀璨夜色 · 私享静谧云端大阳台",
+    badgeEn: "Front-Row 270° River View",
+    badgeZh: "两江交汇 · 270°全江景阳台",
+    bookingComUrl: "https://www.booking.com/hotel/cn/bai-hong-liang-jiang-hui-quan-jiang-jing-gao-kong-min-su.html",
+    basePrice: 654,
     locationEn: "High-floor Riverfront Tower, Yuzhong Peninsula / Nanbin Riverline, Chongqing",
     locationZh: "中国·重庆·南滨江岸一线高层揽江邸",
     heroImage: "/images/retreats/baihong-drone-night.jpg",

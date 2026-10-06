@@ -105,10 +105,21 @@ export function RetreatCard({ property, lang }: RetreatCardProps) {
                 </div>
               ))}
             </div>
+            {property.basePrice && (
+              <div className="flex items-center justify-between py-2.5 px-3.5 bg-amber-50/70 rounded-lg border border-amber-200/70 mb-4">
+                <span className="text-xs text-amber-900 font-medium">
+                  {lang === 'zh' ? '✨ 官网直订专享价' : '✨ Direct Booking Privilege'}
+                </span>
+                <span className="font-serif text-lg font-bold text-amber-950">
+                  ¥{property.basePrice}
+                  <span className="text-xs font-normal text-amber-800"> / {lang === 'zh' ? '晚起' : 'night'}</span>
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Action CTAs */}
-          <div className="pt-4 border-t border-neutral-100 flex flex-col sm:flex-row gap-3">
+          <div className="pt-4 border-t border-neutral-100 flex flex-col sm:flex-row gap-2.5">
             <button
               onClick={() => setWechatModalOpen(true)}
               className="flex-1 py-3 px-4 rounded-lg yojqi-btn-primary text-xs font-medium tracking-wide flex items-center justify-center gap-2"
@@ -117,11 +128,22 @@ export function RetreatCard({ property, lang }: RetreatCardProps) {
               <span>{dict.retreats.bookViaWechat}</span>
             </button>
 
+            {property.bookingComUrl && (
+              <a
+                href={property.bookingComUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="py-3 px-4 rounded-lg border border-yojqi-border hover:border-yojqi-bronze hover:text-yojqi-bronze text-xs font-medium tracking-wide text-center transition-colors flex items-center justify-center gap-1"
+              >
+                <span>Booking.com 预订 ↗</span>
+              </a>
+            )}
+
             <Link
               href={`/${lang}/retreats/${property.slug}`}
               className="py-3 px-4 rounded-lg yojqi-btn-secondary text-xs font-medium tracking-wide text-center"
             >
-              {lang === 'zh' ? '查看宿集全景' : 'View Full Sanctuary'}
+              {lang === 'zh' ? '查看全景' : 'View Details'}
             </Link>
           </div>
         </div>
