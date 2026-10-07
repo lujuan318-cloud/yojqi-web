@@ -48,6 +48,8 @@ export function Navbar({ lang }: NavbarProps) {
   // V2 Top-Level Navigation Architecture
   const primaryNavLinks = [
     { href: `/${lang}`, label: dict.nav.discover || 'Discover', exact: true },
+    { href: `/${lang}/talismans`, label: dict.nav.talismans || (isZh ? '道家符咒' : 'Talismans'), exact: false },
+    { href: `/${lang}/retreats`, label: dict.nav.retreats || (isZh ? '重庆宿集' : 'Retreats'), exact: false },
     { href: `/${lang}/today`, label: dict.nav.today || 'Today', exact: false },
     { href: `/${lang}/journey`, label: dict.nav.journey || 'Journey', exact: false },
     { href: `/${lang}/friends`, label: dict.nav.friends || 'Friends', exact: false },
@@ -102,8 +104,8 @@ export function Navbar({ lang }: NavbarProps) {
               </Link>
             </div>
 
-            {/* Desktop Navigation (V2 Standard: DISCOVER | TODAY | JOURNEY | FRIENDS | SHOP) */}
-            <nav className="hidden lg:flex items-center space-x-8">
+            {/* Desktop Navigation (V2 Standard: DISCOVER | TALISMANS | RETREATS | TODAY | JOURNEY | FRIENDS | SHOP) */}
+            <nav className="hidden lg:flex items-center space-x-5 xl:space-x-7">
               {primaryNavLinks.map((link) => {
                 const active = isLinkActive(link.href, link.exact);
                 return (
