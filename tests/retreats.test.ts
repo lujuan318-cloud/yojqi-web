@@ -109,5 +109,21 @@ test('YOJQI Homestay Direct Booking Architecture Tests', async (t) => {
     assert.match(ppRef, /^YQ-PAY-[A-Z0-9]+$/);
     assert.match(wiseRef, /^YQ-WIS-[A-Z0-9]+$/);
   });
+
+  await t.test('Catalog Image Safety: Transferred Jiefangbei shop photos completely removed', () => {
+    const catalog = getRoomCatalog();
+    for (const room of catalog) {
+      assert.ok(
+        !room.coverImage.includes('baihong-jiefangbei-view-1'),
+        `Room ${room.room_key} coverImage contains forbidden old shop image`
+      );
+      for (const img of room.gallery) {
+        assert.ok(
+          !img.includes('baihong-jiefangbei-view-1'),
+          `Room ${room.room_key} gallery contains forbidden old shop image`
+        );
+      }
+    }
+  });
 });
 

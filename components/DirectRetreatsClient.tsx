@@ -135,7 +135,7 @@ export function DirectRetreatsClient({
       </div>
 
       {/* Top Search & Filter Bar */}
-      <div className="sticky top-20 z-30 pt-1">
+      <div className="relative z-10">
         <DirectBookingSearchBar
           lang={lang}
           checkIn={checkIn}

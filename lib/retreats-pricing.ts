@@ -27,6 +27,8 @@ export interface RoomAvailabilityQuote {
   nameEn: string;
   subtitleZh: string;
   subtitleEn: string;
+  badgeZh?: string;
+  badgeEn?: string;
   coverImage: string;
   gallery: string[];
   area: string;
@@ -171,6 +173,8 @@ export async function calculateRoomQuote(
     nameEn: room.nameEn,
     subtitleZh: room.subtitleZh,
     subtitleEn: room.subtitleEn,
+    badgeZh: room.badgeZh,
+    badgeEn: room.badgeEn,
     coverImage: room.coverImage,
     gallery: room.gallery,
     area: room.area,
