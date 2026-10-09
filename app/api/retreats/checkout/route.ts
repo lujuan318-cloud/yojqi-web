@@ -3,6 +3,10 @@ import Stripe from 'stripe';
 import { validateInventoryHold } from '@/lib/inventory-hold';
 import { calculateRoomQuote } from '@/lib/retreats-pricing';
 import { getRoomByKey } from '@/lib/retreats-catalog';
+import {
+  getDirectAccountDetails,
+  generateBookingReference,
+} from '@/lib/payment-channels';
 
 export async function POST(req: NextRequest) {
   try {
@@ -19,6 +23,7 @@ export async function POST(req: NextRequest) {
       estimated_arrival_time = '15:00',
       currency = 'cny',
       lang = 'zh',
+      payment_channel = 'alipay',
     } = body;
 
     if (!room_key || !check_in || !check_out || !guest_name || !guest_phone) {
@@ -56,10 +61,69 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const stripeKey = process.env.STRIPE_SECRET_KEY;
+    const accounts = getDirectAccountDetails();
+    const reference = generateBookingReference(payment_channel as any);
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
-    // 3. If Stripe key is configured, create live Stripe Checkout Session
+    // 3. User's Direct Payment Channel Handling (Alipay, PayPal, Wise)
+    if (payment_channel === 'alipay') {
+      return NextResponse.json({
+        success: true,
+        mode: 'direct_alipay',
+        payment_reference: reference,
+        account_details: accounts.alipay,
+        order_summary: {
+          room_key: quote.room_key,
+          room_name: lang === 'zh' ? quote.nameZh : quote.nameEn,
+          check_in,
+          check_out,
+          nights: quote.nights,
+          total_amount: quote.total_amount,
+          currency: quote.currency,
+        },
+      });
+    }
+
+    if (payment_channel === 'paypal') {
+      const payPalAmountUrl = `${accounts.paypal.payPalMeUrl}/${quote.total_amount}CNY`;
+      return NextResponse.json({
+        success: true,
+        mode: 'direct_paypal',
+        payment_reference: reference,
+        pay_url: payPalAmountUrl,
+        account_details: accounts.paypal,
+        order_summary: {
+          room_key: quote.room_key,
+          room_name: lang === 'zh' ? quote.nameZh : quote.nameEn,
+          check_in,
+          check_out,
+          nights: quote.nights,
+          total_amount: quote.total_amount,
+          currency: quote.currency,
+        },
+      });
+    }
+
+    if (payment_channel === 'wise') {
+      return NextResponse.json({
+        success: true,
+        mode: 'direct_wise',
+        payment_reference: reference,
+        account_details: accounts.wise,
+        order_summary: {
+          room_key: quote.room_key,
+          room_name: lang === 'zh' ? quote.nameZh : quote.nameEn,
+          check_in,
+          check_out,
+          nights: quote.nights,
+          total_amount: quote.total_amount,
+          currency: quote.currency,
+        },
+      });
+    }
+
+    // 4. International Credit Card (Stripe)
+    const stripeKey = process.env.STRIPE_SECRET_KEY;
     if (stripeKey) {
       const stripe = new Stripe(stripeKey, {
         apiVersion: '2025-02-24.acacia' as any,
@@ -76,7 +140,7 @@ export async function POST(req: NextRequest) {
                 description: `${check_in} 至 ${check_out} · ${quote.bedInfoZh}`,
                 images: quote.coverImage ? [quote.coverImage] : [],
               },
-              unit_amount: Math.round(quote.total_amount * 100), // in cents
+              unit_amount: Math.round(quote.total_amount * 100),
             },
             quantity: 1,
           },
@@ -99,6 +163,8 @@ export async function POST(req: NextRequest) {
           hold_token: hold_token || '',
           special_requests,
           arrival_time: estimated_arrival_time,
+          payment_channel: 'stripe',
+          payment_reference: reference,
           lang,
         },
         success_url: `${appUrl}/${lang}/retreats/booking-success?session_id={CHECKOUT_SESSION_ID}`,
@@ -111,19 +177,18 @@ export async function POST(req: NextRequest) {
         mode: 'stripe',
         url: session.url,
         session_id: session.id,
+        payment_reference: reference,
       });
     }
 
-    // 4. Test / Preview Mode (Graceful instant confirmation)
-    // When Stripe is not set in local dev, provide direct checkout confirmation endpoint
-    const mockOrderReference = `YQ-${Date.now().toString(36).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
-
+    // Fallback: Preview direct confirmation mode
     return NextResponse.json({
       success: true,
       mode: 'preview_direct',
+      payment_reference: reference,
       preview_confirm_url: `${appUrl}/api/retreats/confirm`,
       order_data: {
-        order_reference: mockOrderReference,
+        order_reference: reference,
         room_key: quote.room_key,
         room_name_cn: quote.nameZh,
         room_name_en: quote.nameEn,
@@ -139,8 +204,8 @@ export async function POST(req: NextRequest) {
         hold_token,
         special_requests,
         estimated_arrival_time,
+        payment_channel,
       },
-      message: '测试/直连模式：金额已校验，可直接提交正式确认。',
     });
   } catch (error: any) {
     console.error('[POST /api/retreats/checkout error]:', error);

@@ -170,6 +170,13 @@ function BookingSuccessContent({ lang }: { lang: Language }) {
               <Printer className="w-4 h-4" />
               <span>{isZh ? '打印或保存凭证' : 'Print Voucher'}</span>
             </button>
+
+            <Link
+              href={`/${lang}/retreats/manage?code=${encodeURIComponent(reservationCode)}&phone=${encodeURIComponent(guestPhone)}`}
+              className="px-4 py-2.5 rounded-xl bg-amber-800 hover:bg-amber-900 text-white text-xs font-medium flex items-center gap-1.5 transition-colors shadow-xs"
+            >
+              <span>{isZh ? '管理或退改预订' : 'Manage Booking'}</span>
+            </Link>
           </div>
 
           <div className="flex items-center gap-2">

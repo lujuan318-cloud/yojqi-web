@@ -86,4 +86,28 @@ test('YOJQI Homestay Direct Booking Architecture Tests', async (t) => {
     assert.ok(quote.assigned_property_id > 0);
     assert.ok(['available', 'only_1_left', 'sold_out'].includes(quote.status));
   });
+
+  await t.test('Multi-Channel Payment Configuration & Reference Generation', async () => {
+    const { PAYMENT_CHANNELS, getDirectAccountDetails, generateBookingReference } = await import('../lib/payment-channels');
+
+    assert.equal(PAYMENT_CHANNELS.length, 3, 'Must support Alipay, PayPal, and Wise');
+    const ids = PAYMENT_CHANNELS.map((p) => p.id);
+    assert.ok(ids.includes('alipay'));
+    assert.ok(ids.includes('paypal'));
+    assert.ok(ids.includes('wise'));
+
+    const details = getDirectAccountDetails();
+    assert.ok(details.alipay.account.length > 0);
+    assert.ok(details.paypal.email.length > 0);
+    assert.ok(details.wise.accountHolder.length > 0);
+
+    const aliRef = generateBookingReference('alipay');
+    const ppRef = generateBookingReference('paypal');
+    const wiseRef = generateBookingReference('wise');
+
+    assert.match(aliRef, /^YQ-ALI-[A-Z0-9]+$/);
+    assert.match(ppRef, /^YQ-PAY-[A-Z0-9]+$/);
+    assert.match(wiseRef, /^YQ-WIS-[A-Z0-9]+$/);
+  });
 });
+

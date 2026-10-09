@@ -49,6 +49,8 @@ export interface DirectBookingPayload {
   special_requests?: string;
   estimated_arrival_time?: string;
   stripe_session_id?: string;
+  payment_channel?: string;
+  payment_reference?: string;
 }
 
 export interface ReservationResult {
@@ -166,6 +168,14 @@ export async function queryActiveReservations(
  */
 export async function createHostexReservation(booking: DirectBookingPayload): Promise<ReservationResult> {
   try {
+    // Determine income method: 1: Alipay, 2: WeChat/Online, 0: Other (PayPal/Wise/Card)
+    let incomeMethod = 2;
+    if (booking.payment_channel === 'alipay') incomeMethod = 1;
+    else if (booking.payment_channel === 'paypal' || booking.payment_channel === 'wise') incomeMethod = 0;
+
+    const channelTag = booking.payment_channel?.toUpperCase() || 'DIRECT';
+    const refTag = booking.payment_reference ? ` | 参考号: ${booking.payment_reference}` : '';
+
     const body = {
       property_id: Number(booking.property_id),
       custom_channel_id: 29, // Channel: "Booking Site" / YOJQI Direct
@@ -178,9 +188,9 @@ export async function createHostexReservation(booking: DirectBookingPayload): Pr
       rate_amount: Number(booking.total_amount),
       commission_amount: 0,
       received_amount: Number(booking.total_amount),
-      income_method_id: 2, // 2: WeChat / Online Official Payment, 1: Alipay, 0: Other
+      income_method_id: incomeMethod,
       number_of_guests: booking.number_of_guests || 2,
-      remarks: `[YOJQI官网直订] Stripe: ${booking.stripe_session_id || 'Direct'} | 预计到店: ${booking.estimated_arrival_time || '待定'} | 需求: ${booking.special_requests || '无'}`,
+      remarks: `[YOJQI官网直订] 支付通道: ${channelTag}${refTag} | 预计到店: ${booking.estimated_arrival_time || '待定'} | 需求: ${booking.special_requests || '无'}`,
     };
 
     const resp = await hostexRequest('/reservations', {
@@ -204,6 +214,94 @@ export async function createHostexReservation(booking: DirectBookingPayload): Pr
       success: false,
       error_msg: error.message || 'Hostex reservation creation failed',
     };
+  }
+}
+
+/**
+ * Cancel reservation directly in Hostex v3.
+ * Hostex automatically reopens the room and restores inventory across Booking.com/Ctrip/Meituan!
+ */
+export async function cancelHostexReservation(
+  reservationCode: string,
+  cancelReason: string = '客人官网自助退订'
+): Promise<{ success: boolean; error_msg?: string; raw?: any }> {
+  try {
+    const payload = {
+      status: 'cancelled',
+      remarks: `[YOJQI官网退订] ${cancelReason} (于 ${new Date().toISOString().replace('T', ' ').slice(0, 19)} 触发全网自动开房)`,
+    };
+
+    const resp = await hostexRequest(`/reservations/${reservationCode}`, {
+      method: 'PATCH',
+      body: JSON.stringify(payload),
+    });
+
+    return {
+      success: true,
+      raw: resp,
+    };
+  } catch (error: any) {
+    console.error(`[cancelHostexReservation Error for ${reservationCode}]:`, error);
+    return {
+      success: false,
+      error_msg: error.message || 'Hostex reservation cancellation failed',
+    };
+  }
+}
+
+/**
+ * Fetch a specific reservation from Hostex v3
+ */
+export async function getHostexReservation(reservationCode: string): Promise<any | null> {
+  try {
+    const resp = await hostexRequest(`/reservations?reservation_code=${reservationCode}&limit=1`, {
+      method: 'GET',
+    });
+    const reservations = resp?.data?.reservations || [];
+    return reservations.length > 0 ? reservations[0] : null;
+  } catch (error: any) {
+    console.warn(`[getHostexReservation Error for ${reservationCode}]:`, error);
+    return null;
+  }
+}
+
+/**
+ * Send alert to Operations WeCom bot when a guest cancels a booking
+ */
+export async function notifyWeComCancellation(data: {
+  reservation_code: string;
+  guest_name?: string;
+  guest_phone?: string;
+  room_name?: string;
+  check_in?: string;
+  check_out?: string;
+  total_amount?: number;
+  reason?: string;
+}): Promise<void> {
+  if (!WECOM_WEBHOOK_URL) return;
+
+  const markdownContent = `### 🚨 【YOJQI 官网】收到直订退订与自动开房通报！
+> **百居易预订码**：<font color="warning">${data.reservation_code}</font>
+> **房型名称**：${data.room_name || '白虹江景宿集'}
+> **入离日期**：${data.check_in || '未知'} 至 ${data.check_out || '未知'}
+> **宾客姓名**：**${data.guest_name || '客人'}**
+> **联系电话**：${data.guest_phone || '未留'}
+> **涉及房费**：¥${data.total_amount || 0} CNY
+> **退订原由**：${data.reason || '客人自助申请退订'}
+
+**🔄 开关房联动**：百居易已将该预订标记为 \`cancelled\`，已自动向 Booking.com、携程等全网 OTA 重新下发开房指令，物理房源库存已恢复！请客服管家跟进相关退款或客户关怀。`;
+
+  try {
+    await fetch(WECOM_WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        msgtype: 'markdown',
+        markdown: { content: markdownContent },
+      }),
+    });
+  } catch (err) {
+    console.warn('[WeCom Cancellation Notification Failed]:', err);
   }
 }
 

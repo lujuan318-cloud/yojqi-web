@@ -1,13 +1,14 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import Link from 'next/link';
 import { DirectBookingSearchBar } from './DirectBookingSearchBar';
 import { DirectRoomCard } from './DirectRoomCard';
 import { DirectBookingDrawer } from './DirectBookingDrawer';
 import { AIConciergeWidget } from './AIConciergeWidget';
 import { Language, getDictionary } from '@/lib/i18n';
 import { RoomAvailabilityQuote } from '@/lib/retreats-pricing';
-import { Sparkles, HelpCircle, Shield, Award, MapPin } from 'lucide-react';
+import { Sparkles, HelpCircle, Shield, Award, MapPin, Inbox, RotateCcw } from 'lucide-react';
 
 interface DirectRetreatsClientProps {
   lang: Language;
@@ -25,11 +26,15 @@ export function DirectRetreatsClient({
   const dict = getDictionary(lang);
   const isZh = lang === 'zh';
 
-  const [checkIn, setCheckIn] = useState(initialCheckIn);
-  const [checkOut, setCheckOut] = useState(initialCheckOut);
-  const [guests, setGuests] = useState(2);
+  // Filter states
+  const [checkIn, setCheckIn] = useState('');
+  const [checkOut, setCheckOut] = useState('');
+  const [guests, setGuests] = useState(0);
+  const [beds, setBeds] = useState('all');
+  const [hasFiltered, setHasFiltered] = useState(false);
 
-  const [rooms, setRooms] = useState<RoomAvailabilityQuote[]>(initialRooms);
+  const [allRooms, setAllRooms] = useState<RoomAvailabilityQuote[]>(initialRooms);
+  const [filteredRooms, setFilteredRooms] = useState<RoomAvailabilityQuote[]>(initialRooms);
   const [loading, setLoading] = useState(false);
 
   // Selected room for checkout drawer
@@ -37,19 +42,37 @@ export function DirectRetreatsClient({
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   // Search handler calling /api/retreats/availability
-  const handleSearch = async (newCheckIn: string, newCheckOut: string, newGuests: number) => {
+  const handleSearch = async (newCheckIn: string, newCheckOut: string, newGuests: number, newBeds: string) => {
     setCheckIn(newCheckIn);
     setCheckOut(newCheckOut);
     setGuests(newGuests);
+    setBeds(newBeds);
+    setHasFiltered(true);
     setLoading(true);
 
     try {
       const res = await fetch(
-        `/api/retreats/availability?check_in=${newCheckIn}&check_out=${newCheckOut}&guests=${newGuests}`
+        `/api/retreats/availability?check_in=${newCheckIn}&check_out=${newCheckOut}&guests=${newGuests || 1}`
       );
       const json = await res.json();
       if (json.success && Array.isArray(json.data)) {
-        setRooms(json.data);
+        let results: RoomAvailabilityQuote[] = json.data;
+
+        // 1. Filter: ONLY show available rooms when dates are picked
+        results = results.filter((r) => r.available && r.status !== 'sold_out');
+
+        // 2. Filter: Beds requirement
+        if (newBeds !== 'all') {
+          if (newBeds === '1') {
+            results = results.filter((r) => r.bedInfoZh.includes('1张') || r.bedInfoEn.toLowerCase().includes('1 king'));
+          } else if (newBeds === '2') {
+            results = results.filter((r) => r.bedInfoZh.includes('2张') || r.bedInfoEn.toLowerCase().includes('2 single'));
+          } else if (newBeds === '4') {
+            results = results.filter((r) => r.bedInfoZh.includes('4张') || r.bedInfoEn.toLowerCase().includes('4 large'));
+          }
+        }
+
+        setFilteredRooms(results);
       }
     } catch (err) {
       console.error('Failed to search availability:', err);
@@ -58,10 +81,34 @@ export function DirectRetreatsClient({
     }
   };
 
+  const handleReset = () => {
+    setCheckIn('');
+    setCheckOut('');
+    setGuests(0);
+    setBeds('all');
+    setHasFiltered(false);
+    setFilteredRooms(allRooms);
+  };
+
   const handleOpenBookNow = (room: RoomAvailabilityQuote) => {
-    setSelectedRoom(room);
+    // If dates are not set yet, set default dates (tomorrow to day after tomorrow)
+    if (!checkIn || !checkOut) {
+      const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+      const dayAfter = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+      const roomWithDates = {
+        ...room,
+        check_in: tomorrow,
+        check_out: dayAfter,
+        nights: 1,
+      };
+      setSelectedRoom(roomWithDates);
+    } else {
+      setSelectedRoom(room);
+    }
     setIsDrawerOpen(true);
   };
+
+  const displayedRooms = hasFiltered ? filteredRooms : allRooms;
 
   return (
     <div className="space-y-12 md:space-y-16">
@@ -87,21 +134,24 @@ export function DirectRetreatsClient({
         </p>
       </div>
 
-      {/* Top Search Bar */}
+      {/* Top Search & Filter Bar */}
       <div className="sticky top-20 z-30 pt-1">
         <DirectBookingSearchBar
           lang={lang}
           checkIn={checkIn}
           checkOut={checkOut}
           guests={guests}
+          beds={beds}
+          hasFiltered={hasFiltered}
           onSearch={handleSearch}
+          onReset={handleReset}
           isLoading={loading}
         />
       </div>
 
       {/* Trust & Guarantee Badges */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 text-xs text-amber-950">
-        <div className="bg-[#fffdfa] border border-amber-200/60 p-3.5 rounded-xl flex items-center gap-2.5">
+        <div className="bg-[#fffdfa] border border-amber-200/60 p-3.5 rounded-2xl flex items-center gap-2.5 shadow-xs">
           <Shield className="w-4 h-4 text-emerald-600 shrink-0" />
           <div>
             <span className="font-semibold block">{isZh ? '百居易中央房态实时直连' : 'Hostex Real-time PMS Sync'}</span>
@@ -109,7 +159,7 @@ export function DirectRetreatsClient({
           </div>
         </div>
 
-        <div className="bg-[#fffdfa] border border-amber-200/60 p-3.5 rounded-xl flex items-center gap-2.5">
+        <div className="bg-[#fffdfa] border border-amber-200/60 p-3.5 rounded-2xl flex items-center gap-2.5 shadow-xs">
           <Award className="w-4 h-4 text-amber-600 shrink-0" />
           <div>
             <span className="font-semibold block">{isZh ? '官网直订 95 折专享特惠' : 'Guaranteed 5% Direct Discount'}</span>
@@ -117,7 +167,7 @@ export function DirectRetreatsClient({
           </div>
         </div>
 
-        <div className="bg-[#fffdfa] border border-amber-200/60 p-3.5 rounded-xl flex items-center gap-2.5">
+        <div className="bg-[#fffdfa] border border-amber-200/60 p-3.5 rounded-2xl flex items-center gap-2.5 shadow-xs">
           <MapPin className="w-4 h-4 text-amber-700 shrink-0" />
           <div>
             <span className="font-semibold block">{isZh ? '两江汇流高空一线机位' : 'Front-Row Riverfront Vantage'}</span>
@@ -126,36 +176,69 @@ export function DirectRetreatsClient({
         </div>
       </div>
 
-      {/* Live Available Rooms Catalog */}
-      <div className="space-y-8">
+      {/* Rooms List Section */}
+      <div className="space-y-6">
         <div className="flex items-baseline justify-between border-b border-yojqi-border pb-3">
           <div>
             <span className="text-xs font-mono uppercase tracking-wider text-yojqi-bronze">
-              {isZh ? '7大主力房型清单' : 'Available Suites & Room Types'}
+              {hasFiltered ? (isZh ? '筛选可订房型' : 'Available Rooms') : (isZh ? '7大主力房型全览' : 'All 7 Flagship Suites')}
             </span>
             <h2 className="font-serif text-2xl font-bold text-yojqi-inkHeading">
-              {isZh ? '选择心仪房型并即时直订' : 'Select Your Sanctuary'}
+              {hasFiltered ? (isZh ? '当前时段有房房型' : 'Available on Your Dates') : (isZh ? '选择心仪房型并即时直订' : 'Select Your Sanctuary')}
             </h2>
           </div>
-          <span className="text-xs font-mono text-neutral-500">
-            {rooms.length} {isZh ? '个房型可售' : 'room types listed'}
-          </span>
+          <div className="flex items-center gap-3">
+            <Link
+              href={`/${lang}/retreats/manage`}
+              className="text-xs text-amber-900 hover:text-amber-700 font-medium hover:underline flex items-center gap-1"
+            >
+              <span>{isZh ? '🔍 订单查询与退改' : '🔍 Manage Booking'}</span>
+            </Link>
+            <span className="text-xs font-mono text-neutral-300">|</span>
+            <span className="text-xs font-mono text-neutral-500">
+              {displayedRooms.length} {isZh ? '个房型显示中' : 'rooms shown'}
+            </span>
+          </div>
         </div>
 
         {loading ? (
-          <div className="py-20 text-center space-y-3">
+          <div className="py-20 text-center space-y-3 bg-white rounded-3xl border border-amber-100">
             <div className="w-8 h-8 border-3 border-amber-700 border-t-transparent rounded-full animate-spin mx-auto" />
             <p className="text-xs text-amber-900 font-mono">
               {isZh ? '正在从百居易中央房态查询实时日历与价格...' : 'Checking live Hostex PMS calendar and rates...'}
             </p>
           </div>
+        ) : displayedRooms.length === 0 ? (
+          <div className="py-16 text-center space-y-4 bg-white rounded-3xl border border-amber-200/80 p-8">
+            <div className="w-12 h-12 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center mx-auto">
+              <Inbox className="w-6 h-6" />
+            </div>
+            <div className="space-y-1">
+              <h3 className="font-serif text-lg font-bold text-amber-950">
+                {isZh ? '抱歉，您所选日期内该房型已全部订满' : 'All rooms are fully booked for the selected dates'}
+              </h3>
+              <p className="text-xs text-neutral-500 max-w-md mx-auto">
+                {isZh
+                  ? '建议更换日期重试，或重置筛选查看所有房型及联系管家协助调配。'
+                  : 'Please try different dates or reset filters to browse all room types.'}
+              </p>
+            </div>
+            <button
+              onClick={handleReset}
+              className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-800 hover:bg-amber-900 text-white rounded-xl text-xs font-semibold transition-all shadow-md"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>{isZh ? '查看全部房型' : 'Show All Rooms'}</span>
+            </button>
+          </div>
         ) : (
-          <div className="space-y-8">
-            {rooms.map((room) => (
+          <div className="space-y-6">
+            {displayedRooms.map((room) => (
               <DirectRoomCard
                 key={room.room_key}
                 room={room}
                 lang={lang}
+                isDateSelected={hasFiltered}
                 onBookNow={handleOpenBookNow}
               />
             ))}
@@ -174,7 +257,7 @@ export function DirectRetreatsClient({
       {/* Floating AI Butler Concierge */}
       <AIConciergeWidget lang={lang} />
 
-      {/* FAQ Section */}
+      {/* Stay & Booking Policy FAQs */}
       <div className="pt-8 border-t border-yojqi-border">
         <div className="text-center max-w-2xl mx-auto mb-10">
           <div className="inline-flex items-center gap-1.5 text-xs font-mono text-yojqi-bronze uppercase tracking-widest mb-1">
@@ -187,7 +270,7 @@ export function DirectRetreatsClient({
         </div>
 
         <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-5 bg-white rounded-xl border border-yojqi-border shadow-xs space-y-1.5">
+          <div className="p-5 bg-white rounded-2xl border border-yojqi-border shadow-xs space-y-1.5">
             <h4 className="font-serif text-sm sm:text-base font-semibold text-yojqi-inkHeading">
               {isZh ? '官网直订如何保障房态？会有超售风险吗？' : 'How does Hostex prevent double-booking?'}
             </h4>
@@ -198,7 +281,7 @@ export function DirectRetreatsClient({
             </p>
           </div>
 
-          <div className="p-5 bg-white rounded-xl border border-yojqi-border shadow-xs space-y-1.5">
+          <div className="p-5 bg-white rounded-2xl border border-yojqi-border shadow-xs space-y-1.5">
             <h4 className="font-serif text-sm sm:text-base font-semibold text-yojqi-inkHeading">
               {isZh ? '入离时间和行李寄存如何安排？' : 'Check-in times and luggage storage'}
             </h4>
@@ -209,25 +292,25 @@ export function DirectRetreatsClient({
             </p>
           </div>
 
-          <div className="p-5 bg-white rounded-xl border border-yojqi-border shadow-xs space-y-1.5">
+          <div className="p-5 bg-white rounded-2xl border border-yojqi-border shadow-xs space-y-1.5">
             <h4 className="font-serif text-sm sm:text-base font-semibold text-yojqi-inkHeading">
-              {isZh ? '官网直订可以享受哪些专属礼遇？' : 'What perks do direct guests receive?'}
+              {isZh ? '支持哪些支付方式？' : 'What payment methods are supported?'}
             </h4>
             <p className="text-xs text-yojqi-body leading-relaxed">
               {isZh
-                ? '官网直订客人享受立省 5% 直订专享折扣、赠送高山冷泡工夫迎宾茶礼、赠送 YOJQI 东方身心香丸礼包，以及专属管家 1 对 1 山城出行非遗老餮路线定制。'
-                : 'Direct guests enjoy a 5% discount, complimentary Kung Fu welcome tea set, YOJQI scent anchor gift, and personalized trip curation.'}
+                ? '支持国内支付宝扫码/即时付、PayPal、Wise 跨境国际转账，以及 Visa、Mastercard、Apple Pay 等主流国际信用卡。付款成功后秒级同步百居易出单。'
+                : 'We support Alipay, PayPal, Wise bank remittance, and international credit cards (Visa/Mastercard/Apple Pay) via Stripe.'}
             </p>
           </div>
 
-          <div className="p-5 bg-white rounded-xl border border-yojqi-border shadow-xs space-y-1.5">
+          <div className="p-5 bg-white rounded-2xl border border-yojqi-border shadow-xs space-y-1.5">
             <h4 className="font-serif text-sm sm:text-base font-semibold text-yojqi-inkHeading">
-              {isZh ? '退改政策是怎样的？' : 'Cancellation & refund policy'}
+              {isZh ? '如果行程有变，如何取消预订？' : 'How does cancellation and reopening work?'}
             </h4>
             <p className="text-xs text-yojqi-body leading-relaxed">
               {isZh
-                ? '大床房及双床房在入住前 48 小时可全额免费取消；四室整套套房在入住前 72 小时可免费取消。超时取消按首晚房费收取，其余款项原路自动退回。'
-                : 'Free cancellation up to 48 hours before check-in for king/twin rooms, and 72 hours for 4-bedroom suites.'}
+                ? '大床房及双床房在入住前 48 小时可免费全额取消。取消后系统自动联动百居易，自动将物理房源重新开房恢复全网库存，并按原路原退款项。'
+                : 'Free cancellation up to 48 hours before check-in. The room inventory is automatically restored and reopened across all channels.'}
             </p>
           </div>
         </div>

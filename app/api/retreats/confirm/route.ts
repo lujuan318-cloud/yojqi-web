@@ -21,6 +21,8 @@ export async function POST(req: NextRequest) {
       special_requests = '',
       estimated_arrival_time = '15:00',
       stripe_session_id = '',
+      payment_channel = 'direct',
+      payment_reference = '',
     } = body;
 
     if (!room_key || !check_in || !check_out || !guest_name) {
@@ -37,7 +39,6 @@ export async function POST(req: NextRequest) {
 
     // 1. Submit to Hostex OpenAPI v3
     // custom_channel_id: 29 ("Booking Site" / YOJQI Direct)
-    // income_method_id: 2 (WeChat / Online Payment)
     const hostexResult = await createHostexReservation({
       property_id: candidatePropertyId,
       room_key,
@@ -53,6 +54,8 @@ export async function POST(req: NextRequest) {
       special_requests,
       estimated_arrival_time,
       stripe_session_id,
+      payment_channel,
+      payment_reference,
     });
 
     const reservationCode =
