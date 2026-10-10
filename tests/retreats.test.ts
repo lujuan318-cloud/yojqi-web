@@ -1,46 +1,102 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { getRoomCatalog, getRoomBySlug, getRoomByKey } from '../lib/retreats-catalog';
-import { createInventoryHold, validateInventoryHold, releaseInventoryHold, getActiveHoldsForRoom } from '../lib/inventory-hold';
+import {
+  getRoomCatalog,
+  getRoomBySlug,
+  getRoomByKey,
+  getRoomTypesOnly,
+  getIndividualRoomsOnly,
+} from '../lib/retreats-catalog';
+import {
+  createInventoryHold,
+  validateInventoryHold,
+  releaseInventoryHold,
+  getActiveHoldsForRoom,
+} from '../lib/inventory-hold';
 import { calculateRoomQuote } from '../lib/retreats-pricing';
 
 test('YOJQI Homestay Direct Booking Architecture Tests', async (t) => {
-  await t.test('Room Catalog contains 7 flagship room types mapped to Hostex', () => {
+  await t.test('Room Catalog contains 16 total products (7 pooled room types + 9 dedicated rooms)', () => {
     const catalog = getRoomCatalog();
-    assert.equal(catalog.length, 7, 'Must have exactly 7 flagship rooms');
+    assert.equal(catalog.length, 16, 'Must have exactly 16 rooms in catalog (7 room types + 9 individual rooms)');
 
+    const roomTypes = getRoomTypesOnly();
+    assert.equal(roomTypes.length, 7, 'Must have exactly 7 pooled room types (展示方式 = 房型)');
+
+    const indRooms = getIndividualRoomsOnly();
+    assert.equal(indRooms.length, 9, 'Must have exactly 9 dedicated rooms (展示方式 = 房间)');
+
+    // Ensure every single item has valid Hostex mapping
+    for (const room of catalog) {
+      assert.ok(room.room_key.length > 0, `Missing room_key`);
+      assert.ok(room.slug.length > 0, `Missing slug for ${room.room_key}`);
+      assert.ok(room.house_type_id > 0, `Invalid house_type_id for ${room.room_key}`);
+      assert.ok(room.listing_id.length > 0, `Missing listing_id for ${room.room_key}`);
+      assert.ok(room.property_ids.length > 0, `Missing physical property_ids for ${room.room_key}`);
+      assert.ok(room.default_property_id > 0, `Missing default_property_id for ${room.room_key}`);
+      assert.ok(room.basePrice > 0, `Invalid base price for ${room.room_key}`);
+      assert.ok(room.minFloorPrice > 0, `Invalid min floor price for ${room.room_key}`);
+      assert.ok(room.nameZh.length > 0, `Missing Chinese name for ${room.room_key}`);
+      assert.ok(room.nameEn.length > 0, `Missing English name for ${room.room_key}`);
+      assert.ok(room.coverImage.length > 0, `Missing cover image for ${room.room_key}`);
+
+      // Bed naming rules verification
+      assert.ok(
+        !room.bedInfoEn.includes('Twin Bed'),
+        `Room ${room.room_key} bedInfoEn must not use "Twin Bed" for 1.8m beds`
+      );
+    }
+  });
+
+  await t.test('All 7 Pooled Room Types match user specification', () => {
+    const roomTypes = getRoomTypesOnly();
     const expectedKeys = [
-      'balcony_king_b',
       'floor_window_king',
       'twin_view_a',
       'twin_view_b',
-      'suite_4bed_balcony',
+      'balcony_king_a',
+      'balcony_king_b',
       'suite_4bed_family',
-      'suite_2bed_duo',
+      'suite_4bed_balcony',
     ];
 
     for (const key of expectedKeys) {
-      const room = catalog.find((r) => r.room_key === key);
-      assert.ok(room, `Missing room: ${key}`);
-      assert.ok(room.house_type_id > 0, `Invalid house_type_id for ${key}`);
-      assert.ok(room.listing_id.length > 0, `Missing listing_id for ${key}`);
-      assert.ok(room.property_ids.length > 0, `Missing physical property_ids for ${key}`);
-      assert.ok(room.basePrice > 0, `Invalid base price for ${key}`);
-      assert.ok(room.minFloorPrice > 0, `Invalid min floor price for ${key}`);
-      assert.ok(room.nameZh.length > 0, `Missing Chinese name for ${key}`);
-      assert.ok(room.nameEn.length > 0, `Missing English name for ${key}`);
-      assert.ok(room.coverImage.length > 0, `Missing cover image for ${key}`);
+      const rt = roomTypes.find((r) => r.room_key === key);
+      assert.ok(rt, `Missing pooled room type: ${key}`);
+      assert.equal(rt.display_type, 'room_type');
+    }
+  });
+
+  await t.test('All 9 Dedicated Rooms match user SKU specifications', () => {
+    const indRooms = getIndividualRoomsOnly();
+    const expectedKeys = [
+      'room_b7_2_8_xueliuhua',
+      'room_b19_2_yueshuxing',
+      'room_b22_01_qingying',
+      'room_b22_02_huadengqi',
+      'room_c801_xiangwu',
+      'room_b10_2_666_zhiyu',
+      'room_b16_02_qingfeng',
+      'room_b7_2_whole_suite',
+      'room_b21_02_whole_suite',
+    ];
+
+    for (const key of expectedKeys) {
+      const room = indRooms.find((r) => r.room_key === key);
+      assert.ok(room, `Missing dedicated room: ${key}`);
+      assert.equal(room.display_type, 'individual_room');
+      assert.ok(room.pms_sku && room.pms_sku.length > 0, `Missing pms_sku for dedicated room: ${key}`);
     }
   });
 
   await t.test('getRoomBySlug and getRoomByKey work properly', () => {
-    const room = getRoomBySlug('balcony-river-view-king');
+    const room = getRoomBySlug('river-view-king-suite-with-private-balcony');
     assert.ok(room);
-    assert.equal(room.room_key, 'balcony_king_b');
+    assert.equal(room.room_key, 'balcony_king_a');
 
     const roomByKey = getRoomByKey('floor_window_king');
     assert.ok(roomByKey);
-    assert.equal(roomByKey.slug, 'floor-to-ceiling-skyline-king');
+    assert.equal(roomByKey.slug, 'high-floor-river-view-king-floor-to-ceiling-windows');
   });
 
   await t.test('10-Minute Inventory Hold lifecycle prevents double-booking', () => {
@@ -80,6 +136,7 @@ test('YOJQI Homestay Direct Booking Architecture Tests', async (t) => {
     const quote = await calculateRoomQuote(room, checkIn, checkOut);
     assert.equal(quote.nights, 2);
     assert.equal(quote.room_key, 'balcony_king_b');
+    assert.equal(quote.display_type, 'room_type');
     assert.equal(quote.currency, 'CNY');
     assert.ok(quote.total_amount > 0);
     assert.ok(quote.avg_nightly_price >= room.minFloorPrice, 'Rate cannot breach floor price');
@@ -88,7 +145,9 @@ test('YOJQI Homestay Direct Booking Architecture Tests', async (t) => {
   });
 
   await t.test('Multi-Channel Payment Configuration & Reference Generation', async () => {
-    const { PAYMENT_CHANNELS, getDirectAccountDetails, generateBookingReference } = await import('../lib/payment-channels');
+    const { PAYMENT_CHANNELS, getDirectAccountDetails, generateBookingReference } = await import(
+      '../lib/payment-channels'
+    );
 
     assert.equal(PAYMENT_CHANNELS.length, 3, 'Must support Alipay, PayPal, and Wise');
     const ids = PAYMENT_CHANNELS.map((p) => p.id);
@@ -126,4 +185,3 @@ test('YOJQI Homestay Direct Booking Architecture Tests', async (t) => {
     }
   });
 });
-

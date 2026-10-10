@@ -115,8 +115,20 @@ export function DirectRoomCard({
         <div className="space-y-3">
           {/* Room Title & Subtitle */}
           <div>
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-200/70 text-[11px] font-medium mb-1.5">
-              <span>{isZh ? room.badgeZh : room.badgeEn}</span>
+            <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
+              <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-200/70 text-[11px] font-medium">
+                <span>{isZh ? room.badgeZh : room.badgeEn}</span>
+              </div>
+              {room.display_type === 'individual_room' && (
+                <span className="px-2 py-0.5 rounded-full bg-stone-100 text-stone-700 font-mono text-[10px] border border-stone-200 font-medium">
+                  {isZh ? '独享房源 · 1:1直选' : 'Dedicated 1:1 Room'}
+                </span>
+              )}
+              {room.display_type === 'room_type' && (
+                <span className="px-2 py-0.5 rounded-full bg-amber-100/70 text-amber-800 font-mono text-[10px] border border-amber-200/80 font-medium">
+                  {isZh ? '房型池 · 自动安排' : 'Pooled Room Type'}
+                </span>
+              )}
             </div>
             <h3 className="font-serif text-xl sm:text-2xl font-bold text-yojqi-inkHeading leading-snug">
               {isZh ? room.nameZh : room.nameEn}

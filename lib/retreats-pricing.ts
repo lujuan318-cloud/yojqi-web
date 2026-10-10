@@ -22,6 +22,8 @@ export interface DailyPriceDetail {
 export interface RoomAvailabilityQuote {
   room_key: string;
   slug: string;
+  display_type?: 'room_type' | 'individual_room';
+  pms_sku?: string;
   house_type_id: number;
   nameZh: string;
   nameEn: string;
@@ -168,6 +170,8 @@ export async function calculateRoomQuote(
   return {
     room_key: room.room_key,
     slug: room.slug,
+    display_type: room.display_type,
+    pms_sku: room.pms_sku,
     house_type_id: room.house_type_id,
     nameZh: room.nameZh,
     nameEn: room.nameEn,

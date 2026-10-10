@@ -31,6 +31,7 @@ export function DirectRetreatsClient({
   const [checkOut, setCheckOut] = useState('');
   const [guests, setGuests] = useState(0);
   const [beds, setBeds] = useState('all');
+  const [displayFilter, setDisplayFilter] = useState<'all' | 'room_type' | 'individual_room'>('all');
   const [hasFiltered, setHasFiltered] = useState(false);
 
   const [allRooms, setAllRooms] = useState<RoomAvailabilityQuote[]>(initialRooms);
@@ -66,9 +67,11 @@ export function DirectRetreatsClient({
           if (newBeds === '1') {
             results = results.filter((r) => r.bedInfoZh.includes('1张') || r.bedInfoEn.toLowerCase().includes('1 king'));
           } else if (newBeds === '2') {
-            results = results.filter((r) => r.bedInfoZh.includes('2张') || r.bedInfoEn.toLowerCase().includes('2 single'));
+            results = results.filter((r) => r.bedInfoZh.includes('2张') || r.bedInfoEn.toLowerCase().includes('2 king'));
+          } else if (newBeds === '3') {
+            results = results.filter((r) => r.bedInfoZh.includes('3张') || r.bedInfoEn.toLowerCase().includes('3 king'));
           } else if (newBeds === '4') {
-            results = results.filter((r) => r.bedInfoZh.includes('4张') || r.bedInfoEn.toLowerCase().includes('4 large'));
+            results = results.filter((r) => r.bedInfoZh.includes('4张') || r.bedInfoEn.toLowerCase().includes('4 king') || r.bedInfoEn.toLowerCase().includes('4 large'));
           }
         }
 
@@ -86,6 +89,7 @@ export function DirectRetreatsClient({
     setCheckOut('');
     setGuests(0);
     setBeds('all');
+    setDisplayFilter('all');
     setHasFiltered(false);
     setFilteredRooms(allRooms);
   };
@@ -108,7 +112,13 @@ export function DirectRetreatsClient({
     setIsDrawerOpen(true);
   };
 
-  const displayedRooms = hasFiltered ? filteredRooms : allRooms;
+  const currentPool = hasFiltered ? filteredRooms : allRooms;
+  const roomTypesCount = currentPool.filter((r) => r.display_type === 'room_type').length;
+  const individualRoomsCount = currentPool.filter((r) => r.display_type === 'individual_room').length;
+  const displayedRooms = currentPool.filter((room) => {
+    if (displayFilter === 'all') return true;
+    return room.display_type === displayFilter;
+  });
 
   return (
     <div className="space-y-12 md:space-y-16">
@@ -178,13 +188,13 @@ export function DirectRetreatsClient({
 
       {/* Rooms List Section */}
       <div className="space-y-6">
-        <div className="flex items-baseline justify-between border-b border-yojqi-border pb-3">
+        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between border-b border-yojqi-border pb-3 gap-2">
           <div>
             <span className="text-xs font-mono uppercase tracking-wider text-yojqi-bronze">
-              {hasFiltered ? (isZh ? '筛选可订房型' : 'Available Rooms') : (isZh ? '7大主力房型全览' : 'All 7 Flagship Suites')}
+              {hasFiltered ? (isZh ? '实时房态直查' : 'Live Availability') : (isZh ? '官方直订房源全览' : 'Official Direct Stay Catalog')}
             </span>
             <h2 className="font-serif text-2xl font-bold text-yojqi-inkHeading">
-              {hasFiltered ? (isZh ? '当前时段有房房型' : 'Available on Your Dates') : (isZh ? '选择心仪房型并即时直订' : 'Select Your Sanctuary')}
+              {hasFiltered ? (isZh ? '当前时段可预订房源' : 'Available on Your Dates') : (isZh ? '选择心仪房源并即时直订' : 'Select Your Sanctuary')}
             </h2>
           </div>
           <div className="flex items-center gap-3">
@@ -196,8 +206,62 @@ export function DirectRetreatsClient({
             </Link>
             <span className="text-xs font-mono text-neutral-300">|</span>
             <span className="text-xs font-mono text-neutral-500">
-              {displayedRooms.length} {isZh ? '个房型显示中' : 'rooms shown'}
+              {displayedRooms.length} {isZh ? '个房源显示中' : 'rooms shown'}
             </span>
+          </div>
+        </div>
+
+        {/* Display Mode Tabs (按表格标注的“展示方式”分为：房型 / 房间) */}
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+          <div className="inline-flex p-1 bg-amber-50/80 border border-amber-200/80 rounded-2xl gap-1">
+            <button
+              type="button"
+              onClick={() => setDisplayFilter('all')}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
+                displayFilter === 'all'
+                  ? 'bg-amber-800 text-white shadow-xs'
+                  : 'text-amber-950 hover:bg-amber-100/60'
+              }`}
+            >
+              <span>{isZh ? '全部房源' : 'All Listings'}</span>
+              <span className="ml-1.5 opacity-80 font-mono text-[11px]">({currentPool.length})</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setDisplayFilter('room_type')}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
+                displayFilter === 'room_type'
+                  ? 'bg-amber-800 text-white shadow-xs'
+                  : 'text-amber-950 hover:bg-amber-100/60'
+              }`}
+            >
+              <span>{isZh ? '主力房型' : 'Room Types'}</span>
+              <span className="ml-1.5 opacity-80 font-mono text-[11px]">({roomTypesCount})</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setDisplayFilter('individual_room')}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
+                displayFilter === 'individual_room'
+                  ? 'bg-amber-800 text-white shadow-xs'
+                  : 'text-amber-950 hover:bg-amber-100/60'
+              }`}
+            >
+              <span>{isZh ? '独立专属房间' : 'Dedicated Rooms'}</span>
+              <span className="ml-1.5 opacity-80 font-mono text-[11px]">({individualRoomsCount})</span>
+            </button>
+          </div>
+
+          <div className="text-xs text-neutral-500 hidden sm:block">
+            {displayFilter === 'room_type' && (
+              <span>{isZh ? '📌 房型：多物理房源共享房态，系统自动安排最优房间' : '📌 Pooled Room Types: Shared availability with auto-assignment'}</span>
+            )}
+            {displayFilter === 'individual_room' && (
+              <span>{isZh ? '📌 房间：1:1 独立物理房源直订，所见即所订，精准指定房源' : '📌 Dedicated Rooms: Direct 1:1 physical property reservation'}</span>
+            )}
+            {displayFilter === 'all' && (
+              <span>{isZh ? '📌 可按“主力房型”或“独立专属房间”分类查看' : '📌 Filter by Pooled Room Types or Dedicated Rooms'}</span>
+            )}
           </div>
         </div>
 

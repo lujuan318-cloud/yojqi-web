@@ -288,10 +288,11 @@ export function DirectBookingSearchBar({
               onChange={(e) => setBeds(e.target.value)}
               className="w-full px-3 py-2.5 bg-neutral-50 border border-yojqi-border rounded-xl text-xs sm:text-sm text-yojqi-ink focus:outline-hidden focus:ring-2 focus:ring-amber-500/20 focus:border-amber-600 transition-all cursor-pointer"
             >
-              <option value="all">{isZh ? '床型不限' : 'Any Beds'}</option>
-              <option value="1">{isZh ? '1张特大床 (1.8m)' : '1 King Bed'}</option>
-              <option value="2">{isZh ? '2张独立单人床' : '2 Twin Beds'}</option>
-              <option value="4">{isZh ? '4张大床 (整套)' : '4 Beds Penthouse'}</option>
+              <option value="all">{isZh ? '床数不限' : 'Any Beds'}</option>
+              <option value="1">{isZh ? '1张特大床 (1 King Bed)' : '1 King Bed'}</option>
+              <option value="2">{isZh ? '2张特大床 (2 King Beds)' : '2 King Beds'}</option>
+              <option value="3">{isZh ? '3张特大床 (3 King Beds)' : '3 King Beds'}</option>
+              <option value="4">{isZh ? '4张特大床 (整套公寓)' : '4 King Beds (Apartment)'}</option>
             </select>
           </div>
 
@@ -386,8 +387,8 @@ export function DirectBookingSearchBar({
             <Sparkles className="w-3.5 h-3.5 text-amber-600 shrink-0" />
             <span>
               {isZh
-                ? '默认展示全部 7 大主力房型 · 选择日期后实时展示当前空房并享直订特惠'
-                : 'Showing all 7 flagship suites. Select dates above to view live availability.'}
+                ? '默认展示全部精选房源（含7大主力房型与9套独立专属房间） · 选择日期后实时展示当前空房并享直订特惠'
+                : 'Showing all curated residences (7 Flagship Room Types & 9 Dedicated Suites). Select dates to view live availability.'}
             </span>
           </div>
         )}
