@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
       const holdValidation = validateInventoryHold(hold_token, room_key, check_in, check_out);
       if (!holdValidation.valid) {
         return NextResponse.json(
-          { success: false, error: holdValidation.message || '临时锁房已过期，请重新选房。' },
+          { success: false, error: holdValidation.message || '房源保留已超时，请重新选房。' },
           { status: 410 }
         );
       }

@@ -24,7 +24,7 @@ export default async function ExperiencesPage({
       descZh: '在百米两江交汇之巅，避开地面 5 万人潮，私享一线无人机天幕阳台。',
       descEn: 'Front-row panoramic riverfront balcony with unobstructed drone show vantage.',
       icon: MapPin,
-      tag: isZh ? '物理空间居停' : 'Physical Residence'
+      tag: isZh ? '东方宿集居停' : 'Sanctuary Residence'
     },
     {
       id: 'tea',

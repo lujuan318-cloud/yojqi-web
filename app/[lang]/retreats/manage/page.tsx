@@ -119,8 +119,8 @@ function ManageBookingContent({ lang }: { lang: Language }) {
 
       setSuccessMessage(
         isZh
-          ? '预订已成功取消！百居易房态已自动释放，各大 OTA 渠道对应库存已恢复开房。'
-          : 'Reservation cancelled! Property inventory reopened in Hostex & OTAs.'
+          ? '预订已成功取消！房源已为您解除保留。如涉及已付款项，管家团队将立即为您办理原路退款。'
+          : 'Reservation successfully cancelled! Refund will be processed back to your original payment method.'
       );
       setShowCancelConfirm(false);
       // Update local reservation state
@@ -149,15 +149,15 @@ function ManageBookingContent({ lang }: { lang: Language }) {
       <div className="bg-[#fffdfa] border border-amber-200/80 rounded-3xl p-6 sm:p-8 shadow-sm space-y-3">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-mono font-medium">
           <ShieldCheck className="w-3.5 h-3.5 text-amber-700" />
-          <span>{isZh ? '百居易中央房态实时直连' : 'Hostex Direct Booking Manager'}</span>
+          <span>{isZh ? '官方直订服务中心' : 'Official Direct Booking Manager'}</span>
         </div>
         <h1 className="font-serif text-2xl sm:text-3xl font-bold text-yojqi-inkHeading">
           {isZh ? '官网直订订单查询与自助管理' : 'Manage Your Direct Reservation'}
         </h1>
         <p className="text-xs sm:text-sm text-neutral-600 max-w-xl">
           {isZh
-            ? '输入您的预订确认码与手机号，即可实时核验百居易 PMS 房态、查看入住交通指引、或在入住前自助申请免费退订与开房。'
-            : 'Look up your reservation, check Hostex live calendar status, or manage cancellations with instant inventory reopening.'}
+            ? '输入您的预订确认码与手机号，即可随时查看行程凭据、入住交通指引，或在入住前 48 小时自助申请免费取消与退款。'
+            : 'Look up your reservation, check stay details, navigation guide, or manage complimentary cancellation up to 48 hours prior to check-in.'}
         </p>
 
         {/* Query Input Bar */}
@@ -240,12 +240,12 @@ function ManageBookingContent({ lang }: { lang: Language }) {
                   {reservation.status === 'cancelled' ? (
                     <>
                       <XCircle className="w-3 h-3 text-neutral-400" />
-                      <span>{isZh ? '已退订 (房态已释放开房)' : 'Cancelled (Inventory Reopened)'}</span>
+                      <span>{isZh ? '已退订' : 'Cancelled'}</span>
                     </>
                   ) : (
                     <>
                       <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                      <span>{isZh ? '已确认 (百居易锁房中)' : 'Confirmed & Active'}</span>
+                      <span>{isZh ? '已确认 (有效预订)' : 'Confirmed & Active'}</span>
                     </>
                   )}
                 </span>
@@ -300,10 +300,10 @@ function ManageBookingContent({ lang }: { lang: Language }) {
             <div className="bg-neutral-50 p-3.5 rounded-xl border border-neutral-100 space-y-1">
               <div className="flex items-center gap-1.5 text-neutral-400 font-mono text-[10px] uppercase">
                 <ShieldCheck className="w-3.5 h-3.5 text-amber-700" />
-                <span>{isZh ? '百居易预订码' : 'Hostex Code'}</span>
+                <span>{isZh ? '官方预订确认码' : 'Booking Code'}</span>
               </div>
               <div className="font-bold text-amber-950 text-xs font-mono truncate">{reservation.code}</div>
-              <div className="text-[11px] text-emerald-700 font-medium">{isZh ? '官方直订渠道 #29' : 'Channel #29'}</div>
+              <div className="text-[11px] text-emerald-700 font-medium">{isZh ? '官方直订专属保障' : 'Direct Booking Privilege'}</div>
             </div>
           </div>
 
@@ -327,14 +327,14 @@ function ManageBookingContent({ lang }: { lang: Language }) {
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div className="text-xs text-neutral-500 flex items-center gap-1.5">
                     <Clock className="w-4 h-4 text-emerald-600" />
-                    <span>{isZh ? '入住前48小时内可免费全额退改。系统将秒级释放房源并重新开房。' : 'Free cancellation up to 48 hours before check-in.'}</span>
+                    <span>{isZh ? '入住前 48 小时内可免费全额退改。' : 'Free cancellation up to 48 hours before check-in.'}</span>
                   </div>
 
                   <button
                     onClick={() => setShowCancelConfirm(true)}
                     className="px-4 py-2.5 rounded-xl border border-red-200 text-red-700 hover:bg-red-50 text-xs font-medium transition-colors cursor-pointer"
                   >
-                    {isZh ? '申请取消预订 (释放房源)' : 'Request Cancellation'}
+                    {isZh ? '申请取消预订' : 'Request Cancellation'}
                   </button>
                 </div>
               ) : (
@@ -346,8 +346,8 @@ function ManageBookingContent({ lang }: { lang: Language }) {
                     </h4>
                     <p className="text-xs text-red-700">
                       {isZh
-                        ? '点击确认后，百居易将立即释放该物理房间，并自动向 Booking.com、携程等各大渠道恢复开房。如有已支付款项，专属管家将为您办理原路退款。'
-                        : 'Hostex will cancel this reservation and reopen calendars on Booking.com/Ctrip instantly.'}
+                        ? '点击确认后将取消本次预订。如有已支付款项，专属管家将在 1-3 个工作日内为您办理原路全额退款。'
+                        : 'Your reservation will be cancelled. If payment was made, your refund will be processed within 1-3 business days.'}
                     </p>
                   </div>
 

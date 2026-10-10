@@ -84,14 +84,14 @@ export function getDirectAccountDetails(): DirectAccountDetails {
       account: process.env.NEXT_PUBLIC_ALIPAY_ACCOUNT || 'yojqi@outlook.com',
       payeeName: process.env.NEXT_PUBLIC_ALIPAY_NAME || '重庆白虹两江汇宿集',
       qrImageUrl: process.env.NEXT_PUBLIC_ALIPAY_QR_IMAGE || '',
-      instructionsZh: '请打开手机支付宝，转账至上述账号或扫描收款码，转账备注务必填写【预订参考码】。提交后系统将即刻向百居易锁房。',
-      instructionsEn: 'Open Alipay, transfer to the payee account, and quote your Booking Reference Code in the remarks. Room will be locked in Hostex immediately upon submission.',
+      instructionsZh: '请打开手机支付宝，转账至上述账号或扫描收款码，转账备注务必填写【预订参考码】。提交后系统将即刻为您锁定保留房源。',
+      instructionsEn: 'Open Alipay, transfer to the payee account, and quote your Booking Reference Code in the remarks. Room will be guaranteed immediately upon submission.',
     },
     paypal: {
       payPalMeUrl: process.env.NEXT_PUBLIC_PAYPAL_ME_URL || 'https://paypal.me/yojqi',
       email: process.env.NEXT_PUBLIC_PAYPAL_EMAIL || 'payments@yojqi.com',
-      instructionsZh: '系统将引导您前往专属 PayPal 快速收银通道，支付时请备注订单参考号。完成后系统自动同步百居易并生成凭证。',
-      instructionsEn: 'Click to open PayPal checkout. Please enter your Booking Reference in the payment note. Room is instantly secured in Hostex PMS.',
+      instructionsZh: '系统将引导您前往专属 PayPal 快速收银通道，支付时请备注订单参考号。完成后系统自动生成官方入住凭据与确认码。',
+      instructionsEn: 'Click to open PayPal checkout. Please enter your Booking Reference in the payment note. Official stay voucher will be issued upon completion.',
     },
     wise: {
       accountHolder: process.env.NEXT_PUBLIC_WISE_HOLDER_NAME || 'YOJQI SANCTUARY RETREATS',
@@ -101,7 +101,7 @@ export function getDirectAccountDetails(): DirectAccountDetails {
       usdAccountNumber: process.env.NEXT_PUBLIC_WISE_USD_ACCOUNT || '9608221840',
       eurIban: process.env.NEXT_PUBLIC_WISE_EUR_IBAN || 'BE62 9670 1284 9912',
       swiftBic: process.env.NEXT_PUBLIC_WISE_SWIFT || 'EVBLUS3N',
-      instructionsZh: '请在 Wise App 或银行端向上述账户汇款，转账附言（Reference）务必严格填写您的【专属参考码】。百居易已为您保留锁房。',
+      instructionsZh: '请在 Wise App 或银行端向上述账户汇款，转账附言（Reference）务必严格填写您的【专属参考码】。系统已为您优先保留该房源。',
       instructionsEn: 'Transfer via Wise App or wire to the account above. ALWAYS put your unique Reference Code in the transfer note so our concierge can reconcile instantly.',
     },
   };

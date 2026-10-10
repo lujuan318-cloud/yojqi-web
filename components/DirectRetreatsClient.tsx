@@ -154,8 +154,8 @@ export function DirectRetreatsClient({
         <div className="bg-[#fffdfa] border border-amber-200/60 p-3.5 rounded-2xl flex items-center gap-2.5 shadow-xs">
           <Shield className="w-4 h-4 text-emerald-600 shrink-0" />
           <div>
-            <span className="font-semibold block">{isZh ? '百居易中央房态实时直连' : 'Hostex Real-time PMS Sync'}</span>
-            <span className="text-[11px] text-neutral-500">{isZh ? '自动锁房并同步OTA关房，杜绝超售' : 'Instant inventory lock, no double-booking'}</span>
+            <span className="font-semibold block">{isZh ? '官方房态实时保障' : 'Official Real-Time Availability'}</span>
+            <span className="text-[11px] text-neutral-500">{isZh ? '预订即锁定专属房源，确保有房无忧' : 'Guaranteed suite reservation with zero double-booking'}</span>
           </div>
         </div>
 
@@ -205,7 +205,7 @@ export function DirectRetreatsClient({
           <div className="py-20 text-center space-y-3 bg-white rounded-3xl border border-amber-100">
             <div className="w-8 h-8 border-3 border-amber-700 border-t-transparent rounded-full animate-spin mx-auto" />
             <p className="text-xs text-amber-900 font-mono">
-              {isZh ? '正在从百居易中央房态查询实时日历与价格...' : 'Checking live Hostex PMS calendar and rates...'}
+              {isZh ? '正在查询实时房态与优享价格...' : 'Checking live room availability and rates...'}
             </p>
           </div>
         ) : displayedRooms.length === 0 ? (
@@ -272,12 +272,12 @@ export function DirectRetreatsClient({
         <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="p-5 bg-white rounded-2xl border border-yojqi-border shadow-xs space-y-1.5">
             <h4 className="font-serif text-sm sm:text-base font-semibold text-yojqi-inkHeading">
-              {isZh ? '官网直订如何保障房态？会有超售风险吗？' : 'How does Hostex prevent double-booking?'}
+              {isZh ? '官网直订如何保障房态？会有超售风险吗？' : 'How does direct booking guarantee room availability?'}
             </h4>
             <p className="text-xs text-yojqi-body leading-relaxed">
               {isZh
-                ? 'YOJQI 官网已直连百居易 (Hostex) OpenAPI v3。在您点击直订时，系统会原子锁定物理房间 10 分钟；支付确认后，百居易会秒级向 Booking.com、携程等全网 OTA 下发关房指令，彻底杜绝多渠道错配与超售。'
-                : 'Direct bookings connect live with Hostex OpenAPI v3. Room inventory is pre-held for 10 minutes and automatically locked across Booking.com and Ctrip upon payment.'}
+                ? 'YOJQI 官网为官方直订渠道，房态数据实时互通。在您选定房型时，系统会为您优先保留 10 分钟；预订确认后，房源即刻为您专属锁定并出具凭据，全网统一实时保障，彻底杜绝错单与超售风险，确保预订即有房。'
+                : 'YOJQI Direct is an official booking channel with real-time room availability. When selecting your stay, rooms are reserved for 10 minutes; once confirmed, your suite is officially locked and guaranteed with zero risk of overbooking.'}
             </p>
           </div>
 
@@ -298,19 +298,19 @@ export function DirectRetreatsClient({
             </h4>
             <p className="text-xs text-yojqi-body leading-relaxed">
               {isZh
-                ? '支持国内支付宝扫码/即时付、PayPal、Wise 跨境国际转账，以及 Visa、Mastercard、Apple Pay 等主流国际信用卡。付款成功后秒级同步百居易出单。'
-                : 'We support Alipay, PayPal, Wise bank remittance, and international credit cards (Visa/Mastercard/Apple Pay) via Stripe.'}
+                ? '支持国内支付宝扫码/即时付款、PayPal、Wise 跨境国际汇款，以及 Visa、Mastercard 等主流国际信用卡。付款确认后即刻出具官方住宿凭据与预订确认码。'
+                : 'We accept Alipay, PayPal, Wise multi-currency wire transfers, and major credit cards (Visa/Mastercard/Apple Pay). Once confirmed, you will instantly receive your official stay voucher and reservation code.'}
             </p>
           </div>
 
           <div className="p-5 bg-white rounded-2xl border border-yojqi-border shadow-xs space-y-1.5">
             <h4 className="font-serif text-sm sm:text-base font-semibold text-yojqi-inkHeading">
-              {isZh ? '如果行程有变，如何取消预订？' : 'How does cancellation and reopening work?'}
+              {isZh ? '如果行程有变，如何取消预订？' : 'How does cancellation work?'}
             </h4>
             <p className="text-xs text-yojqi-body leading-relaxed">
               {isZh
-                ? '大床房及双床房在入住前 48 小时可免费全额取消。取消后系统自动联动百居易，自动将物理房源重新开房恢复全网库存，并按原路原退款项。'
-                : 'Free cancellation up to 48 hours before check-in. The room inventory is automatically restored and reopened across all channels.'}
+                ? '大床房及双床房在入住前 48 小时可享受免费全额取消与改签保障。取消申请审核后款项将原路退回，专属管家亦将全程跟进协助。'
+                : 'King and twin rooms offer complimentary cancellation up to 48 hours prior to check-in. Refunds are processed back to the original payment method with our concierge assisting throughout.'}
             </p>
           </div>
         </div>

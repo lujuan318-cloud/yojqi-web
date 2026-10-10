@@ -101,7 +101,7 @@ export async function POST(req: NextRequest) {
       check_in_time: '15:00',
       check_out_time: '12:00',
       hostex_synced: hostexResult.success,
-      message: '预订成功！已同步百居易中央房态并自动锁定库存。管家团队已收到您的订单并将提供出行指引。',
+      message: '预订成功！专属江景房源已为您成功保留。管家团队已收到您的订单并将提供出行指引。',
     });
   } catch (error: any) {
     console.error('[POST /api/retreats/confirm error]:', error);

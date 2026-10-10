@@ -149,7 +149,7 @@ export function DirectBookingDrawer({ room, isOpen, onClose, lang }: DirectBooki
       return;
     }
     if (timeLeft <= 0) {
-      setErrorMessage(isZh ? '锁房已超时失效，请刷新页面重新选择。' : 'Hold reservation expired. Please refresh.');
+      setErrorMessage(isZh ? '房源保留已超时，请刷新页面重新选择。' : 'Reservation hold timed out. Please refresh.');
       return;
     }
     setErrorMessage(null);
@@ -159,7 +159,7 @@ export function DirectBookingDrawer({ room, isOpen, onClose, lang }: DirectBooki
   // Final Step: Submit booking to Hostex OpenAPI & WeCom
   const handleConfirmReservation = async () => {
     if (timeLeft <= 0) {
-      setErrorMessage(isZh ? '锁房已超时失效，请重新选择。' : 'Hold reservation expired.');
+      setErrorMessage(isZh ? '房源保留已超时，请重新选择。' : 'Reservation hold timed out.');
       return;
     }
 
@@ -191,7 +191,7 @@ export function DirectBookingDrawer({ room, isOpen, onClose, lang }: DirectBooki
 
       const confirmData = await confirmRes.json();
       if (!confirmData.success) {
-        throw new Error(confirmData.error || (isZh ? '百居易自动锁房失败' : 'Hostex sync failed'));
+        throw new Error(confirmData.error || (isZh ? '预订确认失败，请联系管家协助' : 'Reservation confirmation failed'));
       }
 
       // Successful confirmation: redirect to Voucher page
@@ -245,7 +245,7 @@ export function DirectBookingDrawer({ room, isOpen, onClose, lang }: DirectBooki
           <div className="bg-amber-500/10 border-b border-amber-200/80 px-4 py-2.5 flex items-center justify-between text-xs text-amber-950 font-medium">
             <div className="flex items-center gap-1.5">
               <Clock className="w-4 h-4 text-amber-700 animate-pulse" />
-              <span>{isHolding ? (isZh ? '正在向百居易请求独占锁房...' : 'Locking room with Hostex...') : dict.retreats.holdNotice}</span>
+              <span>{isHolding ? (isZh ? '正在为您保留专属房源...' : 'Holding room reservation...') : dict.retreats.holdNotice}</span>
             </div>
             <span className="font-mono font-bold bg-amber-600 text-white px-2 py-0.5 rounded-md text-[11px]">
               {formattedTime}
@@ -293,7 +293,7 @@ export function DirectBookingDrawer({ room, isOpen, onClose, lang }: DirectBooki
                   {dict.retreats.guestDetails}
                 </h4>
                 <p className="text-[11px] text-neutral-400">
-                  {isZh ? '信息将直传百居易 PMS 系统，用于公安实名登记及入住办理' : 'Transmitted to Hostex PMS for hotel registration'}
+                  {isZh ? '入住人信息将用于办理入住登记与专属管家出行服务' : 'Information used for guest check-in and dedicated concierge service'}
                 </p>
               </div>
 
@@ -638,7 +638,7 @@ export function DirectBookingDrawer({ room, isOpen, onClose, lang }: DirectBooki
               )}
               <span>
                 {submitting
-                  ? (isZh ? '正在向百居易锁房并同步OTA关房...' : 'Locking room with Hostex...')
+                  ? (isZh ? '正在为您确认预订并生成住宿凭证...' : 'Confirming reservation and issuing voucher...')
                   : (isZh
                       ? `确认并生成直订凭据 (${formatFromCny(room.total_amount)})`
                       : `Confirm Reservation (${formatFromCny(room.total_amount)})`)}
@@ -651,8 +651,8 @@ export function DirectBookingDrawer({ room, isOpen, onClose, lang }: DirectBooki
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
             <span>
               {isZh
-                ? '百居易 OpenAPI 实时锁房保障 · 自动关停 Booking/携程库存'
-                : 'Hostex OpenAPI Realtime Calendar Sync & Protection'}
+                ? '官方直订即时确认保障 · 专属管家一对一出行服务'
+                : 'Instant Direct Confirmation · Dedicated VIP Host & Suite Guarantee'}
             </span>
           </div>
         </div>

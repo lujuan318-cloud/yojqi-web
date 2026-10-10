@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
         success: true,
         already_cancelled: true,
         reservation_code,
-        message: '该订单此前已取消，房源已在各大渠道开房。',
+        message: '该预订此前已取消。',
       });
     }
 
@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
 
     if (!cancelRes.success) {
       return NextResponse.json(
-        { success: false, error: cancelRes.error_msg || '百居易取消预订失败，请联系管家协助。' },
+        { success: false, error: cancelRes.error_msg || '取消预订失败，请联系专属管家协助办理。' },
         { status: 500 }
       );
     }
@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       success: true,
       reservation_code,
-      message: '预订已成功取消。百居易房态已秒级释放，全网OTA库存已恢复开房。如有已支付款项，专属管家将与您联系办理原路退还。',
+      message: '预订已成功取消。如涉及已付款项，专属管家将与您联系办理原路退还。',
     });
   } catch (error: any) {
     console.error('[POST /api/retreats/cancel error]:', error);

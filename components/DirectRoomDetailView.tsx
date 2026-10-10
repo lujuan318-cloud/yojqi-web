@@ -289,7 +289,7 @@ export function DirectRoomDetailView({ room, lang }: DirectRoomDetailViewProps) 
             {/* Rate & Status Display */}
             {loadingQuote ? (
               <div className="py-6 text-center text-xs text-neutral-400 font-mono">
-                {isZh ? '正在从百居易查询实时价格与房态...' : 'Loading live PMS rates...'}
+                {isZh ? '正在查询实时价格与房态...' : 'Checking live room rates & availability...'}
               </div>
             ) : quote ? (
               <div className="space-y-3 pt-2 border-t border-amber-100">
@@ -385,7 +385,7 @@ export function DirectRoomDetailView({ room, lang }: DirectRoomDetailViewProps) 
                 <span>{dict.retreats.bookViaWechat}</span>
               </button>
               <span className="text-[11px] text-neutral-400 font-mono">
-                {isZh ? '百居易自动同步' : 'Hostex Guaranteed'}
+                {isZh ? '官方直订房态保障' : 'Official Direct Guarantee'}
               </span>
             </div>
           </div>

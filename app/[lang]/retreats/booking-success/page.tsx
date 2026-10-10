@@ -47,7 +47,7 @@ function BookingSuccessContent({ lang }: { lang: Language }) {
         <div className="space-y-1">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-mono font-medium">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-            <span>{isZh ? '百居易中央房态已锁房 · 关停外部OTA对应库存' : 'Hostex PMS Confirmed & OTA Auto-Locked'}</span>
+            <span>{isZh ? '官方直订已确认 · 专属江景房源已为您成功保留' : 'Official Direct Reservation Confirmed · Suite Reserved'}</span>
           </div>
           <h1 className="font-serif text-2xl sm:text-4xl font-bold text-yojqi-inkHeading">
             {isZh ? '预订成功！期待与您山城相遇' : 'Reservation Confirmed!'}

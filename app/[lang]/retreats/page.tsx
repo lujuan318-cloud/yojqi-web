@@ -20,7 +20,7 @@ export async function generateMetadata({
       ? '重庆住宿 · 高空全江景宿集直订 | YOJQI 官方直营'
       : 'YOJQI Chongqing Stays | High-Altitude Direct Booking Channel',
     description: isZh
-      ? '居于两江之上，静卧山城之巅。百居易中央房态实时直连，官网直订优享 95 折与专属工夫迎宾茶礼。'
+      ? '居于两江之上，静卧山城之巅。官方房态实时保障，官网直订优享 95 折与专属工夫迎宾茶礼。'
       : 'Stay above the rivers of Chongqing. Sleep quietly. Experience the city differently. Direct booking with 5% privilege.',
   };
 }

@@ -108,14 +108,14 @@ export function validateInventoryHold(
   if (!hold) {
     return {
       valid: false,
-      message: '锁房已超时失效（超过10分钟），请重新刷新并选择房型。',
+      message: '房源保留已超时（超过10分钟），请重新刷新并选择房型。',
     };
   }
 
   if (hold.room_key !== roomKey || hold.check_in !== checkIn || hold.check_out !== checkOut) {
     return {
       valid: false,
-      message: '锁房信息与当前预订不一致。',
+      message: '预订保留信息与当前选择不一致。',
     };
   }
 

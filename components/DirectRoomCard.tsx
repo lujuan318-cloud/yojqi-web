@@ -227,7 +227,7 @@ export function DirectRoomCard({
           )}
         </div>
 
-        {/* Action Button & Hostex Sync Tag */}
+        {/* Action Button & Direct Booking Tag */}
         <div className="space-y-2">
           <button
             onClick={() => onBookNow(room)}
@@ -245,7 +245,7 @@ export function DirectRoomCard({
 
           <div className="text-[10px] text-neutral-400 font-mono text-center flex items-center justify-center gap-1">
             <ShieldCheck className="w-3 h-3 text-emerald-600" />
-            <span>{isZh ? '百居易实时锁房保障' : 'Hostex Live Sync'}</span>
+            <span>{isZh ? '官方直订 · 实时房态保障' : 'Official Direct Stay Guarantee'}</span>
           </div>
         </div>
       </div>

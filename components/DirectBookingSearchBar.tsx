@@ -386,14 +386,14 @@ export function DirectBookingSearchBar({
             <Sparkles className="w-3.5 h-3.5 text-amber-600 shrink-0" />
             <span>
               {isZh
-                ? '默认展示全部 7 大主力房型 · 选择日期后将实时同步百居易房态并只展示可订房型'
-                : 'Showing all 7 flagship rooms. Select dates above to filter strictly available rooms.'}
+                ? '默认展示全部 7 大主力房型 · 选择日期后实时展示当前空房并享直订特惠'
+                : 'Showing all 7 flagship suites. Select dates above to view live availability.'}
             </span>
           </div>
         )}
 
         <div className="text-neutral-500 font-mono text-[10px]">
-          {isZh ? '百居易 OpenAPI 实时直连 · 官网直订立享 95 折' : 'Hostex Live Sync · 5% Direct Discount'}
+          {isZh ? '官方直订优选保障 · 官网预订立享 95 折与专属礼遇' : 'Official Direct Stay Guarantee · 5% Direct Discount & Welcome Tea'}
         </div>
       </div>
     </div>
