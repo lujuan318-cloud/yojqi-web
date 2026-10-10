@@ -18,4 +18,17 @@ test('Multi-Currency Engine', async (t) => {
   await t.test('USD baseline rate is exactly 1.0', () => {
     assert.equal(CURRENCIES.USD.rate, 1.0);
   });
+
+  await t.test('CNY to foreign currency conversion functions accurately for homestay rates', () => {
+    const cnyAmount = 725;
+    const usdAmount = cnyAmount / CURRENCIES.CNY.rate;
+    assert.equal(usdAmount, 100);
+
+    const eurAmount = usdAmount * CURRENCIES.EUR.rate;
+    assert.equal(Math.round(eurAmount), 92);
+
+    const hkdAmount = usdAmount * CURRENCIES.HKD.rate;
+    assert.equal(Math.round(hkdAmount), 782);
+  });
 });
+

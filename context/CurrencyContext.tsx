@@ -25,6 +25,8 @@ interface CurrencyContextType {
   setCurrency: (c: Currency) => void;
   formatPrice: (amountInUSD: number) => string;
   convertPrice: (amountInUSD: number) => number;
+  formatFromCny: (amountInCNY: number) => string;
+  convertFromCny: (amountInCNY: number) => number;
   currentConfig: CurrencyConfig;
 }
 
@@ -40,6 +42,11 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
       const saved = localStorage.getItem('yojqi_currency') as Currency;
       if (saved && CURRENCIES[saved]) {
         setCurrencyState(saved);
+      } else if (typeof window !== 'undefined') {
+        // Intelligently default to CNY on Chinese route (/zh), USD on English route (/en)
+        if (window.location.pathname.startsWith('/zh')) {
+          setCurrencyState('CNY');
+        }
       }
     } catch {
       // Ignore
@@ -59,6 +66,7 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
 
   const currentConfig = CURRENCIES[currency] || CURRENCIES.USD;
 
+  // Convert USD amounts (e.g. Products in store) to selected currency
   const convertPrice = (amountInUSD: number): number => {
     return Number((amountInUSD * currentConfig.rate).toFixed(2));
   };
@@ -71,6 +79,25 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
     return `${currentConfig.symbol}${converted.toFixed(2)}`;
   };
 
+  // Convert CNY amounts (e.g. Hostex homestay rates) to selected currency
+  const convertFromCny = (amountInCNY: number): number => {
+    if (currency === 'CNY') return amountInCNY;
+    const cnyRate = CURRENCIES.CNY.rate || 7.25;
+    const amountInUSD = amountInCNY / cnyRate;
+    return Number((amountInUSD * currentConfig.rate).toFixed(2));
+  };
+
+  const formatFromCny = (amountInCNY: number): string => {
+    if (currency === 'CNY') {
+      return `¥${Math.round(amountInCNY)}`;
+    }
+    const converted = convertFromCny(amountInCNY);
+    if (currency === 'HKD') {
+      return `HK$${Math.round(converted)}`;
+    }
+    return `${currentConfig.symbol}${Math.round(converted)}`;
+  };
+
   return (
     <CurrencyContext.Provider
       value={{
@@ -78,6 +105,8 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
         setCurrency,
         formatPrice,
         convertPrice,
+        formatFromCny,
+        convertFromCny,
         currentConfig,
       }}
     >

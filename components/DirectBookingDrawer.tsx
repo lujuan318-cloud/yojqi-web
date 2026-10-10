@@ -25,6 +25,7 @@ import {
   getDirectAccountDetails,
   generateBookingReference,
 } from '@/lib/payment-channels';
+import { useCurrency } from '@/context/CurrencyContext';
 
 interface DirectBookingDrawerProps {
   room: RoomAvailabilityQuote | null;
@@ -37,6 +38,7 @@ export function DirectBookingDrawer({ room, isOpen, onClose, lang }: DirectBooki
   const router = useRouter();
   const dict = getDictionary(lang);
   const isZh = lang === 'zh';
+  const { formatFromCny, currency } = useCurrency();
 
   // Step state: 1 = Guest Details, 2 = Payment Channel & Confirmation
   const [currentStep, setCurrentStep] = useState<1 | 2>(1);
@@ -588,19 +590,26 @@ export function DirectBookingDrawer({ room, isOpen, onClose, lang }: DirectBooki
           <div className="space-y-1.5 text-xs">
             <div className="flex justify-between text-neutral-600">
               <span>{isZh ? `房费原价 (${room.nights} 晚)` : `Base Rate (${room.nights} nights)`}</span>
-              <span className="font-mono">¥{room.original_ota_total}</span>
+              <span className="font-mono">{formatFromCny(room.original_ota_total)}</span>
             </div>
             {room.direct_savings > 0 && (
               <div className="flex justify-between text-emerald-700 font-medium">
                 <span>{dict.retreats.directPerk}</span>
-                <span className="font-mono">-¥{room.direct_savings}</span>
+                <span className="font-mono">-{formatFromCny(room.direct_savings)}</span>
               </div>
             )}
             <div className="flex justify-between items-baseline pt-2 border-t border-neutral-200/70 text-sm font-bold text-yojqi-ink">
               <span>{dict.retreats.totalStay}</span>
-              <span className="font-serif text-2xl text-amber-950">
-                ¥{room.total_amount} <span className="text-xs font-mono font-normal text-neutral-500">CNY</span>
-              </span>
+              <div className="text-right">
+                <span className="font-serif text-2xl text-amber-950">
+                  {formatFromCny(room.total_amount)}
+                </span>
+                {currency !== 'CNY' && (
+                  <span className="text-xs font-mono font-normal text-neutral-500 ml-1.5">
+                    (¥{room.total_amount} CNY)
+                  </span>
+                )}
+              </div>
             </div>
           </div>
 
@@ -630,7 +639,9 @@ export function DirectBookingDrawer({ room, isOpen, onClose, lang }: DirectBooki
               <span>
                 {submitting
                   ? (isZh ? '正在向百居易锁房并同步OTA关房...' : 'Locking room with Hostex...')
-                  : (isZh ? `确认并生成直订凭据 (¥${room.total_amount})` : `Confirm Reservation (¥${room.total_amount})`)}
+                  : (isZh
+                      ? `确认并生成直订凭据 (${formatFromCny(room.total_amount)})`
+                      : `Confirm Reservation (${formatFromCny(room.total_amount)})`)}
               </span>
               {!submitting && <ArrowRight className="w-4 h-4" />}
             </button>

@@ -19,6 +19,7 @@ import {
   RotateCcw,
 } from 'lucide-react';
 import { Language } from '@/lib/i18n';
+import { useCurrency } from '@/context/CurrencyContext';
 
 interface ReservationData {
   code: string;
@@ -36,6 +37,7 @@ interface ReservationData {
 function ManageBookingContent({ lang }: { lang: Language }) {
   const searchParams = useSearchParams();
   const isZh = lang === 'zh';
+  const { formatFromCny, currency } = useCurrency();
 
   const initialCode = searchParams.get('code') || '';
   const initialPhone = searchParams.get('phone') || '';
@@ -256,8 +258,13 @@ function ManageBookingContent({ lang }: { lang: Language }) {
             <div className="text-right">
               <span className="text-xs text-neutral-400 block">{isZh ? '预订总金额' : 'Total Amount'}</span>
               <span className="font-serif text-2xl font-bold text-amber-950">
-                ¥{reservation.total_amount} <span className="text-xs font-mono font-normal text-neutral-500">CNY</span>
+                {formatFromCny(reservation.total_amount)}
               </span>
+              {currency !== 'CNY' && (
+                <span className="text-xs font-mono font-normal text-neutral-500 block">
+                  (约合 ¥{reservation.total_amount} CNY)
+                </span>
+              )}
             </div>
           </div>
 

@@ -25,6 +25,7 @@ import { calculateRoomQuote, RoomAvailabilityQuote } from '@/lib/retreats-pricin
 import { DirectBookingDrawer } from './DirectBookingDrawer';
 import { AIConciergeWidget } from './AIConciergeWidget';
 import { WeChatModal } from './WeChatModal';
+import { useCurrency } from '@/context/CurrencyContext';
 
 interface DirectRoomDetailViewProps {
   room: RetreatRoomType;
@@ -34,6 +35,7 @@ interface DirectRoomDetailViewProps {
 export function DirectRoomDetailView({ room, lang }: DirectRoomDetailViewProps) {
   const dict = getDictionary(lang);
   const isZh = lang === 'zh';
+  const { formatFromCny, currency } = useCurrency();
 
   // Dates state
   const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split('T')[0];
@@ -320,24 +322,38 @@ export function DirectRoomDetailView({ room, lang }: DirectRoomDetailViewProps) 
                     <span className="text-xs text-amber-900 font-medium">
                       {isZh ? '日均直订优享价' : 'Direct Nightly Rate'}
                     </span>
-                    <div>
+                    <div className="text-right">
                       <span className="font-serif text-3xl font-bold text-amber-950">
-                        ¥{quote.avg_nightly_price}
+                        {formatFromCny(quote.avg_nightly_price)}
                       </span>
                       <span className="text-xs text-amber-800"> {dict.retreats.perNight}</span>
+                      {currency !== 'CNY' && (
+                        <div className="text-[10px] text-neutral-400 font-mono -mt-0.5">
+                          {isZh ? `(约合 ¥${quote.avg_nightly_price} CNY)` : `(approx. ¥${quote.avg_nightly_price} CNY)`}
+                        </div>
+                      )}
                     </div>
                   </div>
 
                   <div className="flex justify-between items-baseline mt-2 pt-2 border-t border-amber-200/50 text-xs">
                     <span className="font-semibold text-amber-950">{dict.retreats.totalStay}:</span>
-                    <span className="font-mono font-bold text-base text-amber-950">
-                      ¥{quote.total_amount} CNY
-                    </span>
+                    <div className="text-right">
+                      <span className="font-mono font-bold text-base text-amber-950">
+                        {formatFromCny(quote.total_amount)}
+                      </span>
+                      {currency !== 'CNY' && (
+                        <span className="text-[11px] font-mono text-neutral-500 ml-1.5">
+                          (约 ¥{quote.total_amount} CNY)
+                        </span>
+                      )}
+                    </div>
                   </div>
 
                   {quote.direct_savings > 0 && (
                     <div className="text-[11px] text-emerald-700 font-medium mt-1">
-                      {isZh ? `✨ 官网直订比 OTA 平台立省 ¥${quote.direct_savings}` : `✨ Save ¥${quote.direct_savings} vs OTA`}
+                      {isZh
+                        ? `✨ 官网直订比 OTA 平台立省 ${formatFromCny(quote.direct_savings)}`
+                        : `✨ Save ${formatFromCny(quote.direct_savings)} vs OTA`}
                     </div>
                   )}
                 </div>

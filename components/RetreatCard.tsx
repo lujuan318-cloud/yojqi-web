@@ -7,6 +7,7 @@ import { Eye, MapPin, Users, Maximize2, MessageCircle, Sparkles, CheckCircle2 } 
 import { SanctuaryProperty } from '@/lib/retreats-data';
 import { Language, getDictionary } from '@/lib/i18n';
 import { WeChatModal } from './WeChatModal';
+import { useCurrency } from '@/context/CurrencyContext';
 
 interface RetreatCardProps {
   property: SanctuaryProperty;
@@ -16,6 +17,7 @@ interface RetreatCardProps {
 export function RetreatCard({ property, lang }: RetreatCardProps) {
   const [wechatModalOpen, setWechatModalOpen] = useState(false);
   const dict = getDictionary(lang);
+  const { formatFromCny, currency } = useCurrency();
 
   const specs = lang === 'zh' ? property.roomSpecsZh : property.roomSpecsEn;
 
@@ -110,10 +112,17 @@ export function RetreatCard({ property, lang }: RetreatCardProps) {
                 <span className="text-xs text-amber-900 font-medium">
                   {lang === 'zh' ? '✨ 官网直订专享价' : '✨ Direct Booking Privilege'}
                 </span>
-                <span className="font-serif text-lg font-bold text-amber-950">
-                  ¥{property.basePrice}
-                  <span className="text-xs font-normal text-amber-800"> / {lang === 'zh' ? '晚起' : 'night'}</span>
-                </span>
+                <div className="text-right">
+                  <span className="font-serif text-lg font-bold text-amber-950">
+                    {formatFromCny(property.basePrice)}
+                    <span className="text-xs font-normal text-amber-800"> / {lang === 'zh' ? '晚起' : 'night'}</span>
+                  </span>
+                  {currency !== 'CNY' && (
+                    <div className="text-[10px] text-neutral-400 font-mono -mt-0.5">
+                      (约合 ¥{property.basePrice} CNY)
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>

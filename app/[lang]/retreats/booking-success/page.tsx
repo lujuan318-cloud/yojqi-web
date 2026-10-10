@@ -5,10 +5,12 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { CheckCircle2, Calendar, MapPin, Phone, Printer, ArrowLeft, ShieldCheck, Clock, Sparkles } from 'lucide-react';
 import { Language } from '@/lib/i18n';
+import { useCurrency } from '@/context/CurrencyContext';
 
 function BookingSuccessContent({ lang }: { lang: Language }) {
   const searchParams = useSearchParams();
   const isZh = lang === 'zh';
+  const { formatFromCny, currency } = useCurrency();
 
   const reservationCode = searchParams.get('code') || 'YQ-STAY-CONFIRMED';
   const roomName = searchParams.get('room') || (isZh ? '白虹·两江汇全江景高空民宿' : 'Baihong River View Panoramic Retreat');
@@ -82,8 +84,13 @@ function BookingSuccessContent({ lang }: { lang: Language }) {
           <div className="text-right">
             <span className="text-xs text-neutral-400 block">{isZh ? '实付总额' : 'Total Amount'}</span>
             <span className="font-serif text-2xl font-bold text-amber-950">
-              ¥{totalAmount} <span className="text-xs font-mono font-normal text-neutral-500">CNY</span>
+              {formatFromCny(Number(totalAmount) || 0)}
             </span>
+            {currency !== 'CNY' && (
+              <span className="text-xs font-mono font-normal text-neutral-500 block">
+                (约合 ¥{totalAmount} CNY)
+              </span>
+            )}
           </div>
         </div>
 

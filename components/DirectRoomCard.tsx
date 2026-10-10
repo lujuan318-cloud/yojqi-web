@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { Language, getDictionary } from '@/lib/i18n';
 import { RoomAvailabilityQuote } from '@/lib/retreats-pricing';
+import { useCurrency } from '@/context/CurrencyContext';
 
 interface DirectRoomCardProps {
   room: RoomAvailabilityQuote;
@@ -33,6 +34,7 @@ export function DirectRoomCard({
 }: DirectRoomCardProps) {
   const dict = getDictionary(lang);
   const isZh = lang === 'zh';
+  const { formatFromCny, currency } = useCurrency();
   const [activeImageIdx, setActiveImageIdx] = useState(0);
 
   const images = room.gallery && room.gallery.length > 0 ? room.gallery : [room.coverImage];
@@ -187,18 +189,25 @@ export function DirectRoomCard({
 
           <div className="flex items-baseline justify-start sm:justify-end lg:justify-end gap-1.5">
             <span className="text-xs text-neutral-400 line-through font-mono">
-              ¥{Math.round((room.original_ota_total || room.avg_nightly_price * 1.05) / (room.nights || 1))}
+              {formatFromCny(Math.round((room.original_ota_total || room.avg_nightly_price * 1.05) / (room.nights || 1)))}
             </span>
             <span className="font-serif text-2xl sm:text-3xl font-bold text-amber-950">
-              ¥{room.avg_nightly_price}
+              {formatFromCny(room.avg_nightly_price)}
             </span>
             <span className="text-xs text-amber-800">{dict.retreats.perNight}</span>
           </div>
 
+          {/* Show CNY reference if viewing in foreign currency (USD, EUR, GBP, HKD) */}
+          {currency !== 'CNY' && (
+            <div className="text-[10px] text-neutral-400 font-mono -mt-1">
+              {isZh ? `(约合 ¥${room.avg_nightly_price} CNY)` : `(approx. ¥${room.avg_nightly_price} CNY)`}
+            </div>
+          )}
+
           {/* Savings Badge */}
           {room.direct_savings > 0 && (
             <div className="text-[11px] text-emerald-700 font-mono font-medium">
-              {isZh ? `比OTA立省 ¥${room.direct_savings}` : `Save ¥${room.direct_savings}`}
+              {isZh ? `比OTA立省 ${formatFromCny(room.direct_savings)}` : `Save ${formatFromCny(room.direct_savings)}`}
             </div>
           )}
 
@@ -206,7 +215,14 @@ export function DirectRoomCard({
           {isDateSelected && room.nights > 0 && (
             <div className="pt-2 border-t border-amber-100 text-xs text-neutral-600">
               <span className="text-neutral-500">{room.nights}晚总额: </span>
-              <span className="font-mono font-bold text-amber-950 text-sm">¥{room.total_amount}</span>
+              <span className="font-mono font-bold text-amber-950 text-sm">
+                {formatFromCny(room.total_amount)}
+              </span>
+              {currency !== 'CNY' && (
+                <span className="text-[10px] text-neutral-400 block font-mono">
+                  (约 ¥{room.total_amount} CNY)
+                </span>
+              )}
             </div>
           )}
         </div>
