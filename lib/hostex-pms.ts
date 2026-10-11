@@ -201,12 +201,18 @@ export async function createHostexReservation(booking: DirectBookingPayload): Pr
     });
 
     const resData = resp?.data || {};
-    const reservationCode = resData.reservation_code || resData.stay_code || 'HOSTEX-AUTO';
+    const reservationObj = resData.reservation || resData;
+    const reservationCode =
+      reservationObj.reservation_code ||
+      reservationObj.stay_code ||
+      resData.reservation_code ||
+      'HOSTEX-AUTO';
+    const stayCode = reservationObj.stay_code || resData.stay_code || reservationCode;
 
     return {
       success: true,
       reservation_code: reservationCode,
-      stay_code: resData.stay_code,
+      stay_code: stayCode,
       property_id: booking.property_id,
       raw: resData,
     };
@@ -230,14 +236,21 @@ export async function cancelHostexReservation(
 ): Promise<{ success: boolean; error_msg?: string; raw?: any }> {
   try {
     const orderPrefix = orderId ? `官网订单号: ${orderId} | ` : '';
-    const payload = {
-      status: 'cancelled',
-      remarks: `【YOJQI官网退订】${orderPrefix}${cancelReason} (于 ${new Date().toISOString().replace('T', ' ').slice(0, 19)} 触发全网自动开房恢复库存)`,
-    };
+    const remarks = `【YOJQI官网退订】${orderPrefix}${cancelReason} (于 ${new Date().toISOString().replace('T', ' ').slice(0, 19)} 触发全网自动开房恢复库存)`;
 
+    // 1. Update remarks in Hostex
+    try {
+      await hostexRequest(`/reservations/${reservationCode}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ remarks, status: 'cancelled' }),
+      });
+    } catch (patchErr) {
+      console.warn(`[cancelHostexReservation PATCH Warning]:`, patchErr);
+    }
+
+    // 2. Trigger native cancellation in Hostex OpenAPI (DELETE /reservations/:code)
     const resp = await hostexRequest(`/reservations/${reservationCode}`, {
-      method: 'PATCH',
-      body: JSON.stringify(payload),
+      method: 'DELETE',
     });
 
     return {
