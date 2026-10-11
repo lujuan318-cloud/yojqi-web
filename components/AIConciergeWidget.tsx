@@ -20,7 +20,7 @@ export function AIConciergeWidget({ lang }: AIConciergeWidgetProps) {
   const [loading, setLoading] = useState(false);
 
   const initialGreeting = isZh
-    ? '您好，贵宾！我是白虹·两江汇全江景高空民宿的宿务管家。关于房型视野、无人机天幕观礼、工夫茶礼遇或重庆山城交通，请随时垂询。'
+    ? '您好，贵宾！我是百弘江景民宿的宿务管家。关于房型视野、无人机天幕观礼、工夫茶礼遇或重庆山城交通，请随时垂询。'
     : 'Greetings! I am your resident VIP Concierge for Baihong River View Retreat in Chongqing. Feel free to ask about riverfront views, drone light shows, tea rituals, or local itinerary recommendations.';
 
   const [messages, setMessages] = useState<Message[]>([
@@ -129,7 +129,7 @@ export function AIConciergeWidget({ lang }: AIConciergeWidgetProps) {
               </div>
               <div>
                 <h4 className="font-serif text-sm font-bold text-amber-200">
-                  {isZh ? '白虹·宿务东方智能管家' : 'Baihong VIP Concierge'}
+                  {isZh ? '百弘江景民宿 · 宿务智能管家' : 'Baihong VIP Concierge'}
                 </h4>
                 <p className="text-[10px] text-neutral-400 font-mono">
                   {isZh ? '基于 OpenAI 与宿务知识库' : 'Powered by OpenAI Concierge'}

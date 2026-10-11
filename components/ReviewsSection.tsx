@@ -33,10 +33,10 @@ export function ReviewsSection({ lang }: ReviewsSectionProps) {
     {
       author: 'Marcus & Linnea',
       location: 'Singapore',
-      verifiedType: isZh ? '已验证住客 · 白宏两江无人机全景套房' : 'Verified Stay · Baihong Drone Balcony Suite',
+      verifiedType: isZh ? '已验证住客 · 百弘两江无人机全景套房' : 'Verified Stay · Baihong Drone Balcony Suite',
       rating: 5,
       date: '2026-09-22',
-      textZh: '在来重庆之前听说南滨路看无人机人山人海根本走不动路。我们预定了白宏的高空套房，真的太惊艳了！晚上八点半，坐在私属大露台上泡着高山茶，数千架无人机就在我们平视的夜空变换编队，完全不用下楼人挤人，终生难忘。',
+      textZh: '在来重庆之前听说南滨路看无人机人山人海根本走不动路。我们预定了百弘的高空套房，真的太惊艳了！晚上八点半，坐在私属大露台上泡着高山茶，数千架无人机就在我们平视的夜空变换编队，完全不用下楼人挤人，终生难忘。',
       textEn: 'Skipping the 50,000+ crowd on the bridge to watch thousands of drones right from our private 270° balcony with hot Kung Fu tea was the highlight of our China journey. World-class hospitality.',
     },
   ];

@@ -17,8 +17,8 @@ export async function generateMetadata({
 
   return {
     title: isZh
-      ? '重庆住宿 · 高空全江景宿集直订 | YOJQI 官方直营'
-      : 'YOJQI Chongqing Stays | High-Altitude Direct Booking Channel',
+      ? '百弘江景民宿 · 高空全江景宿集直订 | YOJQI 官方直营'
+      : 'Baihong River View Retreat | High-Altitude Direct Booking Channel',
     description: isZh
       ? '居于两江之上，静卧山城之巅。官方房态实时保障，官网直订优享 95 折与专属工夫迎宾茶礼。'
       : 'Stay above the rivers of Chongqing. Sleep quietly. Experience the city differently. Direct booking with 5% privilege.',
@@ -82,7 +82,7 @@ export default async function RetreatsPage({
             </h3>
             <p className="text-xs sm:text-sm text-yojqi-bodyStrong leading-relaxed">
               {isZh
-                ? '重庆作为立体魔幻山城，节日期间南滨路与朝天门交通极为拥堵。数十万游客在夜风与嘈杂喇叭声中推挤，极度消耗身心元气。选择白虹高空机位民宿，将万人喧嚣隔绝于双层静音玻璃之外，在私密露台上以最体面的姿态俯瞰天地流光。'
+                ? '重庆作为立体魔幻山城，节日期间南滨路与朝天门交通极为拥堵。数十万游客在夜风与嘈杂喇叭声中推挤，极度消耗身心元气。选择百弘江景民宿，将万人喧嚣隔绝于双层静音玻璃之外，在私密露台上以最体面的姿态俯瞰天地流光。'
                 : 'Chongqing’s vertical topography concentrates massive holiday crowds into bottleneck river quays. By securing a high-altitude sanctuary at Baihong, you transform a hectic tourist chore into an intimate, restorative sensory ritual.'}
             </p>
           </div>

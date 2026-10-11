@@ -199,7 +199,7 @@ export function DiscoverClientSections({ lang }: DiscoverClientSectionsProps) {
                     <span className="text-[10px] font-mono text-neutral-400">Chongqing · 两江交汇</span>
                   </div>
                   <h4 className="font-serif text-lg font-semibold text-yojqi-inkHeading">
-                    {isZh ? '白宏江景无人机机位公寓' : 'Baihong Drone Show Balcony Residence'}
+                    {isZh ? '百弘江景民宿 · 无人机机位套房' : 'Baihong Drone Show Balcony Residence'}
                   </h4>
                   <p className="text-xs text-yojqi-body line-clamp-1 mt-1">
                     {isZh

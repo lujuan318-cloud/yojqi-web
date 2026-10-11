@@ -271,7 +271,7 @@ export default function TodayPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Card 1: Experience */}
           <Link
-            href={`/${lang}/retreats/baihong-drone-show-apartment`}
+            href={`/${lang}/retreats`}
             className="group p-5 rounded-2xl bg-white border border-yojqi-border hover:shadow-cardHover transition-all flex flex-col justify-between"
           >
             <div className="space-y-2">
@@ -279,7 +279,7 @@ export default function TodayPage() {
                 {isZh ? '居停体验推荐' : 'Sanctuary Experience'}
               </span>
               <h4 className="font-serif text-lg font-medium text-yojqi-inkHeading group-hover:text-yojqi-bronze transition-colors">
-                {isZh ? '白宏高空江景公寓 · 听水夜读' : 'Baihong High-Altitude Riverfront Balcony'}
+                {isZh ? '百弘江景民宿 · 听水夜读' : 'Baihong High-Altitude Riverfront Balcony'}
               </h4>
               <p className="text-xs text-yojqi-body line-clamp-2">
                 {isZh

@@ -13,7 +13,7 @@ function BookingSuccessContent({ lang }: { lang: Language }) {
   const { formatFromCny, currency } = useCurrency();
 
   const reservationCode = searchParams.get('code') || 'YQ-STAY-CONFIRMED';
-  const roomName = searchParams.get('room') || (isZh ? '白虹·两江汇全江景高空民宿' : 'Baihong River View Panoramic Retreat');
+  const roomName = searchParams.get('room') || (isZh ? '百弘江景民宿' : 'Baihong River View Panoramic Retreat');
   const checkIn = searchParams.get('in') || new Date().toISOString().split('T')[0];
   const checkOut = searchParams.get('out') || new Date().toISOString().split('T')[0];
   const nights = searchParams.get('nights') || '1';
@@ -143,7 +143,7 @@ function BookingSuccessContent({ lang }: { lang: Language }) {
           </div>
           <p className="text-neutral-700 leading-relaxed">
             {isZh
-              ? '重庆市渝中区解放碑/洪崖洞核心商圈（近千厮门大桥、轻轨轨道交通站步行3分钟）。楼下有专用停车场，打车可直接导航至“白虹民宿两江汇”下车。'
+              ? '重庆市渝中区解放碑/洪崖洞核心商圈（近千厮门大桥、轻轨轨道交通站步行3分钟）。楼下有专用停车场，打车可直接导航至“百弘江景民宿”下车。'
               : 'Yuzhong Peninsula, Jiefangbei / Hongyadong CBD, Chongqing (3-minute walk to metro station, overlooking Qiansimen Bridge). Search "Baihong Retreat" on taxi navigation.'}
           </p>
         </div>

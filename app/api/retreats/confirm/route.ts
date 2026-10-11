@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
     }
 
     const room = getRoomByKey(room_key);
-    const roomNameZh = room ? room.nameZh : '白虹两江汇高空民宿';
+    const roomNameZh = room ? room.nameZh : '百弘江景民宿';
     const roomNameEn = room ? room.nameEn : 'Baihong River View Retreat';
     const candidatePropertyId = Number(property_id) || (room ? room.default_property_id : 12512775);
 

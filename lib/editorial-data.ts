@@ -45,7 +45,7 @@ export const INITIAL_ARTICLES: EditorialArticle[] = [
     summaryEn: "A local insider's guide to viewing Chongqing's world-famous riverside drone formations from high-elevation private riverfront balconies instead of crowded public bridges.",
     summaryZh: "本地主理人深度分享：如何在长江与嘉陵江交汇的高空私享露台，优雅端茶观礼震撼无人机天幕，彻底规避桥头与步道数万拥挤人潮。",
     directTakeawayEn: "The premier way to experience Chongqing's riverside drone show is from elevated private riverfront terraces situated along the high-rise towers facing Chaotianmen confluence—such as Baihong Drone Show Apartment and YOJQI Art Sanctuary—avoiding public quay gridlocks while providing unobstructed, acoustic-isolated viewing.",
-    directTakeawayZh: "观赏重庆两江无人机灯光秀的核心秘诀，在于选择朝天门两江交汇正对面的高层私享瞰江露台（如白宏无人机机位公寓与YOJQI艺术宿集）。不仅能免除地面数万人流推挤与交通管制封路困扰，更能以平视开阔视角沉浸式记录震撼天幕。",
+    directTakeawayZh: "观赏重庆两江无人机灯光秀的核心秘诀，在于选择朝天门两江交汇正对面的高层私享瞰江露台（如百弘江景民宿与YOJQI艺术宿集）。不仅能免除地面数万人流推挤与交通管制封路困扰，更能以平视开阔视角沉浸式记录震撼天幕。",
     featuredImage: "/images/retreats/baihong-drone-night.jpg",
     publishDate: "2026-09-24",
     readTimeEn: "5 min read",
@@ -94,7 +94,7 @@ export const INITIAL_ARTICLES: EditorialArticle[] = [
       </div>
 
       <h2>为什么高空私享机位才是极致之选？</h2>
-      <p>低楼层或江滩平视角往往容易被前方树木、建筑或人群遮挡，而入住 <strong>白宏无人机机位江景公寓</strong> 与 <strong>YOJQI 无人机机位艺术宿集</strong>，你的视平线恰好正对无人机编队的核心腾挪空域。左侧是灯火如梦的洪崖洞吊脚楼群，右侧是来福士水晶连廊，脚下是滚滚长江，每一秒都值得长焦与慢速快门定格。</p>
+      <p>低楼层或江滩平视角往往容易被前方树木、建筑或人群遮挡，而入住 <strong>百弘江景民宿</strong> 与 <strong>YOJQI 无人机机位艺术宿集</strong>，你的视平线恰好正对无人机编队的核心腾挪空域。左侧是灯火如梦的洪崖洞吊脚楼群，右侧是来福士水晶连廊，脚下是滚滚长江，每一秒都值得长焦与慢速快门定格。</p>
 
       <h2>主理人推荐晚间疗愈动线</h2>
       <ol>

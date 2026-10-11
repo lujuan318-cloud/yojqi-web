@@ -299,7 +299,7 @@ export async function notifyWeComCancellation(data: {
 
   const markdownContent = `### 🚨 【YOJQI 官网】收到直订退订与自动开房通报！
 > **百居易预订码**：<font color="warning">${data.reservation_code}</font>
-> **房型名称**：${data.room_name || '白虹江景宿集'}
+> **房型名称**：${data.room_name || '百弘江景民宿'}
 > **入离日期**：${data.check_in || '未知'} 至 ${data.check_out || '未知'}
 > **宾客姓名**：**${data.guest_name || '客人'}**
 > **联系电话**：${data.guest_phone || '未留'}
@@ -381,11 +381,11 @@ export async function askOpenAIConcierge(
 ): Promise<string> {
   if (!OPENAI_API_KEY) {
     return lang === 'zh'
-      ? '感谢您的垂询。我们是白虹·两江汇全江景高空民宿，位于重庆解放碑/洪崖洞核心商圈，拥有两江交汇全景露台与私享茶席。如需订房或咨询具体入住指引，您可直接在官网选定日期直订，或联系专属管家微信。'
+      ? '感谢您的垂询。我们是百弘江景民宿，位于重庆解放碑/洪崖洞核心商圈，拥有两江交汇全景露台与私享茶席。如需订房或咨询具体入住指引，您可直接在官网选定日期直订，或联系专属管家微信。'
       : 'Thank you for your inquiry. Baihong River View Retreat is located in Chongqing Jiefangbei/Hongyadong with panoramic river confluence views and kung fu tea terraces. Feel free to book directly on our website or reach out to our concierge team.';
   }
 
-  const systemPrompt = `You are the bilingual VIP Concierge for YOJQI / Baihong River View Retreat (白虹·两江汇全江景高空民宿) in Chongqing, China.
+  const systemPrompt = `You are the bilingual VIP Concierge for YOJQI / Baihong River View Retreat (百弘江景民宿) in Chongqing, China.
 Tone: Serene, elegant, warm, highly hospitable, cultured, and responsive.
 
 Key Property Facts:
@@ -430,7 +430,7 @@ Key Property Facts:
     }
 
     const data = await res.json();
-    return data?.choices?.[0]?.message?.content || '欢迎光临白虹民宿，请随时告知您的入住需求。';
+    return data?.choices?.[0]?.message?.content || '欢迎光临百弘江景民宿，请随时告知您的入住需求。';
   } catch (err: any) {
     console.warn('[askOpenAIConcierge error]:', err);
     return lang === 'zh'

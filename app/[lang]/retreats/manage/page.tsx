@@ -251,7 +251,7 @@ function ManageBookingContent({ lang }: { lang: Language }) {
                 </span>
               </div>
               <h3 className="font-serif text-xl sm:text-2xl font-bold text-yojqi-inkHeading mt-1">
-                {isZh ? '白虹·两江汇全江景高空宿集' : 'Baihong River View Panoramic Retreat'}
+                {isZh ? '百弘江景民宿' : 'Baihong River View Panoramic Retreat'}
               </h3>
             </div>
 
@@ -315,7 +315,7 @@ function ManageBookingContent({ lang }: { lang: Language }) {
             </div>
             <p className="text-neutral-700 leading-relaxed">
               {isZh
-                ? '重庆市渝中区解放碑/洪崖洞核心商圈（近千厮门大桥、轻轨轨道交通站步行3分钟）。楼下有专用停车场，打车可直接导航至“白虹民宿两江汇”下车。'
+                ? '重庆市渝中区解放碑/洪崖洞核心商圈（近千厮门大桥、轻轨轨道交通站步行3分钟）。楼下有专用停车场，打车可直接导航至“百弘江景民宿”下车。'
                 : 'Yuzhong Peninsula, Jiefangbei / Hongyadong CBD, Chongqing (3-minute walk to metro station, overlooking Qiansimen Bridge). Search "Baihong Retreat" on taxi navigation.'}
             </p>
           </div>

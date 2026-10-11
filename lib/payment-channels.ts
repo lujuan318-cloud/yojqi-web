@@ -82,7 +82,7 @@ export function getDirectAccountDetails(): DirectAccountDetails {
   return {
     alipay: {
       account: process.env.NEXT_PUBLIC_ALIPAY_ACCOUNT || 'yojqi@outlook.com',
-      payeeName: process.env.NEXT_PUBLIC_ALIPAY_NAME || '重庆白虹两江汇宿集',
+      payeeName: process.env.NEXT_PUBLIC_ALIPAY_NAME || '百弘江景民宿',
       qrImageUrl: process.env.NEXT_PUBLIC_ALIPAY_QR_IMAGE || '',
       instructionsZh: '请打开手机支付宝，转账至上述账号或扫描收款码，转账备注务必填写【预订参考码】。提交后系统将即刻为您锁定保留房源。',
       instructionsEn: 'Open Alipay, transfer to the payee account, and quote your Booking Reference Code in the remarks. Room will be guaranteed immediately upon submission.',

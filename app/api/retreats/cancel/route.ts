@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
       reservation_code,
       guest_name: existing?.guest_name || '官网客人',
       guest_phone: guest_phone || existing?.guest_phone || '',
-      room_name: existing?.listing_name || existing?.room_type_name || '白虹江景宿集',
+      room_name: existing?.listing_name || existing?.room_type_name || '百弘江景民宿',
       check_in: existing?.check_in_date || '',
       check_out: existing?.check_out_date || '',
       total_amount: existing?.rate_amount || existing?.received_amount || 0,

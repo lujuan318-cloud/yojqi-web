@@ -534,7 +534,7 @@ export const DICTIONARY = {
       inquirySubtitle: "提交您的入住意向，专属管家将在 15 分钟内与您确认档期与礼遇。",
       submitInquiry: "提交预约意向",
       inquirySuccess: "预约意向已提交！VIP专属管家将通过微信/电话尽快与您取得联系。",
-      directBookingTitle: "重庆住宿 · 高空宿集",
+      directBookingTitle: "百弘江景民宿 · 官方直订",
       directBookingPunchline: "居于两江之上，静卧山城之巅。以从容心境，重遇赛博重庆。",
       checkIn: "入住日期",
       checkOut: "退房日期",

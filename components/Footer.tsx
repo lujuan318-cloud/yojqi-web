@@ -72,7 +72,7 @@ export function Footer({ lang }: FooterProps) {
                     {lang === 'zh' ? '重庆高空无人机宿集' : 'Chongqing Skyline Suites'}
                   </h4>
                   <p className="text-xs text-yojqi-body">
-                    {lang === 'zh' ? '白宏江景公寓 & YOJQI艺术宿集' : 'Baihong & YOJQI Drone Show Balconies'}
+                    {lang === 'zh' ? '百弘江景民宿 & YOJQI艺术宿集' : 'Baihong & YOJQI Drone Show Balconies'}
                   </p>
                 </div>
               </div>

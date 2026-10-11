@@ -111,7 +111,7 @@ export default async function ExperiencesPage({
               {isZh ? '重庆高空无人机江景美宿' : 'Chongqing Drone Balcony Sanctuaries'}
             </span>
             <h2 className="font-serif text-2xl sm:text-3xl font-medium text-yojqi-inkHeading mt-1">
-              {isZh ? '白宏江景公寓 & YOJQI 天幕居所' : 'Baihong Residence & YOJQI Skyline Suites'}
+              {isZh ? '百弘江景民宿 & YOJQI 天幕居所' : 'Baihong Residence & YOJQI Skyline Suites'}
             </h2>
           </div>
           <Link
