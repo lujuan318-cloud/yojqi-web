@@ -37,9 +37,16 @@ export async function POST(req: NextRequest) {
     const roomNameEn = room ? room.nameEn : 'Baihong River View Retreat';
     const candidatePropertyId = Number(property_id) || (room ? room.default_property_id : 12512775);
 
-    // 1. Submit to Hostex OpenAPI v3
-    // custom_channel_id: 29 ("Booking Site" / YOJQI Direct)
+    // Generate YOJQI Official Order ID (e.g. YQ-20261011-8291)
+    const yojqiOrderId =
+      body.order_id ||
+      `YQ-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${Math.floor(1000 + Math.random() * 9000)}`;
+
+    // 1. Submit Manual / Booking Site Reservation directly to Hostex OpenAPI v3
+    // Creates a confirmed manual reservation landed onto candidatePropertyId
+    // custom_channel_id: 29 ("Booking Site" / YOJQI Direct 手工单)
     const hostexResult = await createHostexReservation({
+      order_id: yojqiOrderId,
       property_id: candidatePropertyId,
       room_key,
       room_name_cn: roomNameZh,
@@ -86,6 +93,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
+      order_id: yojqiOrderId,
       reservation_code: reservationCode,
       stay_code: hostexResult.stay_code || reservationCode,
       property_id: candidatePropertyId,

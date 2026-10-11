@@ -8,7 +8,7 @@ import {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { reservation_code, guest_phone, reason = '客人官网自主申请取消' } = body;
+    const { reservation_code, order_id, guest_phone, reason = '客人官网自主申请取消' } = body;
 
     if (!reservation_code) {
       return NextResponse.json(
@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 2. Call Hostex OpenAPI v3 to cancel the reservation & reopen rooms across OTAs
-    const cancelRes = await cancelHostexReservation(reservation_code, reason);
+    const cancelRes = await cancelHostexReservation(reservation_code, reason, order_id);
 
     if (!cancelRes.success) {
       return NextResponse.json(

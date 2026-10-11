@@ -34,6 +34,7 @@ export interface CalendarDay {
 }
 
 export interface DirectBookingPayload {
+  order_id?: string;
   property_id: number;
   room_key: string;
   room_name_cn: string;
@@ -173,12 +174,13 @@ export async function createHostexReservation(booking: DirectBookingPayload): Pr
     if (booking.payment_channel === 'alipay') incomeMethod = 1;
     else if (booking.payment_channel === 'paypal' || booking.payment_channel === 'wise') incomeMethod = 0;
 
+    const orderId = booking.order_id || `YQ-${Date.now().toString(36).toUpperCase()}`;
     const channelTag = booking.payment_channel?.toUpperCase() || 'DIRECT';
-    const refTag = booking.payment_reference ? ` | 参考号: ${booking.payment_reference}` : '';
+    const refTag = booking.payment_reference ? ` | 支付凭证: ${booking.payment_reference}` : '';
 
     const body = {
       property_id: Number(booking.property_id),
-      custom_channel_id: 29, // Channel: "Booking Site" / YOJQI Direct
+      custom_channel_id: 29, // Channel: "Booking Site" (YOJQI官网直订手工单)
       check_in_date: booking.check_in_date,
       check_out_date: booking.check_out_date,
       guest_name: booking.guest_name,
@@ -190,7 +192,7 @@ export async function createHostexReservation(booking: DirectBookingPayload): Pr
       received_amount: Number(booking.total_amount),
       income_method_id: incomeMethod,
       number_of_guests: booking.number_of_guests || 2,
-      remarks: `[YOJQI官网直订] 支付通道: ${channelTag}${refTag} | 预计到店: ${booking.estimated_arrival_time || '待定'} | 需求: ${booking.special_requests || '无'}`,
+      remarks: `【YOJQI官网直订】官网订单号: ${orderId} | 房源: ${booking.room_name_cn} | 支付方式: ${channelTag}${refTag} | 预计到店: ${booking.estimated_arrival_time || '15:00'}${booking.special_requests ? ` | 备注需求: ${booking.special_requests}` : ''}`,
     };
 
     const resp = await hostexRequest('/reservations', {
@@ -223,12 +225,14 @@ export async function createHostexReservation(booking: DirectBookingPayload): Pr
  */
 export async function cancelHostexReservation(
   reservationCode: string,
-  cancelReason: string = '客人官网自助退订'
+  cancelReason: string = '客人官网自助退订',
+  orderId?: string
 ): Promise<{ success: boolean; error_msg?: string; raw?: any }> {
   try {
+    const orderPrefix = orderId ? `官网订单号: ${orderId} | ` : '';
     const payload = {
       status: 'cancelled',
-      remarks: `[YOJQI官网退订] ${cancelReason} (于 ${new Date().toISOString().replace('T', ' ').slice(0, 19)} 触发全网自动开房)`,
+      remarks: `【YOJQI官网退订】${orderPrefix}${cancelReason} (于 ${new Date().toISOString().replace('T', ' ').slice(0, 19)} 触发全网自动开房恢复库存)`,
     };
 
     const resp = await hostexRequest(`/reservations/${reservationCode}`, {
