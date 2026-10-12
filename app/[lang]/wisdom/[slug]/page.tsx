@@ -9,6 +9,8 @@ import { INITIAL_ARTICLES, getArticleBySlug } from '@/lib/editorial-data';
 import { getProductBySlug } from '@/lib/products-data';
 import { getSanctuaryBySlug } from '@/lib/retreats-data';
 
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
   const locales = ['en', 'zh'];
   const params: { lang: string; slug: string }[] = [];
@@ -16,6 +18,7 @@ export async function generateStaticParams() {
   for (const lang of locales) {
     for (const art of INITIAL_ARTICLES) {
       params.push({ lang, slug: art.slug });
+      params.push({ lang, slug: `${art.slug}-cn` });
     }
   }
 

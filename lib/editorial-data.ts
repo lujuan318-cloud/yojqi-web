@@ -167,11 +167,90 @@ export const INITIAL_ARTICLES: EditorialArticle[] = [
       <p>不同于工业合成香精对呼吸道的刺激，YOJQI 采用天然树脂与草本合香。龙涎与沉香中的活性分子温和刺激嗅球中枢，自然引导副交感神经复苏，带来实实在在的平稳感。</p>
     `,
     relatedProductSlug: "wrist-anchor-ambergris-ease-bracelet"
+  },
+
+  // --- TRACK 1: October 12, 2026 Daily Route Article ---
+  {
+    id: "art-protection-route-20261012",
+    slug: "wrist-anchor-ambergris-ease-bracelet-first-protection-route-20261012",
+    track: "product_wisdom",
+    titleEn: "Why October 12 Starts with Ambergris Bracelet",
+    titleZh: "为什么 2026 年 10 月 12 日 先从 Ambergris Bracelet 这条保护路线开始",
+    summaryEn: "A October 12 YOJQI route article explaining why Ambergris Bracelet is today's clearest first protection route based on the latest operating signal.",
+    summaryZh: "YOJQI 2026 年 10 月 12 日 销售路线说明：根据当天最新信号，为什么今天应该先承接 Ambergris Bracelet 这条保护路线。",
+    directTakeawayEn: "Bracelet-first route for lower-friction daily wear, gifting clarity, and a private sensory boundary. When the current signal already favors this route, the cleaner move is to strengthen the handoff around it instead of forcing the visitor back into a less legible entry path.",
+    directTakeawayZh: "手绳优先路线具备低摩擦日常佩戴、心意清晰与私密感官边界三大特质。既然当前信号已经更明确地指向这条路线，就应该把入口承诺、产品页承接和后续内容都围绕它收紧。",
+    featuredImage: "/images/editorial/2026-10-12-ambergris-ease-bracelet-daily-route-featured-1200x675.jpg",
+    publishDate: "2026-10-12",
+    readTimeEn: "4 min read",
+    readTimeZh: "4 分钟阅读",
+    authorEn: "YOJQI Daily Route Studio",
+    authorZh: "YOJQI 每日路线工坊",
+    tagsEn: ["Ambergris Bracelet", "YOJQI Protection", "Daily Route", "Sensory Grounding"],
+    tagsZh: ["龙涎香手绳", "YOJQI Protection", "每日保护路线", "感官锚点"],
+    fourStepPracticeEn: {
+      step1: { title: "Fasten Wrist Anchor", desc: "Fasten the Ambergris Ease Bracelet on your non-dominant wrist each morning before screen exposure." },
+      step2: { title: "Touch Porous Bead", desc: "Whenever tension spikes, touch the central porous ceramic bead with thumb and index finger for 3 deep breaths." },
+      step3: { title: "Inhale Botanical Warmth", desc: "Bring the wrist to the nose to inhale the gentle natural ambergris botanical warmth." },
+      step4: { title: "Anchor the Boundary", desc: "Let the subtle tactile scent create a personal boundary between noisy external inputs and inner calm." },
+    },
+    fourStepPracticeZh: {
+      step1: { title: "晨间佩戴", desc: "每日清晨查看工作讯息前，先将龙涎舒缓定心手绳佩戴于非利手腕间。" },
+      step2: { title: "触感定心", desc: "一旦感知压力或情绪紧绷，用拇指与食指捏揉中央微孔香珠，深长呼吸3次。" },
+      step3: { title: "深嗅树脂", desc: "将手腕轻移至鼻翼下方，深嗅天然龙涎与草本植物所散发出的温润幽香。" },
+      step4: { title: "重构边界", desc: "借由贴肤香气在喧嚣繁复的外界纷扰与内心宁静之间建立私密感官屏障。" },
+    },
+    contentHtmlEn: `
+      <p>On October 12, YOJQI should keep one clear first click instead of inheriting yesterday's assumption. The latest sales route now points to <a href="/en/product/wrist-anchor-ambergris-ease-bracelet" class="text-yojqi-bronze underline font-medium">Wrist Anchor - Ambergris Ease Bracelet</a>, while the broader operating goal is still the same: move real visitors from first click into deeper product attention and then into checkout with less hesitation.</p>
+      
+      <div class="yojqi-takeaway">
+        <strong>Direct Takeaway:</strong> External product interest has started but cart conversion needs focused support. The route keeps the clearest first-order SKU while tightening sensory grounding and product-page persuasion. It is about making the first product decision easier to understand, easier to imagine in daily life, and easier to continue after the first page view.
+      </div>
+
+      <h2>Why Ambergris Bracelet Goes First Today</h2>
+      <p>Bracelet-first route for lower-friction daily wear, gifting clarity, and a private sensory boundary. When the current signal already favors this route, the cleaner move is to strengthen the handoff around it instead of forcing the visitor back into a less legible entry path.</p>
+      <p>So October 12 is a day for one visible promise, one main landing page, and one CTA that matches the clearest operating signal instead of splitting attention too early.</p>
+
+      <h2>Today's Route Links</h2>
+      <ul>
+        <li><strong>Ambergris Bracelet:</strong> lowest friction first order <a href="/en/product/wrist-anchor-ambergris-ease-bracelet" class="text-yojqi-bronze underline">Open route</a></li>
+        <li><strong>Ambergris Pendant:</strong> softer pendant route <a href="/en/product/ambergris-ease-pendant" class="text-yojqi-bronze underline">Open route</a></li>
+        <li><strong>Kinetic Pendant:</strong> stronger visible cue <a href="/en/product/dunhuang-feitian-protection-necklace" class="text-yojqi-bronze underline">Open route</a></li>
+      </ul>
+
+      <h2>How the Other Protection Routes Still Help</h2>
+      <p>Ambergris Pendant and Kinetic Pendant still matter as comparison and handoff routes. But today's first click should stay concentrated on Ambergris Bracelet so the entry promise, product page, and follow-up content do not drift apart.</p>
+      <p>The operating goal is simple: let the visitor start with the route that already feels most legible, then reduce trust, cart, and checkout hesitation close to the product page instead of widening the story too early.</p>
+    `,
+    contentHtmlZh: `
+      <p>2026 年 10 月 12 日，YOJQI 今天应跟随最新路线信号，把主入口集中到 <a href="/zh/product/wrist-anchor-ambergris-ease-bracelet" class="text-yojqi-bronze underline font-medium">Wrist Anchor - Ambergris Ease Bracelet（龙涎舒缓定心手绳）</a>，而不是继续沿用昨天的默认主推。</p>
+      
+      <div class="yojqi-takeaway">
+        <strong>核心运营提要：</strong> 外部选品意向已经启动，加购与转化需要清晰承接。今天要做的是让第一步更容易理解，让访客更顺畅地从第一跳进入产品深访，再进入加购和结账。
+      </div>
+
+      <h2>为什么今天先推 Ambergris Bracelet</h2>
+      <p>手绳优先路线具备低摩擦日常佩戴、心意清晰与私密感官边界三大特质。既然当前信号已经更明确地指向这条路线，就应该把入口承诺、产品页承接和后续内容都围绕它收紧。</p>
+      <p>2026 年 10 月 12 日更适合保持单一主承诺、单一主落地页和单一主 CTA，而不是过早分散注意力。</p>
+
+      <h2>今日路线入口</h2>
+      <ul>
+        <li><strong>Ambergris Bracelet（龙涎手绳）：</strong> 最低摩擦首选入口 <a href="/zh/product/wrist-anchor-ambergris-ease-bracelet" class="text-yojqi-bronze underline">打开路线</a></li>
+        <li><strong>Ambergris Pendant（龙涎项坠）：</strong> 柔和贴身项坠路线 <a href="/zh/product/ambergris-ease-pendant" class="text-yojqi-bronze underline">打开路线</a></li>
+        <li><strong>Kinetic Pendant（飞天动势吊坠）：</strong> 具象视觉守护锚点 <a href="/zh/product/dunhuang-feitian-protection-necklace" class="text-yojqi-bronze underline">打开路线</a></li>
+      </ul>
+
+      <h2>其他保护路线今天如何配合</h2>
+      <p>Ambergris Pendant 和 Kinetic Pendant 仍然有各自的承接价值，但今天的第一跳应该继续集中在 Ambergris Bracelet 上，避免入口承诺、产品页表达和后续内容再次脱节。</p>
+      <p>今天的运营目标很明确：先让访客走进最容易理解的一条路线，再把信任、加购和结算之间的阻力尽量压缩在产品页附近解决。</p>
+    `,
+    relatedProductSlug: "wrist-anchor-ambergris-ease-bracelet"
   }
 ];
 
 export function getArticleBySlug(slug: string): EditorialArticle | undefined {
-  return INITIAL_ARTICLES.find(a => a.slug === slug);
+  const normalizedSlug = slug.endsWith('-cn') ? slug.slice(0, -3) : slug;
+  return INITIAL_ARTICLES.find(a => a.slug === slug || a.slug === normalizedSlug);
 }
 
 export function getArticlesByTrack(track: 'product_wisdom' | 'chongqing_travel' | 'all'): EditorialArticle[] {
