@@ -245,7 +245,7 @@ export const INITIAL_ARTICLES: EditorialArticle[] = [
       <p>今天的运营目标很明确：先让访客走进最容易理解的一条路线，再把信任、加购和结算之间的阻力尽量压缩在产品页附近解决。</p>
     `,
     relatedProductSlug: "wrist-anchor-ambergris-ease-bracelet"
-  }
+  },
   // --- TRACK 1: 2026-10-13 Daily Route Article ---
   {
     id: "art-protection-route-20261013",
