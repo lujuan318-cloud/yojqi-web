@@ -6,6 +6,7 @@ import { CurrencyProvider } from '@/context/CurrencyContext';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { FloatingConcierge } from '@/components/FloatingConcierge';
+import { AnalyticsTracker } from '@/components/AnalyticsTracker';
 
 export async function generateStaticParams() {
   return [{ lang: 'en' }, { lang: 'zh' }];
@@ -33,6 +34,7 @@ export default async function LangLayout({
           <main className="flex-1">{children}</main>
           <Footer lang={lang} />
           <FloatingConcierge lang={lang} />
+          <AnalyticsTracker />
         </div>
       </CartProvider>
     </CurrencyProvider>

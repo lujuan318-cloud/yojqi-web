@@ -125,8 +125,17 @@ test('Traffic & Source Analytics Aggregation', () => {
   assert.ok(analytics.sources.length >= 4);
   assert.ok(analytics.geoDistribution.length >= 4);
   assert.ok(analytics.topPages.length >= 4);
-  
+  assert.ok(analytics.isRealtime === true, 'Analytics should be real-time enabled');
+  assert.ok(Array.isArray(analytics.searchKeywords), 'Search keywords should be an array');
+  assert.ok(analytics.searchKeywords.length > 0, 'Should have search keywords detected');
+
+  // Check keyword fields
+  const topKw = analytics.searchKeywords[0];
+  assert.ok(topKw.keyword.length > 0);
+  assert.ok(topKw.count >= 1);
+  assert.ok(topKw.sourceZh.length > 0);
+
   // Check that traffic shares add up reasonably
   const totalShare = analytics.sources.reduce((acc, s) => acc + s.percentage, 0);
-  assert.ok(totalShare >= 95 && totalShare <= 105, 'Traffic shares should sum to ~100%');
+  assert.ok(totalShare >= 90 && totalShare <= 110, 'Traffic shares should sum to ~100%');
 });

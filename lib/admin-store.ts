@@ -9,6 +9,7 @@ import {
   INITIAL_ANALYTICS,
   AdminPermission,
 } from './admin-data';
+import { getRealtimeAnalyticsSummary, EnhancedAnalyticsSummary } from './analytics-tracker';
 
 // In-Memory Global cache for development / API handlers
 let globalAdminUsers: AdminUser[] = [...INITIAL_ADMIN_USERS];
@@ -199,8 +200,8 @@ export function addInquiry(newInquiry: Omit<CustomerInquiryRecord, 'id' | 'creat
 }
 
 // -----------------------------------------------------------------------------
-// Analytics
+// Analytics (Live Real-Time Engine)
 // -----------------------------------------------------------------------------
-export function getAnalyticsSummary(): AnalyticsSummary {
-  return { ...globalAnalytics };
+export function getAnalyticsSummary(): EnhancedAnalyticsSummary {
+  return getRealtimeAnalyticsSummary();
 }

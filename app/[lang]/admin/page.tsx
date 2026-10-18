@@ -26,6 +26,11 @@ import {
   Lock,
   UserCheck,
   Send,
+  RefreshCw,
+  Radio,
+  Activity,
+  Eye,
+  Zap,
 } from 'lucide-react';
 import { Language } from '@/lib/i18n';
 import {
@@ -39,6 +44,7 @@ import {
   INITIAL_INQUIRIES,
   INITIAL_ANALYTICS,
 } from '@/lib/admin-data';
+import { EnhancedAnalyticsSummary } from '@/lib/analytics-tracker';
 import { useCurrency } from '@/context/CurrencyContext';
 
 interface AdminPageProps {
@@ -59,7 +65,9 @@ export default function AdminPage({ params }: AdminPageProps) {
   // Data states
   const [orders, setOrders] = useState<OrderRecord[]>(INITIAL_ORDERS);
   const [inquiries, setInquiries] = useState<CustomerInquiryRecord[]>(INITIAL_INQUIRIES);
-  const [analytics, setAnalytics] = useState<AnalyticsSummary>(INITIAL_ANALYTICS);
+  const [analytics, setAnalytics] = useState<EnhancedAnalyticsSummary | any>(INITIAL_ANALYTICS);
+  const [isAnalyticsLoading, setIsAnalyticsLoading] = useState(false);
+  const [analyticsLastFetched, setAnalyticsLastFetched] = useState<string>('');
   const [adminUsers, setAdminUsers] = useState<AdminUser[]>(INITIAL_ADMIN_USERS);
 
   // Search & Filter states
@@ -86,11 +94,35 @@ export default function AdminPage({ params }: AdminPageProps) {
 
   const { formatPrice } = useCurrency();
 
+  const loadRealtimeAnalytics = async () => {
+    try {
+      setIsAnalyticsLoading(true);
+      const res = await fetch('/api/admin/analytics');
+      const data = await res.json();
+      if (data.success && data.analytics) {
+        setAnalytics(data.analytics);
+        setAnalyticsLastFetched(new Date().toLocaleTimeString());
+      }
+    } catch (err) {
+      console.error('Failed to load realtime analytics', err);
+    } finally {
+      setIsAnalyticsLoading(false);
+    }
+  };
+
   useEffect(() => {
     params.then((p) => setLang(p.lang as Language));
     // Auto login as super admin initially for demonstration convenience
     setCurrentUser(INITIAL_ADMIN_USERS[0]);
   }, [params]);
+
+  useEffect(() => {
+    if (activeTab === 'analytics') {
+      loadRealtimeAnalytics();
+      const timer = setInterval(loadRealtimeAnalytics, 20000);
+      return () => clearInterval(timer);
+    }
+  }, [activeTab]);
 
   const isZh = lang === 'zh';
 
@@ -655,6 +687,41 @@ export default function AdminPage({ params }: AdminPageProps) {
             {/* TAB 3: Analytics & Source Insights */}
             {activeTab === 'analytics' && hasPerm('analytics:view') && (
               <div className="space-y-6">
+                {/* Real-time Status Header */}
+                <div className="p-4 bg-white rounded-2xl border border-yojqi-border shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="relative flex items-center justify-center w-3 h-3">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-serif text-base font-bold text-yojqi-ink">全站实时流量监控与搜索引擎溯源</h3>
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-mono font-medium border border-emerald-200">
+                          LIVE 实时上报中
+                        </span>
+                      </div>
+                      <p className="text-xs text-neutral-500">
+                        覆盖全站独立访客 (UV)、页面浏览 (PV)、百度/谷歌搜索词解析、小红书/微信引流与终端表现
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 self-end sm:self-auto font-mono text-xs text-neutral-500">
+                    <span className="hidden md:inline text-[11px]">
+                      数据更新于: {analyticsLastFetched || analytics.lastUpdated || '刚刚'}
+                    </span>
+                    <button
+                      onClick={loadRealtimeAnalytics}
+                      disabled={isAnalyticsLoading}
+                      className="px-3 py-1.5 rounded-xl bg-neutral-50 hover:bg-neutral-100 border border-neutral-200 text-xs font-medium text-yojqi-ink flex items-center gap-1.5 transition-colors disabled:opacity-50"
+                    >
+                      <RefreshCw className={`w-3.5 h-3.5 ${isAnalyticsLoading ? 'animate-spin text-yojqi-bronze' : ''}`} />
+                      <span>{isAnalyticsLoading ? '同步中...' : '立即刷新'}</span>
+                    </button>
+                  </div>
+                </div>
+
                 {/* 4 KPI Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   <div className="p-5 bg-white rounded-2xl border border-yojqi-border shadow-xs space-y-1">
@@ -663,7 +730,7 @@ export default function AdminPage({ params }: AdminPageProps) {
                       {analytics.totalPageViews.toLocaleString()}
                     </h3>
                     <span className="text-[11px] font-mono text-emerald-600 flex items-center gap-1">
-                      <TrendingUp className="w-3.5 h-3.5" /> 今日 +{analytics.todayPageViews} 次
+                      <TrendingUp className="w-3.5 h-3.5" /> 今日实时 +{analytics.todayPageViews} 次
                     </span>
                   </div>
 
@@ -673,7 +740,7 @@ export default function AdminPage({ params }: AdminPageProps) {
                       {analytics.totalUniqueVisitors.toLocaleString()}
                     </h3>
                     <span className="text-[11px] font-mono text-emerald-600 flex items-center gap-1">
-                      <TrendingUp className="w-3.5 h-3.5" /> 今日 +{analytics.todayUniqueVisitors} 人
+                      <TrendingUp className="w-3.5 h-3.5" /> 今日独立 +{analytics.todayUniqueVisitors} 人
                     </span>
                   </div>
 
@@ -690,6 +757,82 @@ export default function AdminPage({ params }: AdminPageProps) {
                   </div>
                 </div>
 
+                {/* NEW: Search Engine Keywords Ingestion Table */}
+                <div className="bg-white p-6 rounded-2xl border border-yojqi-border shadow-xs space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-neutral-100 pb-3">
+                    <div>
+                      <h4 className="font-serif text-base font-bold text-yojqi-ink flex items-center gap-2">
+                        <Search className="w-4 h-4 text-yojqi-bronze" />
+                        <span>搜索引擎与进站关键词排行 (Search Keywords)</span>
+                      </h4>
+                      <p className="text-xs text-neutral-500 mt-0.5">
+                        自动解析百度 (Baidu)、谷歌 (Google)、必应 (Bing)、搜狗及外部推广带入的实际搜索检索词
+                      </p>
+                    </div>
+                    <span className="text-xs font-mono text-neutral-400 self-end sm:self-auto">
+                      共捕获 {analytics.searchKeywords?.length || 0} 个有效关键词
+                    </span>
+                  </div>
+
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left text-xs">
+                      <thead>
+                        <tr className="border-b border-neutral-100 text-neutral-400 font-mono">
+                          <th className="py-2.5 px-3 font-normal">排名</th>
+                          <th className="py-2.5 px-3 font-normal">搜索关键词 (Query Term)</th>
+                          <th className="py-2.5 px-3 font-normal">搜索引擎渠道</th>
+                          <th className="py-2.5 px-3 font-normal text-right">进站次数</th>
+                          <th className="py-2.5 px-3 font-normal text-right">搜索占比</th>
+                          <th className="py-2.5 px-3 font-normal text-right">最近搜索时间</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-neutral-100 font-mono">
+                        {analytics.searchKeywords && analytics.searchKeywords.length > 0 ? (
+                          analytics.searchKeywords.map((kw: any, idx: number) => (
+                            <tr key={idx} className="hover:bg-neutral-50/80 transition-colors">
+                              <td className="py-3 px-3 text-neutral-400 font-bold">
+                                {idx < 3 ? (
+                                  <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-amber-100 text-amber-900 text-[10px]">
+                                    {idx + 1}
+                                  </span>
+                                ) : (
+                                  `#${idx + 1}`
+                                )}
+                              </td>
+                              <td className="py-3 px-3 font-sans font-medium text-yojqi-ink">
+                                <span className="px-2 py-0.5 rounded-md bg-neutral-100 text-yojqi-ink">
+                                  {kw.keyword}
+                                </span>
+                              </td>
+                              <td className="py-3 px-3 font-sans text-neutral-600">
+                                <span className="inline-flex items-center gap-1">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-yojqi-bronze"></span>
+                                  {kw.sourceZh}
+                                </span>
+                              </td>
+                              <td className="py-3 px-3 text-right font-bold text-yojqi-ink">
+                                {kw.count} 次
+                              </td>
+                              <td className="py-3 px-3 text-right text-neutral-500">
+                                {kw.percentage}%
+                              </td>
+                              <td className="py-3 px-3 text-right text-neutral-400 text-[11px]">
+                                {kw.lastSearchedAt}
+                              </td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td colSpan={6} className="py-8 text-center text-neutral-400 font-sans">
+                              暂无搜索词数据上报，等待访客进入...
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
                 {/* Grid: Traffic Sources & Geo Locations */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                   {/* Left: Sources */}
@@ -697,13 +840,13 @@ export default function AdminPage({ params }: AdminPageProps) {
                     <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
                       <h4 className="font-serif text-base font-bold text-yojqi-ink flex items-center gap-2">
                         <TrendingUp className="w-4 h-4 text-yojqi-bronze" />
-                        <span>流量来源渠道分析</span>
+                        <span>流量来源渠道全景分析</span>
                       </h4>
-                      <span className="text-xs font-mono text-neutral-400">近 7 日占比</span>
+                      <span className="text-xs font-mono text-neutral-400">实时占比</span>
                     </div>
 
                     <div className="space-y-3">
-                      {analytics.sources.map((src, idx) => (
+                      {analytics.sources.map((src: any, idx: number) => (
                         <div key={idx} className="space-y-1">
                           <div className="flex justify-between text-xs">
                             <span className="font-medium text-neutral-700">{src.sourceZh}</span>
@@ -715,7 +858,7 @@ export default function AdminPage({ params }: AdminPageProps) {
                           <div className="w-full h-2 bg-neutral-100 rounded-full overflow-hidden">
                             <div
                               className="h-full bg-yojqi-ink rounded-full transition-all"
-                              style={{ width: `${src.percentage}%` }}
+                              style={{ width: `${Math.min(100, src.percentage)}%` }}
                             />
                           </div>
                         </div>
@@ -730,11 +873,11 @@ export default function AdminPage({ params }: AdminPageProps) {
                         <Globe className="w-4 h-4 text-amber-700" />
                         <span>全球访客国家与城市分布</span>
                       </h4>
-                      <span className="text-xs font-mono text-neutral-400">海外占比 52%</span>
+                      <span className="text-xs font-mono text-neutral-400">多城市 IP 定位</span>
                     </div>
 
                     <div className="space-y-3">
-                      {analytics.geoDistribution.map((geo, idx) => (
+                      {analytics.geoDistribution.map((geo: any, idx: number) => (
                         <div key={idx} className="flex items-center justify-between p-2.5 rounded-xl bg-neutral-50 text-xs">
                           <div>
                             <strong className="text-yojqi-ink block">{geo.countryZh} ({geo.country})</strong>
@@ -750,13 +893,56 @@ export default function AdminPage({ params }: AdminPageProps) {
                   </div>
                 </div>
 
+                {/* NEW: Live Visitor Stream (Recent Events) */}
+                {analytics.recentEvents && analytics.recentEvents.length > 0 && (
+                  <div className="bg-white p-6 rounded-2xl border border-yojqi-border shadow-xs space-y-4">
+                    <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
+                      <h4 className="font-serif text-base font-bold text-yojqi-ink flex items-center gap-2">
+                        <Activity className="w-4 h-4 text-emerald-600" />
+                        <span>实时访客动态流水 (Live Visitor Stream)</span>
+                      </h4>
+                      <span className="text-xs font-mono text-neutral-400">最新受访记录</span>
+                    </div>
+
+                    <div className="space-y-2.5">
+                      {analytics.recentEvents.slice(0, 8).map((ev: any, idx: number) => (
+                        <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-xl bg-neutral-50/70 border border-neutral-100 text-xs gap-2">
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-2">
+                              <span className="font-mono text-[11px] text-neutral-400">
+                                {ev.timestamp.replace('T', ' ').substring(11, 19)}
+                              </span>
+                              <span className="px-1.5 py-0.5 rounded bg-amber-50 text-amber-900 border border-amber-200 text-[10px] font-mono">
+                                {ev.device.toUpperCase()}
+                              </span>
+                              <strong className="text-yojqi-ink truncate">{ev.pageTitle || ev.path}</strong>
+                            </div>
+                            <div className="flex items-center gap-3 text-[11px] text-neutral-500">
+                              <span>来源: {ev.sourceNameZh}</span>
+                              {ev.searchKeyword && (
+                                <span className="text-yojqi-bronze font-medium">
+                                  搜词: &ldquo;{ev.searchKeyword}&rdquo;
+                                </span>
+                              )}
+                              <span>城市: {ev.city || '未知'}</span>
+                            </div>
+                          </div>
+                          <span className="font-mono text-[11px] text-neutral-400 self-end sm:self-auto">
+                            ID: {ev.visitorId}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {/* Top Pages & Device Breakdown */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                   {/* Top Pages */}
                   <div className="lg:col-span-8 bg-white p-6 rounded-2xl border border-yojqi-border shadow-xs space-y-4">
                     <h4 className="font-serif text-base font-bold text-yojqi-ink">热门受访页面与停留表现</h4>
                     <div className="divide-y divide-neutral-100">
-                      {analytics.topPages.map((page, idx) => (
+                      {analytics.topPages.map((page: any, idx: number) => (
                         <div key={idx} className="py-2.5 flex items-center justify-between text-xs">
                           <div className="max-w-md truncate">
                             <span className="font-medium text-yojqi-ink block truncate">{page.titleZh}</span>
