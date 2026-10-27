@@ -27,6 +27,31 @@ export async function POST(req: NextRequest) {
     const country = req.headers.get('cf-ipcountry') || req.headers.get('x-vercel-ip-country') || 'China';
     const city = req.headers.get('cf-ipcity') || req.headers.get('x-vercel-ip-city') || 'Chongqing';
 
+    // 1. Exclude Admin & API paths
+    const reqPath = payload.path || '/';
+    if (reqPath.includes('/admin') || reqPath.startsWith('/api') || reqPath.includes('/_next')) {
+      return NextResponse.json({ success: true, ignored: 'admin_path' });
+    }
+
+    // 2. Exclude Internal staff & Admin sessions
+    const isInternalCookie = req.cookies.get('yojqi_is_internal')?.value === '1' || !!req.cookies.get('yojqi_admin_auth');
+    if (isInternalCookie || payload.isInternal) {
+      return NextResponse.json({ success: true, ignored: 'internal_staff' });
+    }
+
+    // 3. Exclude Localhost & Internal IPs
+    const isLocalhost = clientIp === '127.0.0.1' || clientIp === '::1' || clientIp === '::ffff:127.0.0.1';
+    if (isLocalhost) {
+      return NextResponse.json({ success: true, ignored: 'localhost' });
+    }
+
+    // 4. Exclude automated crawlers, test tools & headless bots
+    const uaLower = userAgent.toLowerCase();
+    const isBot = /bot|spider|crawl|lighthouse|headless|python-requests|node-fetch|postman/i.test(uaLower);
+    if (isBot) {
+      return NextResponse.json({ success: true, ignored: 'crawler_or_bot' });
+    }
+
     // Cookie visitor ID
     const cookieVid = req.cookies.get('yojqi_vid')?.value;
     const isNewVisitor = !cookieVid;

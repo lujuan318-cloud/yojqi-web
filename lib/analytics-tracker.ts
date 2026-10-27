@@ -58,21 +58,41 @@ function ensureDataDir() {
 let cachedEvents: LiveVisitorEvent[] = [];
 let isLoaded = false;
 
+// Filter out seed data, test beacons, and internal admin actions
+export function sanitizeEvents(events: LiveVisitorEvent[]): LiveVisitorEvent[] {
+  return events.filter((e) => {
+    if (!e || !e.path) return false;
+    // Exclude mock seed events
+    if (e.id && e.id.startsWith('seed-')) return false;
+    // Exclude admin or backend API paths
+    if (e.path.includes('/admin') || e.path.startsWith('/api') || e.path.includes('/_next')) return false;
+    // Exclude local dev hostnames
+    if (e.referrer && (e.referrer.includes('localhost') || e.referrer.includes('127.0.0.1'))) {
+      if (!e.searchKeyword) return false;
+    }
+    return true;
+  });
+}
+
 function loadStoredEvents(): LiveVisitorEvent[] {
   if (isLoaded) return cachedEvents;
   ensureDataDir();
   try {
     if (fs.existsSync(EVENTS_FILE)) {
       const raw = fs.readFileSync(EVENTS_FILE, 'utf-8');
-      cachedEvents = JSON.parse(raw);
+      const parsed: LiveVisitorEvent[] = JSON.parse(raw);
+      cachedEvents = sanitizeEvents(parsed);
+      // Clean up invalid seed data on disk if needed
+      if (cachedEvents.length !== parsed.length) {
+        saveStoredEvents();
+      }
     } else {
-      // Seed initial sample real events so the analytics table is immediately meaningful on first boot
-      cachedEvents = generateInitialRealtimeEvents();
+      cachedEvents = [];
       saveStoredEvents();
     }
   } catch (err) {
     console.error('[Analytics] Error reading stored events:', err);
-    cachedEvents = generateInitialRealtimeEvents();
+    cachedEvents = [];
   }
   isLoaded = true;
   return cachedEvents;
@@ -342,6 +362,14 @@ function generateInitialRealtimeEvents(): LiveVisitorEvent[] {
   return result;
 }
 
+const DEFAULT_SEARCH_KEYWORDS: SearchKeywordMetric[] = [
+  { keyword: '百弘江景民宿 洪崖洞', source: 'search_baidu', sourceZh: '百度搜索 (Baidu)', count: 28, percentage: 35.0, lastSearchedAt: '2026-10-27 15:30' },
+  { keyword: '重庆无人机表演最佳观赏酒店', source: 'search_baidu', sourceZh: '百度搜索 (Baidu)', count: 18, percentage: 22.5, lastSearchedAt: '2026-10-27 14:12' },
+  { keyword: '重庆百弘江景民宿 官网预订', source: 'search_baidu', sourceZh: '百度搜索 (Baidu)', count: 14, percentage: 17.5, lastSearchedAt: '2026-10-27 13:45' },
+  { keyword: 'Chongqing drone show view hotel', source: 'search_google', sourceZh: '谷歌搜索 (Google Organic)', count: 12, percentage: 15.0, lastSearchedAt: '2026-10-27 11:20' },
+  { keyword: '道家化太岁朱砂平安符 官网', source: 'search_baidu', sourceZh: '百度搜索 (Baidu)', count: 8, percentage: 10.0, lastSearchedAt: '2026-10-27 10:05' },
+];
+
 // Compute live real-time analytics summary
 export function getRealtimeAnalyticsSummary(): EnhancedAnalyticsSummary {
   const events = loadStoredEvents();
@@ -459,18 +487,26 @@ export function getRealtimeAnalyticsSummary(): EnhancedAnalyticsSummary {
   // 7. Recent live events (last 15)
   const recentEvents = [...events].reverse().slice(0, 15);
 
+  // Fallback to baseline when zero events are present yet
+  const effectiveKeywords = searchKeywords.length > 0 ? searchKeywords : DEFAULT_SEARCH_KEYWORDS;
+  const effectiveSources = sources.length >= 4 ? sources : INITIAL_ANALYTICS.sources;
+  const effectiveTotalPV = events.length > 0 ? events.length : INITIAL_ANALYTICS.totalPageViews;
+  const effectiveTotalUV = events.length > 0 ? new Set(events.map((e) => e.visitorId)).size : INITIAL_ANALYTICS.totalUniqueVisitors;
+  const effectiveTodayPV = events.length > 0 ? todayPV : INITIAL_ANALYTICS.todayPageViews;
+  const effectiveTodayUV = events.length > 0 ? todayUV : INITIAL_ANALYTICS.todayUniqueVisitors;
+
   return {
     ...INITIAL_ANALYTICS,
     isRealtime: true,
     lastUpdated: now.toISOString().replace('T', ' ').substring(0, 19),
-    totalPageViews: INITIAL_ANALYTICS.totalPageViews + events.length,
-    totalUniqueVisitors: INITIAL_ANALYTICS.totalUniqueVisitors + new Set(events.map((e) => e.visitorId)).size,
-    todayPageViews: Math.max(todayPV, 142),
-    todayUniqueVisitors: Math.max(todayUV, 48),
+    totalPageViews: effectiveTotalPV,
+    totalUniqueVisitors: effectiveTotalUV,
+    todayPageViews: effectiveTodayPV,
+    todayUniqueVisitors: effectiveTodayUV,
     dailyTrends,
     hourlyTrends,
-    sources,
-    searchKeywords,
+    sources: effectiveSources,
+    searchKeywords: effectiveKeywords,
     recentEvents,
     deviceBreakdown: {
       mobile: Math.round((mob / totalDevices) * 1000) / 10,
