@@ -471,62 +471,73 @@ export function DirectBookingDrawer({ room, isOpen, onClose, lang }: DirectBooki
                   </button>
                 </div>
 
-                {/* ALIPAY SPECIFIC BOX */}
+                {/* ALIPAY & WECHAT SPECIFIC BOX */}
                 {selectedChannel === 'alipay' && (
-                  <div className="space-y-2.5 text-xs">
-                    <div className="flex items-center gap-1.5 font-semibold text-amber-950">
-                      <Smartphone className="w-4 h-4 text-blue-600" />
-                      <span>{isZh ? '支付宝官方收款信息' : 'Alipay Transfer Info'}</span>
-                    </div>
-
-                    <div className="space-y-1.5 bg-white p-3 rounded-xl border border-neutral-200">
-                      <div className="flex justify-between items-center">
-                        <span className="text-neutral-500">{isZh ? '收款户名' : 'Payee Name'}:</span>
-                        <span className="font-medium text-yojqi-ink">{accountDetails.alipay.payeeName}</span>
+                  <div className="space-y-3 text-xs">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 font-semibold text-amber-950">
+                        <Smartphone className="w-4 h-4 text-emerald-600" />
+                        <span>{isZh ? '微信 / 支付宝聚合扫码' : 'WeChat Pay & Alipay Universal QR'}</span>
                       </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-neutral-500">{isZh ? '支付宝账号' : 'Alipay Account'}:</span>
-                        <div className="flex items-center gap-1 font-mono font-bold text-amber-950">
-                          <span>{accountDetails.alipay.account}</span>
-                          <button
-                            type="button"
-                            onClick={() => handleCopy(accountDetails.alipay.account, 'ali_acc')}
-                            className="p-1 text-neutral-400 hover:text-amber-800"
-                          >
-                            {copiedKey === 'ali_acc' ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
-                          </button>
-                        </div>
+                      <div className="flex items-center gap-1">
+                        <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 font-medium">微信</span>
+                        <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-blue-100 text-blue-800 font-medium">支付宝</span>
+                        <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-rose-100 text-rose-800 font-medium">云闪付</span>
                       </div>
                     </div>
 
-                    <p className="text-[11px] text-neutral-500 leading-relaxed">
+                    {/* Pure QR Code Card */}
+                    <div className="bg-white p-4 rounded-2xl border border-amber-200/80 flex flex-col items-center justify-center text-center shadow-xs">
+                      <div className="relative w-48 h-48 sm:w-52 sm:h-52 rounded-xl overflow-hidden bg-white border border-neutral-100 p-2 shadow-xs">
+                        <Image
+                          src={accountDetails.alipay.qrImageUrl}
+                          alt="WeChat Pay & Alipay Aggregate QR"
+                          width={208}
+                          height={208}
+                          className="object-contain w-full h-full"
+                          priority
+                        />
+                      </div>
+                      <div className="mt-3 flex items-center justify-center gap-2 text-[11px] text-neutral-600">
+                        <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span className="font-medium">{isZh ? '支持手机微信或支付宝直接扫码' : 'Scan via WeChat or Alipay App'}</span>
+                      </div>
+                      <p className="text-[11px] text-amber-900/90 mt-1">
+                        {isZh ? '收款户名：重庆农商行渝快付聚合收单 / 百弘江景民宿' : 'Payee: Chongqing Rural Commercial Bank / Baihong Retreat'}
+                      </p>
+                    </div>
+
+                    <div className="bg-amber-500/10 p-2.5 rounded-xl border border-amber-200/70 text-[11px] text-amber-950 leading-relaxed">
                       💡 {isZh ? accountDetails.alipay.instructionsZh : accountDetails.alipay.instructionsEn}
-                    </p>
+                    </div>
                   </div>
                 )}
 
                 {/* PAYPAL SPECIFIC BOX */}
                 {selectedChannel === 'paypal' && (
-                  <div className="space-y-2.5 text-xs">
+                  <div className="space-y-3 text-xs">
                     <div className="flex items-center gap-1.5 font-semibold text-amber-950">
                       <CreditCard className="w-4 h-4 text-blue-800" />
-                      <span>{isZh ? 'PayPal 快速收款通道' : 'PayPal Instant Checkout'}</span>
+                      <span>{isZh ? 'PayPal 国际直付通道' : 'PayPal Instant Checkout'}</span>
                     </div>
 
-                    <div className="space-y-1.5 bg-white p-3 rounded-xl border border-neutral-200">
-                      <div className="flex justify-between items-center">
-                        <span className="text-neutral-500">{isZh ? 'PayPal 收款邮箱' : 'PayPal Email'}:</span>
-                        <div className="flex items-center gap-1 font-mono font-medium text-amber-950">
-                          <span>{accountDetails.paypal.email}</span>
+                    <div className="space-y-2 bg-white p-3.5 rounded-2xl border border-neutral-200 shadow-xs">
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="text-neutral-500">{isZh ? 'PayPal 专属收款通道' : 'PayPal Payee'}:</span>
+                        <div className="flex items-center gap-1 font-mono font-bold text-amber-950">
+                          <span>paypal.me/BaihongYojqi</span>
                           <button
                             type="button"
-                            onClick={() => handleCopy(accountDetails.paypal.email, 'pp_email')}
+                            onClick={() => handleCopy('https://paypal.me/BaihongYojqi', 'pp_url')}
                             className="p-1 text-neutral-400 hover:text-amber-800"
                           >
-                            {copiedKey === 'pp_email' ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
+                            {copiedKey === 'pp_url' ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                           </button>
                         </div>
                       </div>
+                      <p className="text-[11px] text-neutral-500">
+                        {isZh ? '支持全球主流信用卡 (Visa / Mastercard / Amex) 或 PayPal 余额即时结算。' : 'Supports global credit cards and PayPal balance with zero friction.'}
+                      </p>
                     </div>
 
                     {accountDetails.paypal.payPalMeUrl && (
@@ -534,49 +545,64 @@ export function DirectBookingDrawer({ room, isOpen, onClose, lang }: DirectBooki
                         href={`${accountDetails.paypal.payPalMeUrl}/${room.total_amount}CNY`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full py-2.5 px-3 bg-[#0070ba] hover:bg-[#005ea6] text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-sm"
+                        className="w-full py-3 px-4 bg-[#0070ba] hover:bg-[#005ea6] text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-lg cursor-pointer"
                       >
-                        <span>{isZh ? '打开 PayPal 快速付款页面' : 'Open PayPal.Me Checkout'}</span>
+                        <span>{isZh ? `前往 PayPal 支付 ¥${room.total_amount} CNY` : `Open PayPal.Me / ¥${room.total_amount} CNY`}</span>
                         <ExternalLink className="w-3.5 h-3.5" />
                       </a>
                     )}
 
-                    <p className="text-[11px] text-neutral-500 leading-relaxed">
+                    <div className="bg-amber-500/10 p-2.5 rounded-xl border border-amber-200/70 text-[11px] text-amber-950 leading-relaxed">
                       💡 {isZh ? accountDetails.paypal.instructionsZh : accountDetails.paypal.instructionsEn}
-                    </p>
+                    </div>
                   </div>
                 )}
 
                 {/* WISE SPECIFIC BOX */}
                 {selectedChannel === 'wise' && (
-                  <div className="space-y-2.5 text-xs">
-                    <div className="flex items-center gap-1.5 font-semibold text-amber-950">
-                      <Globe className="w-4 h-4 text-emerald-700" />
-                      <span>{isZh ? 'Wise 跨境多币种汇款账户' : 'Wise Wire Transfer Details'}</span>
+                  <div className="space-y-3 text-xs">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 font-semibold text-amber-950">
+                        <Globe className="w-4 h-4 text-emerald-700" />
+                        <span>{isZh ? 'Wise 跨境多币种扫码 / 电汇' : 'Wise Multi-Currency Checkout'}</span>
+                      </div>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full font-mono bg-emerald-100 text-emerald-800 font-medium">
+                        {isZh ? '实时极低汇率' : 'Mid-market Rate'}
+                      </span>
                     </div>
 
-                    <div className="space-y-1.5 bg-white p-3 rounded-xl border border-neutral-200 font-mono text-[11px]">
-                      <div className="flex justify-between items-center">
-                        <span className="text-neutral-400 font-sans">{isZh ? '收款账户名' : 'Holder'}:</span>
-                        <span className="font-bold text-amber-950">{accountDetails.wise.accountHolder}</span>
+                    {/* Wise QR Code Card */}
+                    <div className="bg-white p-4 rounded-2xl border border-amber-200/80 flex flex-col items-center justify-center text-center shadow-xs">
+                      <div className="relative w-48 h-48 sm:w-52 sm:h-52 rounded-xl overflow-hidden bg-neutral-900 border border-neutral-200 p-2 shadow-xs">
+                        <Image
+                          src={accountDetails.wise.qrImageUrl}
+                          alt="Wise QR Code"
+                          width={208}
+                          height={208}
+                          className="object-contain w-full h-full"
+                          priority
+                        />
                       </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-neutral-400 font-sans">Wise Tag:</span>
-                        <span className="text-yojqi-ink">{accountDetails.wise.wiseTag}</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-neutral-400 font-sans">USD Routing / Account:</span>
-                        <span className="text-neutral-700">{accountDetails.wise.usdRouting} / {accountDetails.wise.usdAccountNumber}</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-neutral-400 font-sans">EUR IBAN:</span>
-                        <span className="text-neutral-700">{accountDetails.wise.eurIban}</span>
+                      <div className="mt-3 flex items-center justify-center gap-1.5 text-[11px] text-neutral-600">
+                        <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span className="font-medium">{isZh ? '支持使用 Wise App 直接扫码付款' : 'Scan with Wise App'}</span>
                       </div>
                     </div>
 
-                    <p className="text-[11px] text-neutral-500 leading-relaxed">
+                    {/* Wise Direct Pay Button */}
+                    <a
+                      href={accountDetails.wise.payUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full py-3 px-4 bg-[#2ed06e] hover:bg-[#25b85f] text-neutral-950 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-lg cursor-pointer"
+                    >
+                      <span>{isZh ? '打开 Wise 付款主页 (wise.com/pay/me/juanl4209)' : 'Open Wise Payment Link'}</span>
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+
+                    <div className="bg-amber-500/10 p-2.5 rounded-xl border border-amber-200/70 text-[11px] text-amber-950 leading-relaxed">
                       💡 {isZh ? accountDetails.wise.instructionsZh : accountDetails.wise.instructionsEn}
-                    </p>
+                    </div>
                   </div>
                 )}
               </div>

@@ -6,6 +6,7 @@ import { X, Trash2, Plus, Minus, ArrowRight, ShieldCheck, Lock } from 'lucide-re
 import { useCart } from '@/context/CartContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import { Language, getDictionary } from '@/lib/i18n';
+import { DirectProductCheckoutModal } from './DirectProductCheckoutModal';
 
 interface CartDrawerProps {
   lang: Language;
@@ -15,6 +16,7 @@ export function CartDrawer({ lang }: CartDrawerProps) {
   const { items, isOpen, closeCart, removeFromCart, updateQuantity, totalPrice, totalCount } = useCart();
   const { formatPrice, currency } = useCurrency();
   const [isLoading, setIsLoading] = useState(false);
+  const [showDirectCheckout, setShowDirectCheckout] = useState(false);
   const dict = getDictionary(lang);
 
   if (!isOpen) return null;
@@ -44,11 +46,12 @@ export function CartDrawer({ lang }: CartDrawerProps) {
       if (data.url) {
         window.location.href = data.url;
       } else {
-        alert(data.message || (lang === 'zh' ? '暂未连接在线收银台，请联系客服' : 'Checkout session simulated successfully.'));
+        // Fallback to seamless Direct Checkout Modal (WeChat Pay / Alipay / PayPal / Wise)
+        setShowDirectCheckout(true);
       }
     } catch (err) {
       console.error(err);
-      alert(lang === 'zh' ? '结算暂时异常，请稍后重试' : 'Checkout error. Please try again.');
+      setShowDirectCheckout(true);
     } finally {
       setIsLoading(false);
     }
@@ -179,16 +182,23 @@ export function CartDrawer({ lang }: CartDrawerProps) {
             </div>
 
             <button
-              onClick={handleCheckout}
+              onClick={() => setShowDirectCheckout(true)}
               disabled={isLoading}
-              className="w-full py-3.5 px-4 rounded-lg yojqi-btn-primary flex items-center justify-center gap-2 text-sm font-medium tracking-wide disabled:opacity-50"
+              className="w-full py-3.5 px-4 rounded-xl yojqi-btn-primary flex items-center justify-center gap-2 text-sm font-medium tracking-wide disabled:opacity-50 cursor-pointer shadow-md hover:shadow-lg transition-all"
             >
-              <span>{isLoading ? '...' : dict.shop.checkoutBtn}</span>
+              <span>{dict.shop.checkoutBtn} (微信/支付宝/PayPal/Wise)</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
         )}
       </div>
+
+      {/* Direct Payment Checkout Modal */}
+      <DirectProductCheckoutModal
+        isOpen={showDirectCheckout}
+        onClose={() => setShowDirectCheckout(false)}
+        lang={lang}
+      />
     </div>
   );
 }

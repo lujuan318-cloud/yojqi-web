@@ -1,10 +1,10 @@
 /**
- * Direct Payment Channel Configurations for YOJQI Direct Booking
+ * Direct Payment Channel Configurations for YOJQI Direct Booking & E-Commerce
  * 
  * Supports user-configured direct accounts:
- * 1. Alipay (支付宝 - 扫码/转账，支持绑定账号与收款码)
- * 2. PayPal (PayPal.me 专属直付链接 / 国际账户)
- * 3. Wise (跨境多币种汇款 / 专属参考编号与银行账户)
+ * 1. 微信 / 支付宝聚合扫码 (重庆农商行渝快付聚合码 - 支持微信支付、支付宝、云闪付)
+ * 2. PayPal (paypal.me/BaihongYojqi - 国际信用卡/借记卡/PayPal账户即时结算)
+ * 3. Wise (https://wise.com/pay/me/juanl4209 - Wise App扫码 / 专属链接，超低汇损多币种)
  */
 
 export interface PaymentChannelConfig {
@@ -16,38 +16,44 @@ export interface PaymentChannelConfig {
   descriptionZh: string;
   descriptionEn: string;
   iconName: string;
+  qrImageUrl?: string;
+  directUrl?: string;
 }
 
 export const PAYMENT_CHANNELS: PaymentChannelConfig[] = [
   {
     id: 'alipay',
-    nameZh: '支付宝 (Alipay)',
-    nameEn: 'Alipay',
-    badgeZh: '国内即时支付',
-    badgeEn: 'Instant QR / Mobile Pay',
-    descriptionZh: '支持中国大陆手机支付宝扫码、转账或跨境 TourPass。秒级生成唯一核销码。',
-    descriptionEn: 'Scan to pay or transfer via Alipay. Instant verification with reference code.',
+    nameZh: '微信 / 支付宝聚合扫码',
+    nameEn: 'WeChat Pay & Alipay (Universal QR)',
+    badgeZh: '微信 / 支付宝均可扫码',
+    badgeEn: 'Universal Mobile Pay',
+    descriptionZh: '支持手机微信、支付宝或银联云闪付直接扫码支付。无需切换，一码通用。',
+    descriptionEn: 'Scan with WeChat Pay, Alipay or UnionPay app. Universal QR code for instant RMB payment.',
     iconName: 'Smartphone',
+    qrImageUrl: '/images/payment/aggregate-qr.png',
   },
   {
     id: 'paypal',
     nameZh: 'PayPal 国际直付',
-    nameEn: 'PayPal Checkout',
-    badgeZh: '海外主流外卡/钱包',
+    nameEn: 'PayPal Direct Checkout',
+    badgeZh: '全球外卡 / PayPal 账户',
     badgeEn: 'Global Cards & Wallets',
-    descriptionZh: '支持全球 200+ 国家与地区信用卡 (Visa / Mastercard) 或 PayPal 账户即时结算。',
-    descriptionEn: 'Pay instantly via PayPal balance or international credit cards with zero friction.',
+    descriptionZh: '直达 paypal.me/BaihongYojqi，支持全球 200+ 国家信用卡 (Visa/Mastercard) 与 PayPal 余额。',
+    descriptionEn: 'Pay instantly via paypal.me/BaihongYojqi with global credit cards or PayPal balance.',
     iconName: 'CreditCard',
+    directUrl: 'https://paypal.me/BaihongYojqi',
   },
   {
     id: 'wise',
-    nameZh: 'Wise 跨境电汇',
-    nameEn: 'Wise International Wire',
-    badgeZh: '极低汇损 · 多币种',
-    badgeEn: 'Lowest FX Fees · Multi-Currency',
-    descriptionZh: '支持 USD / EUR / GBP / AUD 等多币种本地清算，附带专属订单参考号，免除昂贵外卡刷卡费。',
-    descriptionEn: 'Local bank transfers via Wise in USD, EUR, GBP, AUD. Avoid expensive credit card surcharge.',
+    nameZh: 'Wise 跨境直付 / 扫码',
+    nameEn: 'Wise Multi-Currency Pay',
+    badgeZh: '极低汇损 · 支持 Wise 扫码',
+    badgeEn: 'Lowest FX Fees · Scan to Pay',
+    descriptionZh: '支持 Wise App 扫码或访问付款主页，超低汇损直付 USD / EUR / GBP / AUD / HKD 等多币种。',
+    descriptionEn: 'Scan via Wise App or pay via https://wise.com/pay/me/juanl4209 with real mid-market exchange rates.',
     iconName: 'Globe',
+    qrImageUrl: '/images/payment/wise-qr.jpg',
+    directUrl: 'https://wise.com/pay/me/juanl4209',
   },
 ];
 
@@ -66,6 +72,8 @@ export interface DirectAccountDetails {
     instructionsEn: string;
   };
   wise: {
+    payUrl: string;
+    qrImageUrl: string;
     accountHolder: string;
     wiseTag: string;
     email: string;
@@ -81,28 +89,30 @@ export interface DirectAccountDetails {
 export function getDirectAccountDetails(): DirectAccountDetails {
   return {
     alipay: {
-      account: process.env.NEXT_PUBLIC_ALIPAY_ACCOUNT || 'yojqi@outlook.com',
-      payeeName: process.env.NEXT_PUBLIC_ALIPAY_NAME || '百弘江景民宿',
-      qrImageUrl: process.env.NEXT_PUBLIC_ALIPAY_QR_IMAGE || '',
-      instructionsZh: '请打开手机支付宝，转账至上述账号或扫描收款码，转账备注务必填写【预订参考码】。提交后系统将即刻为您锁定保留房源。',
-      instructionsEn: 'Open Alipay, transfer to the payee account, and quote your Booking Reference Code in the remarks. Room will be guaranteed immediately upon submission.',
+      account: process.env.NEXT_PUBLIC_ALIPAY_ACCOUNT || '微信 / 支付宝聚合收单 (重庆农商行)',
+      payeeName: process.env.NEXT_PUBLIC_ALIPAY_NAME || '百弘江景民宿 / YOJQI SANCTUARY',
+      qrImageUrl: process.env.NEXT_PUBLIC_AGGREGATE_QR_IMAGE || '/images/payment/aggregate-qr.png',
+      instructionsZh: '请使用手机微信或支付宝扫描上方专属收款码完成付款。支付时请在备注栏填入您的【专属参考码】。提交后系统将即刻锁定房源或安排出库。',
+      instructionsEn: 'Scan the universal QR code with WeChat or Alipay. Please input your unique Reference Code in the transfer remarks so our concierge can reconcile immediately.',
     },
     paypal: {
-      payPalMeUrl: process.env.NEXT_PUBLIC_PAYPAL_ME_URL || 'https://paypal.me/yojqi',
-      email: process.env.NEXT_PUBLIC_PAYPAL_EMAIL || 'payments@yojqi.com',
-      instructionsZh: '系统将引导您前往专属 PayPal 快速收银通道，支付时请备注订单参考号。完成后系统自动生成官方入住凭据与确认码。',
-      instructionsEn: 'Click to open PayPal checkout. Please enter your Booking Reference in the payment note. Official stay voucher will be issued upon completion.',
+      payPalMeUrl: process.env.NEXT_PUBLIC_PAYPAL_ME_URL || 'https://paypal.me/BaihongYojqi',
+      email: process.env.NEXT_PUBLIC_PAYPAL_EMAIL || 'BaihongYojqi',
+      instructionsZh: '点击下方按钮直达 PayPal.me 快速付款通道。支持全球 Visa / MasterCard 国际信用卡或 PayPal 余额，转账时请备注专属参考码。',
+      instructionsEn: 'Click the button to open paypal.me/BaihongYojqi. Supports global credit/debit cards or PayPal balance. Quote your Reference Code in the payment note.',
     },
     wise: {
-      accountHolder: process.env.NEXT_PUBLIC_WISE_HOLDER_NAME || 'YOJQI SANCTUARY RETREATS',
-      wiseTag: process.env.NEXT_PUBLIC_WISE_TAG || '@yojqi',
+      payUrl: process.env.NEXT_PUBLIC_WISE_PAY_URL || 'https://wise.com/pay/me/juanl4209',
+      qrImageUrl: process.env.NEXT_PUBLIC_WISE_QR_IMAGE || '/images/payment/wise-qr.jpg',
+      accountHolder: process.env.NEXT_PUBLIC_WISE_HOLDER_NAME || 'YOJQI / Juan L',
+      wiseTag: process.env.NEXT_PUBLIC_WISE_TAG || '@juanl4209',
       email: process.env.NEXT_PUBLIC_WISE_EMAIL || 'concierge@yojqi.com',
       usdRouting: process.env.NEXT_PUBLIC_WISE_USD_ROUTING || '026073150 (Evolve Bank)',
       usdAccountNumber: process.env.NEXT_PUBLIC_WISE_USD_ACCOUNT || '9608221840',
       eurIban: process.env.NEXT_PUBLIC_WISE_EUR_IBAN || 'BE62 9670 1284 9912',
       swiftBic: process.env.NEXT_PUBLIC_WISE_SWIFT || 'EVBLUS3N',
-      instructionsZh: '请在 Wise App 或银行端向上述账户汇款，转账附言（Reference）务必严格填写您的【专属参考码】。系统已为您优先保留该房源。',
-      instructionsEn: 'Transfer via Wise App or wire to the account above. ALWAYS put your unique Reference Code in the transfer note so our concierge can reconcile instantly.',
+      instructionsZh: '支持使用 Wise App 直接扫描上方二维码，或点击按钮跳转至 Wise 付款主页完成低汇损直付，转账附言（Reference）务必严格填写您的【专属参考码】。',
+      instructionsEn: 'Scan the QR code with your Wise App or click through to https://wise.com/pay/me/juanl4209. Please enter your unique Reference Code in the transfer note.',
     },
   };
 }
