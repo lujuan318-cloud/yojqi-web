@@ -54,8 +54,12 @@ export function ProductCard({ product, lang, darkTheme = false }: ProductCardPro
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
         <div className="absolute top-3 left-3 flex gap-1.5">
-          <span className="px-2.5 py-1 text-[11px] font-mono tracking-wider uppercase rounded-full bg-white/95 backdrop-blur-xs text-yojqi-inkHeading border border-yojqi-border shadow-xs flex items-center gap-1">
-            {product.category === 'protection' && <Shield className="w-3 h-3 text-amber-700" />}
+          <span className={`px-2.5 py-1 text-[11px] font-mono tracking-wider uppercase rounded-full backdrop-blur-xs shadow-xs flex items-center gap-1 ${
+            darkTheme
+              ? 'bg-black/75 text-amber-200 border border-amber-500/40'
+              : 'bg-white/95 text-yojqi-inkHeading border border-yojqi-border'
+          }`}>
+            {product.category === 'protection' && <Shield className={`w-3 h-3 ${darkTheme ? 'text-amber-400' : 'text-amber-700'}`} />}
             <span>{categoryLabels[product.category] || product.category}</span>
           </span>
         </div>
@@ -64,29 +68,43 @@ export function ProductCard({ product, lang, darkTheme = false }: ProductCardPro
       {/* Details */}
       <div className="p-5 flex-1 flex flex-col justify-between">
         <div>
-          <div className="text-[11px] font-mono tracking-widest text-yojqi-bronze uppercase mb-1">
+          <div className={`text-[11px] font-mono tracking-widest uppercase mb-1 ${
+            darkTheme ? 'text-amber-400/90' : 'text-yojqi-bronze'
+          }`}>
             {typeLabels[product.type] || product.type}
           </div>
 
           <Link href={`/${lang}/product/${product.slug}`}>
-            <h3 className="font-serif text-lg font-medium text-yojqi-inkHeading group-hover:text-yojqi-bronze transition-colors line-clamp-1">
+            <h3 className={`font-serif text-lg font-medium transition-colors line-clamp-1 ${
+              darkTheme
+                ? 'text-white group-hover:text-amber-200'
+                : 'text-yojqi-inkHeading group-hover:text-yojqi-bronze'
+            }`}>
               {lang === 'zh' ? product.nameZh : product.nameEn}
             </h3>
           </Link>
 
-          <p className="text-xs text-yojqi-body line-clamp-2 mt-1.5 leading-relaxed">
+          <p className={`text-xs line-clamp-2 mt-1.5 leading-relaxed ${
+            darkTheme ? 'text-neutral-300' : 'text-yojqi-body'
+          }`}>
             {lang === 'zh' ? product.taglineZh : product.taglineEn}
           </p>
         </div>
 
         {/* Pricing & Add to Cart */}
-        <div className="mt-5 pt-3 border-t border-neutral-100 flex items-center justify-between">
+        <div className={`mt-5 pt-3 border-t flex items-center justify-between ${
+          darkTheme ? 'border-amber-900/40' : 'border-neutral-100'
+        }`}>
           <div className="flex items-baseline gap-2">
-            <span className="font-serif text-lg font-semibold text-yojqi-ink">
+            <span className={`font-serif text-lg font-semibold ${
+              darkTheme ? 'text-amber-300' : 'text-yojqi-ink'
+            }`}>
               {formatPrice(product.price)}
             </span>
             {product.originalPrice > product.price && (
-              <span className="text-xs text-neutral-400 line-through">
+              <span className={`text-xs line-through ${
+                darkTheme ? 'text-neutral-500' : 'text-neutral-400'
+              }`}>
                 {formatPrice(product.originalPrice)}
               </span>
             )}
@@ -94,7 +112,11 @@ export function ProductCard({ product, lang, darkTheme = false }: ProductCardPro
 
           <button
             onClick={() => addToCart(product)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg yojqi-btn-primary text-xs font-medium tracking-wide"
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium tracking-wide transition-colors ${
+              darkTheme
+                ? 'bg-amber-500 hover:bg-amber-400 text-neutral-950 font-semibold shadow-md'
+                : 'yojqi-btn-primary'
+            }`}
             aria-label={`Add ${product.nameEn} to bag`}
           >
             <Plus className="w-3.5 h-3.5" />
