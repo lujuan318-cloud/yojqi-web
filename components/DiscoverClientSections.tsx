@@ -41,9 +41,65 @@ export function DiscoverClientSections({ lang }: DiscoverClientSectionsProps) {
   const [activeNeed, setActiveNeed] = useState<UserNeed>('sleep');
   const [userProfile, setUserProfile] = useState<any>(null);
   const [communityPosts, setCommunityPosts] = useState(SEED_COMMUNITY_POSTS);
+  const [activeHeroIdx, setActiveHeroIdx] = useState(0);
+
+  const heroScenes = [
+    {
+      id: 'river',
+      badgeZh: '两江交汇 · 云端栖息',
+      badgeEn: 'Chongqing · River Skyline',
+      titleZh: '百弘两江天幕套房 · 晨曦江岚',
+      titleEn: 'Baihong Skyline Suite · Dawn Riverview',
+      descZh: '推窗两江浩荡，晨光入牖，以通透高阔景致重启身心清明。',
+      descEn: 'Expansive river confluence panoramic view with morning daylight, restoring sensory baseline.',
+      image: '/images/retreats/homestay-river-room.jpg',
+      tagZh: '空间居定',
+      tagEn: 'Sanctuary Space'
+    },
+    {
+      id: 'drone',
+      badgeZh: '专属机位 · 天幕流光',
+      badgeEn: 'Balcony View · Drone Show',
+      titleZh: '百弘江景露台 · 平视万架无人机夜宴',
+      titleEn: 'Baihong Balcony · Front-Row Drone Spectacle',
+      descZh: '避开地面人潮，于专属高空露台捧茶平视万架无人机星河盛宴。',
+      descEn: 'Private front-row balcony overlooking Hongyadong and the 10,000-drone celestial show.',
+      image: '/images/retreats/baihong-drone-night.jpg',
+      tagZh: '天街夜宴',
+      tagEn: 'Night Splendor'
+    },
+    {
+      id: 'tea',
+      badgeZh: '明窗静几 · 缓律宁神',
+      badgeEn: 'Tatami Nook · Quiet Pacing',
+      titleZh: '空灵茶席 · 一盏老茶缓心归序',
+      titleEn: 'Daylight Tea Ceremony · Somatic Deceleration',
+      descZh: '在日光轻洒的飘窗茶榻前，以温润茶汤重置神经节奏，感官自然松弛。',
+      descEn: 'Natural window light and deliberate tea pacing to mechanically slow heart rate and stress.',
+      image: '/images/retreats/rooms/room_b21_02_whole_suite/03-bedroom-tatami-bay-window-tea-ceremony-nook.jpg',
+      tagZh: '茶道缓心',
+      tagEn: 'Tea Ritual'
+    },
+    {
+      id: 'scent',
+      badgeZh: '触觉锚点 · 随身雅器',
+      badgeEn: 'Tactile Anchor · Wearable Zen',
+      titleZh: '古香雅器 · 随身收摄浮躁心神',
+      titleEn: 'Wearable Aroma Anchor · Ambergris Ease',
+      descZh: '纯铜精铸与天然古法香方，指尖每一次摩挲皆是收摄心神的锚点。',
+      descEn: 'Handcrafted pure bronze aroma capsule grounding the nervous system in high-stress settings.',
+      image: '/images/products/ambergris-bracelet.png',
+      tagZh: '随身安神',
+      tagEn: 'Sensory Anchor'
+    }
+  ];
 
   useEffect(() => {
     setUserProfile(getUserProfile());
+    const timer = setInterval(() => {
+      setActiveHeroIdx((prev) => (prev + 1) % 4);
+    }, 6000);
+    return () => clearInterval(timer);
   }, []);
 
   const needsList: { id: UserNeed; icon: any; label: string; desc: string }[] = [
@@ -176,35 +232,62 @@ export function DiscoverClientSections({ lang }: DiscoverClientSectionsProps) {
               </div>
             </div>
 
-            {/* Right Atmospheric Hero Card */}
+            {/* Right Atmospheric Hero Showcase */}
             <div className="lg:col-span-5 relative">
-              <div className="relative mx-auto max-w-md lg:max-w-none rounded-3xl overflow-hidden border border-yojqi-borderAccent shadow-2xl bg-neutral-950 aspect-[4/5] group">
-                <Image
-                  src="/images/retreats/baihong-drone-night.jpg"
-                  alt="YOJQI Chongqing Skyline & Eastern Living Sanctuary"
-                  fill
-                  priority
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  sizes="(max-width: 1024px) 100vw, 40vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+              <div className="relative mx-auto max-w-md lg:max-w-none rounded-3xl overflow-hidden border border-amber-900/20 shadow-2xl bg-neutral-950 aspect-[4/5] group">
+                {heroScenes.map((scene, idx) => (
+                  <div
+                    key={scene.id}
+                    className={`absolute inset-0 transition-opacity duration-1000 ${
+                      idx === activeHeroIdx ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
+                    }`}
+                  >
+                    <Image
+                      src={scene.image}
+                      alt={isZh ? scene.titleZh : scene.titleEn}
+                      fill
+                      priority={idx === 0}
+                      className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                      sizes="(max-width: 1024px) 100vw, 40vw"
+                    />
+                  </div>
+                ))}
+                
+                {/* Luminous, breathable overlay */}
+                <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/75 via-black/20 to-transparent pointer-events-none" />
+
+                {/* Top Scene Navigation Pills */}
+                <div className="absolute top-4 left-4 right-4 z-30 flex items-center justify-between gap-1.5 overflow-x-auto no-scrollbar">
+                  {heroScenes.map((scene, idx) => (
+                    <button
+                      key={scene.id}
+                      type="button"
+                      onClick={() => setActiveHeroIdx(idx)}
+                      className={`px-3 py-1.5 rounded-full text-[11px] font-mono tracking-wider transition-all backdrop-blur-md ${
+                        idx === activeHeroIdx
+                          ? 'bg-[#C4A470] text-[#141210] font-semibold shadow-md'
+                          : 'bg-black/35 text-white/80 hover:bg-black/50 border border-white/20'
+                      }`}
+                    >
+                      {isZh ? scene.tagZh : scene.tagEn}
+                    </button>
+                  ))}
+                </div>
 
                 {/* Floating Experience Badge */}
-                <div className="absolute bottom-6 left-6 right-6 p-5 rounded-2xl bg-white/95 backdrop-blur-md border border-white/60 text-yojqi-ink shadow-xl">
+                <div className="absolute bottom-6 left-6 right-6 z-30 p-5 rounded-2xl bg-white/95 backdrop-blur-md border border-white/60 text-yojqi-ink shadow-xl transition-all">
                   <div className="flex items-center justify-between mb-1.5">
                     <span className="text-[10px] font-mono font-semibold tracking-wider text-amber-800 uppercase flex items-center gap-1.5">
                       <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                      <span>{isZh ? '真实空间栖息体验' : 'Physical Sanctuary'}</span>
+                      <span>{isZh ? heroScenes[activeHeroIdx].badgeZh : heroScenes[activeHeroIdx].badgeEn}</span>
                     </span>
-                    <span className="text-[10px] font-mono text-neutral-400">Chongqing · 两江交汇</span>
+                    <span className="text-[10px] font-mono text-neutral-400">0{activeHeroIdx + 1} / 04</span>
                   </div>
                   <h4 className="font-serif text-lg font-semibold text-yojqi-inkHeading">
-                    {isZh ? '百弘江景民宿 · 无人机机位套房' : 'Baihong Drone Show Balcony Residence'}
+                    {isZh ? heroScenes[activeHeroIdx].titleZh : heroScenes[activeHeroIdx].titleEn}
                   </h4>
-                  <p className="text-xs text-yojqi-body line-clamp-1 mt-1">
-                    {isZh
-                      ? '高空露台正对两江交汇浩瀚全景，避开地面人潮，于茶香中平视天幕。'
-                      : 'Front-row balcony overlooking the Yangtze & Jialing confluence without crowds.'}
+                  <p className="text-xs text-yojqi-body line-clamp-2 mt-1">
+                    {isZh ? heroScenes[activeHeroIdx].descZh : heroScenes[activeHeroIdx].descEn}
                   </p>
                 </div>
               </div>

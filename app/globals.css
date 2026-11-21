@@ -15,6 +15,11 @@
   --yojqi-text-strong: #4e4339;
   --yojqi-accent: #7a5a3a;
   --yojqi-accent-deep: #7a351b;
+  --yojqi-gold: #c4a470;
+  --yojqi-gold-light: #e6d2b8;
+  --yojqi-mineral-sage: #2b3e3c;
+  --yojqi-mineral-ochre: #8c6847;
+  --yojqi-rice-paper: #fbf9f5;
   --yojqi-border: rgba(38, 29, 24, 0.12);
   --yojqi-border-accent: rgba(122, 90, 58, 0.24);
   --yojqi-cta-primary: linear-gradient(180deg, #15110f 0%, #261d18 100%);
@@ -47,17 +52,18 @@ body {
 
 /* Primary CTA Button */
 .yojqi-btn-primary {
-  background: linear-gradient(180deg, #15110f 0%, #261d18 100%);
+  background: #15110f;
   color: #fffdfa;
-  border: 1px solid rgba(122, 90, 58, 0.28);
-  box-shadow: 0 4px 16px rgba(21, 17, 15, 0.18);
+  border: 1px solid var(--yojqi-gold, #c4a470);
+  box-shadow: 0 4px 16px rgba(196, 164, 112, 0.22);
   transition: all 0.2s ease-in-out;
 }
 
 .yojqi-btn-primary:hover {
-  background: linear-gradient(180deg, #261d18 0%, #15110f 100%);
-  border-color: rgba(122, 90, 58, 0.45);
-  box-shadow: 0 6px 20px rgba(21, 17, 15, 0.25);
+  background: var(--yojqi-gold, #c4a470);
+  color: #15110f;
+  border-color: var(--yojqi-gold, #c4a470);
+  box-shadow: 0 6px 22px rgba(196, 164, 112, 0.38);
   transform: translateY(-1px);
 }
 
