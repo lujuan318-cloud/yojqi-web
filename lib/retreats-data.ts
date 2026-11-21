@@ -46,7 +46,7 @@ export const SANCTUARY_PROPERTIES: SanctuaryProperty[] = [
     id: "prop-baihong-drone-view",
     slug: "baihong-drone-show-apartment",
     nameEn: "Baihong River View Panoramic Balcony Retreat",
-    nameZh: "白虹·两江汇全江景阳台大床房 (潋滟)",
+    nameZh: "百弘·两江汇全江景阳台大床房 (潋滟)",
     subtitleEn: "Private Balcony Over the Two Rivers Confluence & Hongyadong — The Ultimate High-Altitude Sanctuary",
     subtitleZh: "坐拥长江与嘉陵江两江交汇浩瀚全景 · 俯瞰洪崖洞木质灯火璀璨夜色 · 私享静谧云端大阳台",
     badgeEn: "Front-Row 270° River View",

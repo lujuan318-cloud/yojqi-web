@@ -106,6 +106,144 @@ export const INITIAL_ARTICLES: EditorialArticle[] = [
     `,
     relatedPropertySlug: "baihong-drone-show-apartment"
   },
+  {
+    id: "art-cq-late-arrival-prep-guide",
+    slug: "late-arrival-chongqing-check-in-prep-guide",
+    track: "chongqing_travel",
+    titleEn: "Late Arrival in Chongqing: What to Prepare Before Your First Night High-Floor Check-In",
+    titleZh: "深夜抵达重庆避坑指南：首夜入住高空江景民宿前必须准备的几件事",
+    summaryEn: "Arriving late at CKG Airport or Chongqing North Station? A comprehensive survival guide on midnight navigation, high-speed elevator access, and acoustic recovery at high altitudes.",
+    summaryZh: "深夜落地江北机场或重庆北站？山城本地管家深度拆解：深夜交通避坑、智能高空门锁、以及如何走近30楼落地窗享受静谧深睡与震撼两江夜景。",
+    directTakeawayEn: "For midnight arrivals in Chongqing, avoid street-level roadside motels that suffer from nightlife noise. Instead, head directly to a high-elevation sanctuary like Baihong River View Homestay (30th Floor) overlooking the Yangtze and Jialing confluence, equipped with double acoustic glazing and self-check-in.",
+    directTakeawayZh: "深夜抵达山城重庆，首夜切忌选择临街沿道低楼层酒店（常年受火锅夜市与夜间施工汽笛干扰）。最优解是直奔洪崖洞/千厮门大桥交汇核心区的高空居所——百弘江景民宿（最高30层），走近落地窗不仅能饱览千厮门大桥璀璨天幕，更因多层降噪中空玻璃与全套草本安神礼遇，确保旅途劳顿后获得高质量深度睡眠。",
+    featuredImage: "/images/retreats/baihong-drone-night.jpg",
+    publishDate: "2026-10-10",
+    readTimeEn: "6 min read",
+    readTimeZh: "6 分钟阅读",
+    authorEn: "YOJQI Chongqing Sanctuary Host",
+    authorZh: "YOJQI 重庆宿集主理人",
+    tagsEn: ["Chongqing Travel", "Late Arrival", "Airport Fast Track", "Baihong Homestay", "Travel Recovery"],
+    tagsZh: ["重庆旅游", "深夜入住", "江北机场攻略", "百弘江景民宿", "旅途修护"],
+    fourStepPracticeEn: {
+      step1: { title: "Pre-install Mobile Pay", desc: "Bind international credit cards to Alipay or WeChat Pay before taking off to ensure smooth midnight taxi dispatch at CKG Airport." },
+      step2: { title: "Message Your Concierge", desc: "Notify the Baihong 24-hour concierge with your flight number for direct smart lock codes and 30th-floor elevator access guides." },
+      step3: { title: "Direct High-Speed Elevation", desc: "Take the express elevator straight to the 30th floor, bypassing bustling ground-level street traffic and midnight crowds." },
+      step4: { title: "Step to the Window", desc: "Step toward the floor-to-ceiling windows, brew a cup of aged hot tea, and take in the glowing bridge lights before falling into deep rest." }
+    },
+    fourStepPracticeZh: {
+      step1: { title: "行前备好支付", desc: "登机前在支付宝或微信绑定常用卡片，抵达江北机场后直奔正规网约车乘车区，无需排队找零。" },
+      step2: { title: "微信报备管家", desc: "向百弘24小时专属管家报备落地时间，提前获取30楼直达电梯动线与密码门锁指引，实现零等待自助入住。" },
+      step3: { title: "直上30层谧境", desc: "抵达洪崖洞核心地段后，乘坐高速电梯直抵30楼百弘江景民宿，将街面喧嚣与人潮彻底隔绝在脚下。" },
+      step4: { title: "走近百弘落地窗", desc: "推开窗户深呼吸，泡上一盏温润老茶，倚窗俯瞰千厮门大桥金色天幕与两江静水，让紧绷的神经彻底松弛安睡。" }
+    },
+    contentHtmlEn: `
+      <h2>The Midnight Reality of Mountain City Transit</h2>
+      <p>Touching down at Chongqing Jiangbei International Airport (CKG) past 23:00 introduces travelers to China's most vertically complex metropolis. With metro lines suspended after 23:00, navigating highway flyovers and multi-level quays can disorient even seasoned explorers.</p>
+
+      <div class="yojqi-takeaway">
+        <strong>Direct Takeaway:</strong> The single most crucial decision for late-night arrivals is securing a high-elevation room (such as the 30th floor of Baihong River View Homestay). Ground-level streets around commercial hubs remain noisy until 04:00 AM. Rising 30 stories immediately separates you from street decibels into absolute stillness.
+      </div>
+
+      <h2>Three Rules for Smooth Late-Night Arrival</h2>
+      <ol>
+        <li><strong>Terminal Transport Protocol:</strong> Follow the illuminated signage for official ride-hailing pick-up zones (T3 Terminal GTC Floor 1). Input your precise building address provided in your host welcome guide.</li>
+        <li><strong>Elevator & Digital Access:</strong> Ensure you have received the door keypad pin code and elevator card access details from your Baihong concierge via WeChat or WhatsApp prior to landing.</li>
+        <li><strong>Acoustic Isolation & Floor Choice:</strong> Choose higher floors (25F to 30F). The acoustic energy of river ferries and hillside traffic disperses significantly above the 20th level.</li>
+      </ol>
+
+      <h2>The First Night Somatic Wind-Down</h2>
+      <p>After reaching your suite, take a moment to walk toward the floor-to-ceiling windows. Opening the terrace reveals the quiet sweep of the Jialing and Yangtze rivers meeting beneath the golden towers of Hongyadong. Pour a cup of complimentary warm herbal tea, unbox the bedside somatic kit, and transition effortlessly into restorative sleep.</p>
+    `,
+    contentHtmlZh: `
+      <h2>深夜入渝的立体山城现实</h2>
+      <p>当航班在深夜23点后降落重庆江北国际机场（CKG），迎面而来的是魔幻山城的8D立体交通网。夜间轨道交通停运后，穿行于错综复杂的立交桥与沿江滨道，初来乍到的旅人极易产生感官疲劳与方向迷失。</p>
+
+      <div class="yojqi-takeaway">
+        <strong>核心避坑提要：</strong> 深夜抵达重庆最关键的选择，是避开沿街低楼层客房。洪崖洞周边夜生活常持续至凌晨四点，唯有入住如 <strong>百弘江景民宿（最高30层）</strong> 的高空居所，利用百米高空落差与中空隔音玻璃，才能在繁华核心地段独享难得的深度宁静。
+      </div>
+
+      <h2>深夜顺畅入住的三大实战法则</h2>
+      <ol>
+        <li><strong>机场交通动线：</strong> 沿航站楼指示直达 T3 综合交通枢纽（GTC）负一层网约车专属上车点，按管家指引输入准确上客门号，避开黑车揽客纠缠。</li>
+        <li><strong>直达电梯与密码锁：</strong> 提前通过百弘管家微信确认30楼高速电梯楼层刷卡权限与智能入户密码，深夜到房即可无感秒开门。</li>
+        <li><strong>高空物理隔音优势：</strong> 坚持选择25-30高楼层。江轮汽笛声与公路车流声在20层以上急剧衰减，配合百弘定制静音中空落地窗，营造宛如云端静修室的深睡空间。</li>
+      </ol>
+
+      <h2>首夜身心安顿仪式</h2>
+      <p>步入房间，换上柔软棉麻拖鞋，<strong>走近落地窗</strong>。<strong>推开阳台窗户</strong>，江风微拂，千厮门大桥的暖金余晖与两江交汇的粼粼波光尽收眼底。在工夫茶席冲泡一壶管家精备的老沱茶，伴着草本沉香的温润香气，让奔波一整天的身体与神经彻底复位。</p>
+    `,
+    relatedPropertySlug: "baihong-drone-show-apartment"
+  },
+  {
+    id: "art-cq-where-to-stay-first-timers",
+    slug: "where-to-stay-in-chongqing-first-time-jiefangbei-or-hongyadong",
+    track: "chongqing_travel",
+    titleEn: "Where to Stay in Chongqing for First-Timers: Hongyadong, River View, and the Calmer High-Floor Vantage",
+    titleZh: "初次来重庆住哪里？洪崖洞与两江交汇核心区：为什么30楼高空瞰江才是最优解",
+    summaryEn: "First-time visitor to Chongqing? A definitive comparison of Hongyadong, Jiefangbei, and why a 30th-floor riverfront sanctuary at Baihong delivers the ultimate mountain city experience.",
+    summaryZh: "初访山城重庆该如何选宿？深度对比洪崖洞与核心商圈：为什么选择百弘江景民宿30楼高空全江景机位，能完美兼得下楼即景的便利与云端深睡的宁静。",
+    directTakeawayEn: "While Jiefangbei offers pedestrian shopping malls, the authentic Chongqing visual spirit lies in the Hongyadong and dual-river confluence belt. Booking a 30th-floor riverfront suite at Baihong River View Homestay gives you front-row panorama over Qiansimen Bridge and Chaotianmen, completely elevated above street crowds and traffic noise.",
+    directTakeawayZh: "初次游览山城重庆，核心住宿区域首推洪崖洞与两江交汇带。选择百弘江景民宿（最高30层），走近百弘落地窗即可饱览千厮门大桥与朝天门两江汇流绝美景致。既拥有下楼即达核心景区的黄金动线，又能在30层高空依托中空静音玻璃隔绝地面嘈杂，享受私享茶席与高品质安睡。",
+    featuredImage: "/images/retreats/baihong-drone-night.jpg",
+    publishDate: "2026-10-15",
+    readTimeEn: "5 min read",
+    readTimeZh: "5 分钟阅读",
+    authorEn: "YOJQI Chongqing Sanctuary Host",
+    authorZh: "YOJQI 重庆宿集主理人",
+    tagsEn: ["Where to Stay in Chongqing", "Hongyadong", "River View", "Baihong Homestay", "Chongqing Skyline"],
+    tagsZh: ["重庆住宿攻略", "洪崖洞民宿", "高空江景房", "百弘江景民宿", "千厮门大桥"],
+    fourStepPracticeEn: {
+      step1: { title: "Choose Altitude First", desc: "Select high-rise units (25th to 30th floor) to stay comfortably above mountain city road traffic and cruise whistles." },
+      step2: { title: "Secure Bridge & Confluence Line", desc: "Confirm unobstructed panoramic orientation facing Qiansimen Bridge and the confluence point." },
+      step3: { title: "Step to the Terrace at Sunset", desc: "Walk to the private terrace at dusk as the golden lights of Hongyadong illuminate below you." },
+      step4: { title: "Book Official Direct Channel", desc: "Reserve through the official retreat portal for personalized host concierge service and guaranteed room selection." }
+    },
+    fourStepPracticeZh: {
+      step1: { title: "选址先选垂直高度", desc: "山城地貌立体起伏，务必认准百弘25-30楼高空房型，利用垂直落差天然隔绝地面车马人流。" },
+      step2: { title: "锁定千厮门核心水景", desc: "确认房间拥有正对千厮门大桥与两江交汇开阔视野，避免被周边高楼视线遮挡。" },
+      step3: { title: "暮色时分走近落地窗", desc: "傍晚19点推开阳台窗户，静候洪崖洞千盏金色灯火瞬间点亮，在私享茶榻前拍照留念。" },
+      step4: { title: "通过官网通道直订", desc: "选择官网直订通道，享受专属管家全程一对一动线指引、正品品质保证与无忧入住服务。" }
+    },
+    contentHtmlEn: `
+      <h2>The Classic First-Time Dilemma in Chongqing</h2>
+      <p>Chongqing's dramatic riverfront geography splits visitor attention between two closely connected epicenters: the dense commercial pedestrian district of Jiefangbei, and the historic cliff-hanging architecture of Hongyadong overlooking the Qiansimen Bridge and the dual-river confluence.</p>
+
+      <div class="yojqi-takeaway">
+        <strong>Direct Takeaway:</strong> For first-time visitors seeking breathtaking, iconic visual memories, staying directly along the Hongyadong river-facing corridor at high altitude (such as Baihong River View Homestay on the 30th floor) provides unbeatable immersion without the claustrophobia of inland concrete blocks.
+      </div>
+
+      <h2>Why Vertical Elevation Matters Most in Mountain Cities</h2>
+      <p>In standard cities, location is purely two-dimensional. In Chongqing's 8D topography, the vertical dimension (altitude) dictates your entire sensory experience:</p>
+      <ul>
+        <li><strong>Floors 1 - 10:</strong> Vulnerable to roadside food stall noise, tourist tour megaphone chatter, and persistent vehicle honking.</li>
+        <li><strong>Floors 11 - 24:</strong> Improved view, but partial acoustic resonance between adjacent hillsides and riverbanks.</li>
+        <li><strong>Floors 25 - 30 (Baihong Pinnacle Range):</strong> Unobstructed 270° celestial perspective, pure mountain breeze, and clean acoustic isolation with double-glazed acoustic windows.</li>
+      </ul>
+
+      <h2>Sunset & Twilight: The Golden Hour Window</h2>
+      <p>Around 19:30 every evening, the golden illumination on Hongyadong turns on simultaneously. Guests at Baihong can step toward the floor-to-ceiling windows or relax on their private balcony, soaking in the panoramic drone formations, cruise ships cutting trails through the water, and the glittering Chongqing skyline without lifting a finger.</p>
+    `,
+    contentHtmlZh: `
+      <h2>初次来重庆的经典选址困惑</h2>
+      <p>重庆独步全球的两江交汇地形，让初次到访的游客往往在不同商圈之间难以抉择。是选择百货商场林立的传统步行街，还是选择拥抱壮阔长江与嘉陵江的洪崖洞及千厮门江景带？</p>
+
+      <div class="yojqi-takeaway">
+        <strong>核心选宿法则：</strong> 如果你希望推窗即是《千与千寻》般的梦幻金光，夜卧可观两江汇流的浩瀚波光，洪崖洞一线江景带无疑是第一选择。而其中的核心关键，在于锁定 <strong>百弘江景民宿（最高30层）</strong> 的高空开阔机位。
+      </div>
+
+      <h2>山城住宿的“垂直海拔定律”</h2>
+      <p>普通平原城市选房只需看横向距离，而在8D魔幻山城，垂直高度（楼层）直接决定了你的居住品质与感官舒适度：</p>
+      <ul>
+        <li><strong>1 - 10 楼（低区）：</strong> 紧邻行车道与步行人流，夜间极易受到火锅油烟、游客喧哗与沿线喇叭声打扰。</li>
+        <li><strong>11 - 24 楼（中区）：</strong> 视野逐渐展开，但在两江峡谷风道效应下仍有局部声波反射。</li>
+        <li><strong>25 - 30 楼（百弘高空尊享区）：</strong> 视平线与两江汇流、千厮门大桥天际线完美齐平。走近百弘落地窗，百米高空气场天然沉静，配合高标准中空静音中空玻璃，静享私密深睡。</li>
+      </ul>
+
+      <h2>暮色降临：私享千厮门大桥天幕</h2>
+      <p>每晚19:30左右，洪崖洞与千厮门大桥的景观灯群在暮色中瞬间齐亮。入住百弘，你无需在桥面忍受数万人潮拥挤，只需 <strong>走近落地窗</strong> 或 <strong>推开阳台窗户</strong>，端上一杯管家特调清茶，便能将两江交汇的粼粼波光与穿梭游轮尽收眼底，定格属于你的山城浪漫记忆。</p>
+    `,
+    relatedPropertySlug: "baihong-drone-show-apartment"
+  },
 
   // --- TRACK 1: Product Somatic Wisdom ---
   {

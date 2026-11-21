@@ -236,37 +236,62 @@ export default async function ArticlePage({
         )}
 
         {relatedProperty && (
-          <div className="p-6 rounded-2xl bg-white border border-yojqi-border shadow-xs flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-4">
-              <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-neutral-900 shrink-0">
-                <Image
-                  src={relatedProperty.heroImage}
-                  alt={currentLang === 'zh' ? relatedProperty.nameZh : relatedProperty.nameEn}
-                  fill
-                  className="object-cover"
-                  sizes="64px"
-                />
+          <div className="p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-amber-50/70 via-white to-amber-50/40 border border-amber-200/80 shadow-card space-y-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-neutral-900 shrink-0 shadow-xs">
+                  <Image
+                    src={relatedProperty.heroImage}
+                    alt={currentLang === 'zh' ? relatedProperty.nameZh : relatedProperty.nameEn}
+                    fill
+                    className="object-cover"
+                    sizes="80px"
+                  />
+                </div>
+                <div>
+                  <span className="text-xs font-mono font-semibold text-amber-800 uppercase tracking-wider block">
+                    {currentLang === 'zh' ? '📍 官方推荐高空宿集' : '📍 FEATURED HIGH-FLOOR SANCTUARY'}
+                  </span>
+                  <h4 className="font-serif text-xl font-medium text-yojqi-inkHeading mt-0.5">
+                    {currentLang === 'zh' ? relatedProperty.nameZh : relatedProperty.nameEn}
+                  </h4>
+                  <p className="text-xs text-amber-900/80 line-clamp-1 mt-1 font-medium">
+                    {currentLang === 'zh' ? '最高30层一线江景 · 正对千厮门大桥与两江交汇 · 走近落地窗私享茶席' : 'Highest 30th Floor River Panorama · Qiansimen Bridge & Confluence Front-Row · Private Balcony'}
+                  </p>
+                </div>
               </div>
-              <div>
-                <span className="text-xs font-mono font-medium text-amber-700 uppercase block">
-                  {dict.wisdom.exploreSanctuary}
-                </span>
-                <h4 className="font-serif text-lg font-medium text-yojqi-inkHeading">
-                  {currentLang === 'zh' ? relatedProperty.nameZh : relatedProperty.nameEn}
-                </h4>
-                <p className="text-xs text-yojqi-body line-clamp-1 mt-0.5">
-                  {currentLang === 'zh' ? relatedProperty.badgeZh : relatedProperty.badgeEn}
-                </p>
+
+              <div className="flex items-center gap-2 w-full sm:w-auto shrink-0">
+                <Link
+                  href={`/${lang}/retreats`}
+                  className="flex-1 sm:flex-none px-6 py-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 bg-amber-900 hover:bg-amber-800 text-white shadow-sm transition-all"
+                >
+                  <span>{currentLang === 'zh' ? '🏨 官网直订·查实时房态' : '🏨 Book Direct & Check Rates'}</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+                <Link
+                  href={`/${lang}/retreats/${relatedProperty.slug}`}
+                  className="px-4 py-3 rounded-xl border border-amber-300 hover:bg-amber-100/50 text-xs font-medium text-amber-950 transition-colors shrink-0"
+                >
+                  <span>{currentLang === 'zh' ? '房型详情' : 'Room Specs'}</span>
+                </Link>
               </div>
             </div>
 
-            <Link
-              href={`/${lang}/retreats/${relatedProperty.slug}`}
-              className="w-full sm:w-auto px-6 py-3 rounded-xl yojqi-btn-secondary text-xs font-medium flex items-center justify-center gap-2 shrink-0"
-            >
-              <span>{currentLang === 'zh' ? '探索此机位公寓' : 'Explore Apartment'}</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-amber-200/60 text-xs text-yojqi-body">
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+                <span>{currentLang === 'zh' ? '百弘最高30层，远离街道喧嚣' : 'Highest 30F Altitude, Acoustic Isolated'}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+                <span>{currentLang === 'zh' ? '正对千厮门大桥/无人机天幕机位' : 'Front-Row Drone Show & Riverview Balcony'}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+                <span>{currentLang === 'zh' ? '24小时管家微信一对一指引' : '24h VIP Concierge Support (WeChat/WhatsApp)'}</span>
+              </div>
+            </div>
           </div>
         )}
       </div>
